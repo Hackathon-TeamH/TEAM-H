@@ -6,7 +6,7 @@ class models:
     try:
       connect = DB.getConnection()
       cursor = connect.cursor()
-      sql = "INSERT INTO users (id, user_name, email, password, language, learning_language, country, city, last_operation_at) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+      sql = "INSERT INTO users (id, user_name, email, password, language, learning_language, country, city, last_operation_at) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);"
       cursor.execute(sql, (id,name,email,password,lng,learning_lng,country,city,last_operation_at))
       connect.commit()
     except Exception as e:

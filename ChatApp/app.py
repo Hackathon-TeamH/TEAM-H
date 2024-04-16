@@ -1,4 +1,3 @@
-import datetime
 from flask import Flask, redirect, render_template, request, session, flash
 from datetime import timedelta
 import hashlib
@@ -47,9 +46,11 @@ def user_signup():
     # user = models.getUser(email)
 
   #if user != None:
-  #  flash('既に登録済みのユーザーです')
+  #  flash('既に使用されているアドレスです')
     models.create_user(id,name,email,password,lng,learning_lng,country,city,last_operation_at)
     UserId = str(id)
     session['uid'] = UserId
     return redirect('/')
   return redirect('/signup')
+
+if __name__ == '__main__': app.run(host="0.0.0.0", debug=False)
