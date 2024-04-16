@@ -5,7 +5,7 @@ version: "3.9"
 services:
   db:
     # コンテナ名をmysqlに設定
-    container_name: MySQL
+    container_name: MySQL_teamH
     # MySQLのDockerfileをビルドする
     build:
       # ビルドコンテキストはカレントディレクトリ
@@ -39,7 +39,7 @@ services:
 
   app:
     # コンテナ名をFlaskに設定
-    container_name: Flask
+    container_name: Flask_teamH
     # FlaskのDockerfileをビルドする
     build:
       # ビルドコンテキストはカレントディレクトリ
@@ -51,7 +51,8 @@ services:
       - ./ChatApp:/code
     # ローカルの5000番ポートとコンテナの5000番ポートをつなぐ
     ports:
-      - "5000:5000"
+      - "5002:5002"
+
     # コマンドを実行
     command:  bash -c "python app.py"
     # 先にdbを起動してからappを起動する

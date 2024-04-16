@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        #chat-box {
+            width: 300px;
+            height: 200px;
+            overflow-y: scroll;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+    <title>チャット</title>
+</head>
+<body>
+    <h1>チャット</h1>
+    <div id="chat-box">
+        <ul>
+            {% for message_dict in sentmessage %}
+                <li>{{ message_dict['message'] }}</li>
+                <li>{{ message_dict['translated_message'] }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <form action="{{url_for('blank')}}" method="POST">
+        <input type="text" name="message" placeholder="メッセージを入力してください">
+        <button type="submit">送信</button>
+    </form>
+</body>
+</html>
