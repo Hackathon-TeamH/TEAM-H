@@ -1,4 +1,3 @@
-import pymysql
 from flask import abort
 from util.DB import DB
 
