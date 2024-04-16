@@ -19,13 +19,13 @@
     <h1>チャット</h1>
     <div id="chat-box">
         <ul>
-            {% for message_dict in sentmessage %}
-                <li>{{ message_dict['message'] }}</li>
-                <li>{{ message_dict['translated_message'] }}</li>
+            {% for msg in sent_message %}
+                <li>{{ msg['message'] }}</li>
+                    <p>{{ msg['translated_message'] }}</p>
             {% endfor %}
         </ul>
     </div>
-    <form action="{{url_for('blank')}}" method="POST">
+    <form action="{{url_for('send_messege')}}" method="POST">
         <input type="text" name="message" placeholder="メッセージを入力してください">
         <button type="submit">送信</button>
     </form>

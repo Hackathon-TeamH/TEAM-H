@@ -4,25 +4,24 @@ from util.DB import DB
 
 
 class dbConnect:
+    #メッセージ一覧取得
+    #channnelidごとに分ける予定
     def getMessageAll():
-        #cur = None  # tryブロックの外でcurをNoneで初期化
         try:
             conn = DB.getConnection()
             cur = conn.cursor()
             sql = "SELECT message, translated_message FROM messages;"
             cur.execute(sql)
-            messages = cur.fetchall() #タプルで1行ずつ返す
+            messages = cur.fetchall()
             return messages
         except:
             print('Exception1が発生しています')
             abort(500)
         finally:
-            #if cur is not None:  # curがNoneでないことを確認してからcloseを呼び出す
             cur.close()
 
-
+    #メッセージ格納
     def createMessage(message, translated_message, user_id, channel_id):
-        #cur = None  # tryブロックの外でcurをNoneで初期化
         try:
             conn = DB.getConnection()
             cur = conn.cursor()
@@ -33,20 +32,19 @@ class dbConnect:
             print('Exception2が発生しています')
             abort(500)
         finally:
-            #if cur is not None:  # curがNoneでないことを確認してからcloseを呼び出す
             cur.close()
 
+    #翻訳元と翻訳対象言語を取得
     def translationlanguage(id):
         try:
             conn = DB.getConnection()
             cur = conn.cursor()
             sql = "SELECT language, learning_language FROM users WHERE id = %s;"
             cur.execute(sql, (id))
-            lang = cur.fetchall() #タプルで1行ずつ返す
+            lang = cur.fetchall()
             return lang
         except:
             print('Exception3が発生しています')
             abort(500)
         finally:
-            #if cur is not None:  # curがNoneでないことを確認してからcloseを呼び出す
             cur.close()
