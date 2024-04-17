@@ -59,13 +59,18 @@ def user_signup():
 
 # チャットページ
 @app.route('/')
-def chat():
+def home():
+    return render_template('home.html')
+
+
+@app.route('/message')
+def all_message():
     sent_message = models.getMessageAll()
     return render_template('chat.html', sent_message=sent_message)
 
 
 #チャット送信
-@app.route('/', methods=['POST'])
+@app.route('/message', methods=['POST'])
 def send_messege():
     
     #ログイン処理でsessionに入れたidを使う
@@ -83,7 +88,6 @@ def send_messege():
         return redirect('/')
 
     #学ぶ/教える言語が必ず対になる前提の記述
-    #送信者の学ぶ言語→受信者の学ぶ言語への設定に変更予定
     language_pair = models.translationlanguage(user_id)
     
     for lang in language_pair:
@@ -92,7 +96,7 @@ def send_messege():
     
     translated_message = translation.translation(message, src, dest)
     models.createMessage(message, translated_message, user_id, channel_id)
-    return redirect('/')
+    return redirect('/message')
 
 
 if __name__ == '__main__':
