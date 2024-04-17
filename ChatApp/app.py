@@ -4,9 +4,12 @@ import hashlib
 import uuid
 import re
 
-from util.DB import DB
+from util.db import DB
 from config import config
 from models import models
+
+import translation
+
 
 app = Flask(__name__)
 app.config.from_object(config)
@@ -53,19 +56,11 @@ def user_signup():
     return redirect('/')
   return redirect('/signup')
 
-if __name__ == '__main__': app.run(host="0.0.0.0", debug=False)from flask import Flask, render_template, request, redirect, url_for
-
-from models import dbConnect
-import translation 
-
-
-app = Flask(__name__)
-  
 
 # チャットページ
 @app.route('/')
 def chat():
-    sent_message = dbConnect.getMessageAll()
+    sent_message = models.getMessageAll()
     return render_template('chat.html', sent_message=sent_message)
 
 
@@ -89,16 +84,20 @@ def send_messege():
 
     #学ぶ/教える言語が必ず対になる前提の記述
     #送信者の学ぶ言語→受信者の学ぶ言語への設定に変更予定
-    language_pair = dbConnect.translationlanguage(user_id)
+    language_pair = models.translationlanguage(user_id)
     
     for lang in language_pair:
         src = lang['learning_language']
         dest = lang['language']
     
     translated_message = translation.translation(message, src, dest)
-    dbConnect.createMessage(message, translated_message, user_id, channel_id)
+    models.createMessage(message, translated_message, user_id, channel_id)
     return redirect('/')
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5002, debug=False)
+ 
+
+  
+
