@@ -57,12 +57,13 @@ def user_signup():
   return redirect('/signup')
 
 
-# チャットページ
+# ハブページ用
 @app.route('/')
 def home():
     return render_template('home.html')
 
 
+# チャットページ
 @app.route('/message')
 def all_message():
     sent_message = models.getMessageAll()
