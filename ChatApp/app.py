@@ -4,9 +4,12 @@ import hashlib
 import uuid
 import re
 
-from util.DB import DB
+from util.db import DB
 from config import config
 from models import models
+
+import translation
+
 
 app = Flask(__name__)
 app.config.from_object(config)
@@ -53,4 +56,53 @@ def user_signup():
     return redirect('/')
   return redirect('/signup')
 
-if __name__ == '__main__': app.run(host="0.0.0.0", debug=False)
+
+# ハブページ用
+@app.route('/')
+def home():
+    return render_template('home.html')
+
+
+# チャットページ
+@app.route('/message')
+def all_message():
+    sent_message = models.getMessageAll()
+    return render_template('chat.html', sent_message=sent_message)
+
+
+#チャット送信
+@app.route('/message', methods=['POST'])
+def send_messege():
+    
+    #ログイン処理でsessionに入れたidを使う
+    #user_id = session.get("id")　
+    user_id = "35d485b3-f3e0-4b34-84bd-3460487c711e"
+    if user_id is None:
+        return redirect('/login') #リンク先は要調整
+
+    #チャンネルに入るとき？にidをもらう
+    #channel_id = request.form.get('channel_id')
+    channel_id = 1
+
+    message = request.form.get('message')
+    if message is None:
+        return redirect('/')
+
+    #学ぶ/教える言語が必ず対になる前提の記述
+    language_pair = models.translationlanguage(user_id)
+
+    for lang in language_pair:
+        src = lang['learning_language']
+        dest = lang['language']
+    
+    translated_message = translation.translation(message, src, dest)
+    models.createMessage(message, translated_message, user_id, channel_id)
+    return redirect('/message')
+
+
+if __name__ == '__main__':
+    app.run(host="0.0.0.0", port=5002, debug=False)
+ 
+
+  
+
