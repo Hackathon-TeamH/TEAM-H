@@ -1,0 +1,24 @@
+
+<!--動作確認用なので変更OKです-->
+<!--正式なページ実装後は消す予定です-->
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title></title>
+</head>
+<body>
+    <h1>リクエスト</h1>
+
+    <form action="{{url_for('signup')}}" >
+        <button type="submit">サインアップ</button>
+    </form>
+    
+    <form action="{{url_for('all_message')}}" >
+        <button type="submit">チャット画面</button>
+    </form>
+</body>
+</html>
