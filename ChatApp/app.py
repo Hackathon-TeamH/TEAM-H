@@ -124,7 +124,7 @@ def send_message():
         return redirect('/')
 
     #学ぶ/教える言語が必ず対になる前提の記述
-    language_pair = models.translationlanguage(user_id)
+    language_pair = models.translationLanguage(user_id)
 
     for lang in language_pair:
         src = lang['learning_language']
