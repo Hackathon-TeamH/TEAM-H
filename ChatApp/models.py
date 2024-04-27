@@ -1,5 +1,5 @@
 from flask import abort
-from util.DB import DB
+from util.db import DB
 
 class models:
   def create_user(id,name,email,password,lng,learning_lng,country,city,last_operation_at):
@@ -88,3 +88,59 @@ class models:
           abort(500)
       finally:
           cur.close()
+
+  def getChannelAll():
+    try:
+        conn = DB.getConnection()
+        cur = conn.cursor()
+        sql = "SELECT * FROM CHANNELS;"
+        cur.execute(sql)
+        channels = cur.fetchall()
+        return channels
+    except Exception as e:
+        print('エラー:' + e)
+        abort(500)
+    finally:
+        cur.close()         
+  
+  def getChannelById(channel_id):
+    try:
+        conn = DB.getConnection()
+        cur = conn.cursor()
+        sql = "SELECT * FROM CHANNELS WHERE channel_id=%S;"
+        cur.execute(sql, (channel_id))
+        channel = cur.fetchone()
+        return channel
+    except Exception as e:
+        print('エラー:' + e)
+        abort(500)
+    finally:
+        cur.close()
+        
+  def getChannelByName(channel_name):
+    try:
+        conn = DB.getConnection()
+        cur = conn.cursor()
+        sql = "SELECT * FROM CHANNELS WHERE channel_name=%S;"
+        cur.execute(sql, (channel_name))
+        channel = cur.fetchone()
+        return channel
+    except Exception as e:
+        print('エラー:' + e)
+        abort(500)
+    finally:
+        cur.close()
+
+  def addChannel(id, channel_name, user_id):
+    try:
+        conn = DB.getConnection()
+        cur = conn.cursor()
+        sql = "INSERT INTO channels(id, channel_name, user_id) VALUES(%s, %s, %s);"
+        cur.execute(sql, (id, channel_name, user_id))
+        conn.commit()
+    except Exception as e:
+        print('エラー:' + e)
+        abort(500)
+    finally:
+        cur.close()
+     
