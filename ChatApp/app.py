@@ -135,6 +135,35 @@ def send_message():
     return redirect('/message')
 
 
+# チャンネル一覧ページの表示
+# 最終的には"/"にする
+@app.route("/channel")
+def index():
+    # user_id = session.get("id")
+    user_id = "35d485b3-f3e0-4b34-84bd-3460487c711e"
+    if user_id is None:
+        return redirect('/login')
+    else:
+        channels = models.getChannelAll()
+        channels.reverse()
+    return render_template('index.html', channels=channels, user_id=user_id)
+
+
+# チャンネルの追加
+# 最終的には"/"にする
+@app.route("/channel", methods=["POST"])
+def add_channel():
+    # sessionからuser_id取得
+    # user_id = session.get("user_id")
+    user_id = "35d485b3-f3e0-4b34-84bd-3460487c711e"
+    if user_id is None:
+        return redirect("/login")
+    channel_name = request.form.get("channel_name")
+    id = uuid.uuid4()
+    models.addChannel(id, channel_name, user_id)
+    models.addToUsersChannels(user_id, id)
+    return redirect("/channel")
+
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5002, debug=False)
 

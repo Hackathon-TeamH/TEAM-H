@@ -10,7 +10,7 @@ class models:
           cursor.execute(sql, (id,name,email,password,lng,learning_lng,country,city,last_operation_at))
           connect.commit()
       except Exception as e:
-          print('エラー:' + e)
+          print(f"エラー: {e}")
           abort(5000)
       finally:
           cursor.close()
@@ -19,12 +19,12 @@ class models:
     try:
       connect = DB.getConnection()
       cursor = connect.cursor()
-      sql = "SELECT * FROM user WHERE email=%s;"
+      sql = "SELECT * FROM users WHERE email=%s;"
       cursor.execute(sql, (email))
       user = cursor.fetchone()
       return user
     except Exception as e:
-      print('エラー:' + e)
+      print(f"エラー: {e}")
       abort(500)
     finally:
       cursor.close()
@@ -39,7 +39,7 @@ class models:
       user = cursor.fetchone()
       return user
     except Exception as e:
-      print('エラー:' + e)
+      print(f"エラー: {e}")
       abort(500)
     finally:
       cursor.close()
@@ -89,16 +89,18 @@ class models:
       finally:
           cur.close()
 
+  #チャンネル一覧取得
+  #user_idごとにも取得できるようにした方が良さそう
   def getChannelAll():
     try:
         conn = DB.getConnection()
         cur = conn.cursor()
-        sql = "SELECT * FROM CHANNELS;"
+        sql = "SELECT * FROM channels;"
         cur.execute(sql)
         channels = cur.fetchall()
         return channels
     except Exception as e:
-        print('エラー:' + e)
+        print(f"エラー: {e}")
         abort(500)
     finally:
         cur.close()         
@@ -107,26 +109,27 @@ class models:
     try:
         conn = DB.getConnection()
         cur = conn.cursor()
-        sql = "SELECT * FROM CHANNELS WHERE channel_id=%S;"
+        sql = "SELECT * FROM channels WHERE channel_id=%S;"
         cur.execute(sql, (channel_id))
         channel = cur.fetchone()
         return channel
     except Exception as e:
-        print('エラー:' + e)
+        print(f"エラー: {e}")
         abort(500)
     finally:
         cur.close()
-        
+
+#   チャンネル名にUNIQUE制約を課さないなら不要？      
   def getChannelByName(channel_name):
     try:
         conn = DB.getConnection()
         cur = conn.cursor()
-        sql = "SELECT * FROM CHANNELS WHERE channel_name=%S;"
+        sql = "SELECT * FROM channels WHERE channel_name=%S;"
         cur.execute(sql, (channel_name))
         channel = cur.fetchone()
         return channel
     except Exception as e:
-        print('エラー:' + e)
+        print(f"エラー: {e}")
         abort(500)
     finally:
         cur.close()
@@ -139,8 +142,23 @@ class models:
         cur.execute(sql, (id, channel_name, user_id))
         conn.commit()
     except Exception as e:
-        print('エラー:' + e)
+        print(f"エラー: {e}")
         abort(500)
     finally:
         cur.close()
+
+# users_channelsテーブルに追加
+  def addToUsersChannels(user_id, channel_id):
+    try:
+        conn = DB.getConnection()
+        cur = conn.cursor()
+        sql = "INSERT INTO users_channels(user_id, channel_id) VALUES(%s, %s);"
+        cur.execute(sql, (user_id, channel_id))
+        conn.commit()
+    except Exception as e:
+        print(f"エラー: {e}")
+        abort(500)
+    finally:
+        cur.close()
+
      

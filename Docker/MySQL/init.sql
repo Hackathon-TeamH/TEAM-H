@@ -32,12 +32,12 @@ CREATE TABLE messages (
 CREATE TABLE channels(
   id varchar(255) PRIMARY KEY,
   channel_name varchar(255) NOT NULL,
-  created_at timestamp NOT NULL default current_timestamp,
+  created_at DATETIME NOT NULL default current_timestamp,
   user_id varchar(255) REFERENCES users(id)
 );
 
-CREATE TABLE user_channels(
-  user_id varchar(255) REFERENCES users(id) NOT NULL,
+CREATE TABLE users_channels(
+  user_id varchar(255) REFERENCES users(id),
   channel_id varchar(255) REFERENCES channels(id)
 );
 
@@ -50,5 +50,9 @@ INSERT INTO messages (id, message, translated_message, created_at, user_id, chan
     ('3', 'Nice to meet you.', 'はじめまして。', NOW(), '2', '2');
 
 INSERT INTO channels(id, channel_name, created_at, user_id) VALUES
-  ('295287cc-5efc-43ee-a03b-b5cb67c87167', 'TEST_CHANNEL1', NOW(), "35d485b3-f3e0-4b34-84bd-3460487c711e"),
-  ('a2e90f73-e91f-4d62-a25b-e3d06551226d', 'TEST_CHANNEL2', NOW(), "ab0bf204-3df1-4a52-b14a-89f18e8a8188");
+    ("1", "TEST_CHANNEL1", NOW(), "35d485b3-f3e0-4b34-84bd-3460487c711e"),
+    ("2", "TEST_CHANNEL2", NOW(), "ab0bf204-3df1-4a52-b14a-89f18e8a8188");
+
+INSERT INTO users_channels(user_id, channel_id) VALUES
+    ("35d485b3-f3e0-4b34-84bd-3460487c711e", "1"),
+    ("ab0bf204-3df1-4a52-b14a-89f18e8a8188", "2")
