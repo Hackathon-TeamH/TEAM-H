@@ -90,7 +90,6 @@ class models:
           cur.close()
 
   #チャンネル一覧取得
-  #user_idごとにも取得できるようにした方が良さそう
   def getChannelAll():
     try:
         conn = DB.getConnection()
@@ -105,6 +104,7 @@ class models:
     finally:
         cur.close()         
   
+  #指定したchannel_idに対応するチャンネルを取得
   def getChannelById(channel_id):
     try:
         conn = DB.getConnection()
@@ -112,6 +112,21 @@ class models:
         sql = "SELECT * FROM channels WHERE channel_id=%S;"
         cur.execute(sql, (channel_id))
         channel = cur.fetchone()
+        return channel
+    except Exception as e:
+        print(f"エラー: {e}")
+        abort(500)
+    finally:
+        cur.close()
+ 
+  #指定したユーザーが参加しているチャンネルを取得
+  def getChannelByUserId(user_id):
+    try:
+        conn = DB.getConnection()
+        cur = conn.cursor()
+        sql = "SELECT * FROM users_channels WHERE user_id=%S;"
+        cur.execute(sql, (user_id))
+        channel = cur.fetchall()
         return channel
     except Exception as e:
         print(f"エラー: {e}")
