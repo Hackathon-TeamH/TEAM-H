@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>login</title>
+  <link rel="stylesheet" href="{{url_for('static',filename='css/styles.css')}}">
+</head>
+<body>
+  <header>
+    <p>あなたと私のLanguage</p>
+  </header>
+  <div>
+    <form class="registration-form" method="post">
+      <h1 class="registration-title">あなたと私のLanguage</h1>
+      <div>
+        <label for="email-input">Email</label>
+        <input
+          type="text"
+          placeholder="Email"
+          name="email"
+          id="email-input"
+        />
+      </div>
+      <div>
+        <label for="password-input">Password</label>
+        <input
+          type="password"
+          placeholder="Password"
+          name="password"
+          id="password-input"
+        />
+      </div>
+      <div class="registration-button-container">
+        {% with messages = get_flashed_messages() %} {% if messages %}
+        <ul class="flashes">
+          {% for message in messages %}
+          <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %} {% endwith %}
+        <button class="registration-button pink">ログイン</button>
+        <a class="switch-register-mode" href="{{ url_for('signup') }}">
+          新規会員登録
+        </a>
+      </div>
+    </form>
+
+  </div>
+</body>
+</html>
