@@ -1,0 +1,4 @@
+/* 全てのCSSをまとめてエクスポート */
+
+@import "color.css";
+@import "registration.css";

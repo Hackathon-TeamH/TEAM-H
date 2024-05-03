@@ -1,5 +1,5 @@
 from flask import abort
-from util.DB import DB
+from util.db import DB
 
 class models:
   def create_user(id,name,email,password,lng,learning_lng,country,city,last_operation_at):
