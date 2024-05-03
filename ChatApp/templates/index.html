@@ -18,20 +18,19 @@
             margin-bottom: 10px;
         }
     </style>
-    <title>チャット</title>
+    <title>チャンネル一覧</title>
 </head>
 <body>
-    <h1>チャット</h1>
+    <h1>チャンネル一覧</h1>
     <div id="chat-box">
         <ul>
-            {% for msg in sent_message %}
-                <li>{{ msg['message'] }}</li>
-                    <p><font color="#808000">{{ msg['translated_message'] }}</font></p>
+            {% for channel in channels %}
+                <li>{{ channel["channel_name"] }}</li>
             {% endfor %}
         </ul>
     </div>
-    <form action="{{url_for('send_message')}}" method="POST">
-        <input type="text" name="message" placeholder="メッセージを入力してください">
+    <form action="{{url_for('add_channel')}}" method="POST">
+        <input type="text" name="channel_name" placeholder="チャンネル名を入力してください">
         <button type="submit">送信</button>
     </form>
 </body>
