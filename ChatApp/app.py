@@ -1,5 +1,6 @@
 from flask import Flask, redirect, render_template, request, session, flash
 from datetime import timedelta
+# datetimeモジュールのインポートが必要
 import datetime
 import hashlib
 import uuid
@@ -13,7 +14,7 @@ import translation
 
 app = Flask(__name__)
 app.config.from_object(config.Config)
-
+# config.pyのConfigクラス
 
 @app.route('/signup')
 def signup():
@@ -32,6 +33,7 @@ def user_signup():
   country = request.form.get('country')
   city = request.form.get('city')
 
+# 変数名がdatetimeだとエラーが起きたのでdtに
   dt = datetime.datetime.now()
   last_operation_at = dt.strftime('%Y-%m-%d %H:%M:%S')
 
