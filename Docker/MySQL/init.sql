@@ -36,7 +36,7 @@ CREATE TABLE channels(
   user_id varchar(255) REFERENCES users(id)
 );
 
-CREATE TABLE users_channels(
+CREATE TABLE memberships(
   user_id varchar(255) REFERENCES users(id),
   channel_id varchar(255) REFERENCES channels(id)
 );
@@ -46,14 +46,15 @@ INSERT INTO users(id, user_name, password, email, language, learning_language, c
 INSERT INTO users(id, user_name, password, email, language, learning_language, country, city, last_operation_at) VALUES ("ab0bf204-3df1-4a52-b14a-89f18e8a8188", "TEST_USER2", "password", "test2@email.com", "en", "ja", "US", "LosAngeles", '2024-04-14 22:00:00');
 
 INSERT INTO messages (id, message, translated_message, created_at, user_id, channel_id) VALUES
-    ('1', 'Hello', 'こんにちは', NOW(), '1', '1'),
-    ('2', 'How are you?', '元気ですか？', NOW(), '2', '1'),
-    ('3', 'Nice to meet you.', 'はじめまして。', NOW(), '2', '2');
+    ("1", "Hello", "こんにちは", NOW(), "35d485b3-f3e0-4b34-84bd-3460487c711e", "1"),
+    ("2", "How are you?", "元気ですか？", NOW(), "35d485b3-f3e0-4b34-84bd-3460487c711e", "2"),
+    ("3", "Nice to meet you.", "はじめまして。", NOW(), "ab0bf204-3df1-4a52-b14a-89f18e8a8188", "2");
 
 INSERT INTO channels(id, channel_name, created_at, user_id) VALUES
     ("1", "TEST_CHANNEL1", NOW(), "35d485b3-f3e0-4b34-84bd-3460487c711e"),
     ("2", "TEST_CHANNEL2", NOW(), "ab0bf204-3df1-4a52-b14a-89f18e8a8188");
 
-INSERT INTO users_channels(user_id, channel_id) VALUES
+INSERT INTO memberships(user_id, channel_id) VALUES
     ("35d485b3-f3e0-4b34-84bd-3460487c711e", "1"),
+    ("35d485b3-f3e0-4b34-84bd-3460487c711e", "2"),
     ("ab0bf204-3df1-4a52-b14a-89f18e8a8188", "2")
