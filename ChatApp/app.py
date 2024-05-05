@@ -1,5 +1,7 @@
 from flask import Flask, redirect, render_template, request, session, flash
 from datetime import timedelta
+# datetimeモジュールのインポートが必要
+import datetime
 import hashlib
 import uuid
 import re
@@ -11,8 +13,8 @@ import translation
 
 
 app = Flask(__name__)
-app.config.from_object(config)
-
+app.config.from_object(config.Config)
+# config.pyのConfigクラス
 
 @app.route('/signup')
 def signup():
@@ -31,28 +33,29 @@ def user_signup():
   country = request.form.get('country')
   city = request.form.get('city')
 
-  datetime = datetime.now()
-  last_operation_at = datetime.strftime('%Y-%m-%d %H:%M:%S')
+# 変数名がdatetimeだとエラーが起きたのでdtに
+  dt = datetime.datetime.now()
+  last_operation_at = dt.strftime('%Y-%m-%d %H:%M:%S')
 
   pattern = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
 
-  if(name == "" | email == "" | password1 == "" | password2 == "" | lng == "" | learning_lng == ""):
+  if(name == "" or email == "" or password1 == "" or password2 == "" or lng == "" or learning_lng == ""):
     flash("必須項目をすべて入力してください")
   elif(password1 != password2):
     flash("同じパスワードを入力してください")
-  elif(re.match(pattern,email)):
-    flash("正しいパスワードを入力してください")
+  elif(re.match(pattern,email) is None):
+    flash("正しいメールアドレスを入力してください")
   else:
     password = hashlib.sha256(password1.encode('utf-8')).hexdigest()
     user = models.getUser(email)
 
-  if user != None:
-    flash('既に使用されているアドレスです')
-  else:
-     models.create_user(id,name,email,password,lng,learning_lng,country,city,last_operation_at)
-     UserId = str(id)
-     session['id'] = UserId
-     return redirect('/')
+    if user != None:
+        flash('既に使用されているアドレスです')
+    else:
+        models.create_user(id,name,email,password,lng,learning_lng,country,city,last_operation_at)
+        UserId = str(id)
+        session['id'] = UserId
+        return redirect('/')
   return redirect('/signup')
 
 
@@ -68,13 +71,13 @@ def userLogin():
 
     pattern = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
 
-    if(email == "" & password == ""):
+    if(email == "" and password == ""):
        flash('メールアドレスとパスワードを入力してください')
     elif(email == "" ):
        flash('メールアドレスを入力してください')
     elif(password == ""):
        flash('パスワードを入力してください')
-    elif(re.match(pattern,email)):
+    elif(re.match(pattern,email) is None):
        flash('正しいメールアドレスを入力してください')
     else:
        user = models.getUser(email)
@@ -86,8 +89,8 @@ def userLogin():
              flash('パスワードが間違っています')
           else:
              session["id"] = user["id"]
-             datetime = datetime.now()
-             last_operation_at = datetime.strftime('%Y-%m-%d %H:%M:%S')
+             dt = datetime.datetime.now()
+             last_operation_at = dt.strftime('%Y-%m-%d %H:%M:%S')
              models.updateLastOperationAt(user["id"],last_operation_at)
              return redirect('/')
     return redirect('/login')
