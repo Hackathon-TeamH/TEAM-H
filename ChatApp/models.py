@@ -184,7 +184,7 @@ class models:
 
 
   #学びたい言語を取得
-  def getLearningLang(user_id):
+  def getLearningLanguage(user_id):
       try:
           connect = DB.getConnection()
           cursor = connect.cursor()
@@ -199,7 +199,7 @@ class models:
           cursor.close()
 
   #話せる言語を取得          
-  def getNativeLang(user_id):
+  def getNativeLanguage(user_id):
       try:
           connect = DB.getConnection()
           cursor = connect.cursor()

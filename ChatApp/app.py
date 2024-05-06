@@ -112,24 +112,18 @@ def all_message(channel_id):
     user_id = {"user_id":"35d485b3-f3e0-4b34-84bd-3460487c711e"}
     if user_id is None:
         return redirect('/login')
-    print(user_id)
 
-    # #貰ったcidをpythonの型に直す？ 無くてもいいのか？  
-    # print(type(channel_id))   
-    # channel_id = channel_id
-    print(f"{channel_id} + {type(channel_id)}")
+    # サンプルにはあるけど無くても動く     
+    channel_id = channel_id
             
     channel_members = models.getChannelMemberId(channel_id)
-    print(channel_members)
 
     if user_id not in channel_members:
         print("このチャンネルに参加していません")
         #flash("このチャンネルに参加していません")
         return redirect('/') 
-    
-    print("1")        
-    messages = models.getMessageAll(channel_id)
-    print("2")    
+     
+    messages = models.getMessageAll(channel_id)    
     channel = models.getChannelById(channel_id)
     return render_template('chat.html', messages=messages, channel=channel)
 
@@ -138,14 +132,13 @@ def all_message(channel_id):
 @app.route('/message', methods=['POST'])
 def send_message():
     message = request.form.get('message')
-    print(message)
     #sender_id = session["id"]
     sender_id = "35d485b3-f3e0-4b34-84bd-3460487c711e"
     channel_id = request.form.get('channel_id')
-    print(channel_id)
     
     if message is None:
-        flash("メッセージが入力されていません")
+        #flash("メッセージが入力されていません")
+        print("メッセージが入力されていません")
         return redirect("/message/{channel_id}".format(channel_id = channel_id))
     elif sender_id is None:
         return redirect('/login')
@@ -162,7 +155,6 @@ def send_message():
         return redirect("/message/{channel_id}".format(channel_id = channel_id))
 
     translated_message = translation.translation(message, source_lang, target_lang)
-    print(translated_message)
     models.createMessage(message, translated_message, sender_id, channel_id)
 
     return redirect("/message/{channel_id}".format(channel_id = channel_id))
@@ -200,19 +192,17 @@ def add_channel():
 
 
 #メッセージ削除
-#編集機能実装するなら関数として切り離して流用するorこの中でif使って編集もやる
-@app.route('/message', methods=['POST'])
-def delete_message():
+#編集機能実装するなら関数として切り離して流用するorこの中でif使って編集もやる予定
+@app.route('/message/<message_id>', methods=['POST'])
+def delete_message(message_id):
     user_id = session.get("id")
-    message_id = request.form.get("message_id")
     
     message_info = models.getMessageById(message_id)
     sender_id = message_info["user_id"]
     channel_id = message_info["channel_id"]
 
-    #フロントからのuserIDと合っているのか確認
     if user_id != sender_id:
-        flash("自分の投稿ではありません")
+        flash("あなたの投稿ではありません")
     else:
         new_message = "この投稿は削除されました"
         source_lang, target_lang = translation.get_language_pair(sender_id, channel_id)
