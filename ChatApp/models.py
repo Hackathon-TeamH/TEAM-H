@@ -2,12 +2,12 @@ from flask import abort
 from util.db import DB
 
 class models:
-  def create_user(id,name,email,password,lng,learning_lng,country,city,last_operation_at):
+  def create_user(id,name,email,password,lang,learning_lang,country,city,last_operation_at):
       try:
           connect = DB.getConnection()
           cursor = connect.cursor()
           sql = "INSERT INTO users (id, user_name, email, password, language, learning_language, country, city, last_operation_at) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);"
-          cursor.execute(sql, (id,name,email,password,lng,learning_lng,country,city,last_operation_at))
+          cursor.execute(sql, (id,name,email,password,lang,learning_lang,country,city,last_operation_at))
           connect.commit()
       except Exception as e:
           print(f"エラー: {e}")
@@ -44,50 +44,40 @@ class models:
     finally:
       cursor.close()
 
+
   #メッセージ一覧取得
-  #channnelidごとに分ける予定
-  def getMessageAll():
+  def getMessageAll(channel_id):
       try:
-          conn = DB.getConnection()
-          cur = conn.cursor()
-          sql = "SELECT message, translated_message FROM messages;"
-          cur.execute(sql)
-          messages = cur.fetchall()
+          connect = DB.getConnection()
+          cursor = connect.cursor()
+          sql = "SELECT m.id, user_id, user_name, message, translated_message, created_at "\
+              "FROM messages AS m INNER JOIN users AS u ON m.user_id = u.id "\
+              "WHERE channel_id = %s "\
+              "ORDER BY created_at ASC"\
+          ";"
+          cursor.execute(sql, (channel_id))
+          messages = cursor.fetchall()
           return messages
-      except:
-          print('Exception1が発生しています')
+      except Exception as e:
+          print(f"エラー: {e}")
           abort(500)
       finally:
-          cur.close()
+          cursor.close()
 
   #メッセージ格納
   def createMessage(message, translated_message, user_id, channel_id):
       try:
-          conn = DB.getConnection()
-          cur = conn.cursor()
+          connect = DB.getConnection()
+          cursor = connect.cursor()
           sql = "INSERT INTO messages(message, translated_message, user_id, channel_id) VALUES(%s, %s, %s, %s)"
-          cur.execute(sql, (message, translated_message, user_id, channel_id))
-          conn.commit()
-      except:
-          print('Exception2が発生しています')
+          cursor.execute(sql, (message, translated_message, user_id, channel_id))
+          connect.commit()
+      except Exception as e:
+          print(f"エラー: {e}")
           abort(500)
       finally:
-          cur.close()
+          cursor.close()
 
-  #翻訳元と翻訳対象言語を取得
-  def translationLanguage(id):
-      try:
-          conn = DB.getConnection()
-          cur = conn.cursor()
-          sql = "SELECT language, learning_language FROM users WHERE id = %s;"
-          cur.execute(sql, (id))
-          lang = cur.fetchall()
-          return lang
-      except:
-          print('Exception3が発生しています')
-          abort(500)
-      finally:
-          cur.close()
 
   #チャンネル一覧取得
   def getChannelAll():
@@ -109,7 +99,7 @@ class models:
     try:
         conn = DB.getConnection()
         cur = conn.cursor()
-        sql = "SELECT * FROM channels WHERE channel_id=%S;"
+        sql = "SELECT * FROM channels WHERE id=%s;"
         cur.execute(sql, (channel_id))
         channel = cur.fetchone()
         return channel
@@ -124,7 +114,7 @@ class models:
     try:
         conn = DB.getConnection()
         cur = conn.cursor()
-        sql = "SELECT * FROM users_channels WHERE user_id=%S;"
+        sql = "SELECT * FROM memberships WHERE user_id=%s;"
         cur.execute(sql, (user_id))
         channel = cur.fetchall()
         return channel
@@ -139,7 +129,7 @@ class models:
     try:
         conn = DB.getConnection()
         cur = conn.cursor()
-        sql = "SELECT * FROM channels WHERE channel_name=%S;"
+        sql = "SELECT * FROM channels WHERE channel_name=%s;"
         cur.execute(sql, (channel_name))
         channel = cur.fetchone()
         return channel
@@ -167,7 +157,7 @@ class models:
     try:
         conn = DB.getConnection()
         cur = conn.cursor()
-        sql = "INSERT INTO users_channels(user_id, channel_id) VALUES(%s, %s);"
+        sql = "INSERT INTO memberships(user_id, channel_id) VALUES(%s, %s);"
         cur.execute(sql, (user_id, channel_id))
         conn.commit()
     except Exception as e:
@@ -176,4 +166,84 @@ class models:
     finally:
         cur.close()
 
+
+ #user_channnelテーブルからそのチャンネルにいるユーザーを取得
+  def getChannelMemberId(channel_id):
+      try:
+          connect = DB.getConnection()
+          cursor = connect.cursor()
+          sql = "SELECT user_id FROM memberships WHERE channel_id = %s;"
+          cursor.execute(sql, (channel_id))
+          members = cursor.fetchall()
+          return members
+      except Exception as e:
+          print(f"エラー: {e}")
+          abort(500)
+      finally:
+          cursor.close()
+
+
+  #学びたい言語を取得
+  def getLearningLanguage(user_id):
+      try:
+          connect = DB.getConnection()
+          cursor = connect.cursor()
+          sql = "SELECT learning_language FROM users WHERE id = %s;"
+          cursor.execute(sql, (user_id))
+          src_lang = cursor.fetchone()
+          return src_lang
+      except Exception as e:
+          print(f"エラー: {e}")
+          abort(500)
+      finally:
+          cursor.close()
+
+  #話せる言語を取得          
+  def getNativeLanguage(user_id):
+      try:
+          connect = DB.getConnection()
+          cursor = connect.cursor()
+          sql = "SELECT learning_language FROM users WHERE id = %s;"
+          cursor.execute(sql, (user_id))
+          dest_lang = cursor.fetchone()
+          return dest_lang
+      except Exception as e:
+          print(f"エラー: {e}")
+          abort(500)
+      finally:
+          cursor.close()
+
+
+   #メッセージIDからメッセージ取得
+  def getMessageById(message_id):
+      try:
+          connect = DB.getConnection()
+          cursor = connect.cursor()
+          sql = "SELECT user_id, channel_id FROM messages WHERE id=%s;"
+          cursor.execute(sql, (message_id))
+          message_info = cursor.fetchone()
+          return message_info
+      except Exception as e:
+          print(f"エラー:{e}")
+          abort(500)
+      finally:
+          cursor.close()
+
+
+  #メッセージ編集
+  def changeMessage(new_message, new_translated_message, message_id):
+      try:
+          connect = DB.getConnection()
+          cursor = connect.cursor()
+          sql = "UPDATE messages SET message=%s, translated_message=%s WHERE message_id=%s;"
+          cursor.execute(sql, (new_message, new_translated_message, message_id))
+          connect.commit()
+      except Exception as e:
+          print(f"エラー:{e}")
+          abort(500)
+      finally:
+          cursor.close()
+
+
+ 
      
