@@ -18,7 +18,7 @@ def translation(message, src, dest):
 #翻訳言語取得
 def get_language_pair(user_id, channel_id):
     source_lang = models.getLearningLanguage(user_id).get("learning_language") 
-
+    print(user_id, channel_id, source_lang)
     for user in models.getChannelMemberId(channel_id):
         if user["user_id"] != user_id:
             recipient_id = user["user_id"]

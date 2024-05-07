@@ -109,23 +109,25 @@ def home():
 def all_message(channel_id):
     #user_id = session["id"]
     user_id = {}
-    user_id = {"user_id":"35d485b3-f3e0-4b34-84bd-3460487c711e"}
+    user_id = "35d485b3-f3e0-4b34-84bd-3460487c711e"
     if user_id is None:
         return redirect('/login')
-
-    # サンプルにはあるけど無くても動く     
-    channel_id = channel_id
             
     channel_members = models.getChannelMemberId(channel_id)
 
     if user_id not in channel_members:
         print("このチャンネルに参加していません")
         #flash("このチャンネルに参加していません")
-        return redirect('/') 
+        #return redirect('/') 
      
     messages = models.getMessageAll(channel_id)    
     channel = models.getChannelById(channel_id)
-    return render_template('chat.html', messages=messages, channel=channel)
+
+    channels = models.getChannelByUserId(user_id)
+    channels.reverse()
+    
+    return render_template(
+       'chat.html', messages=messages, channel=channel, user_id=user_id, channels=channels)
 
 
 #チャット送信
@@ -163,16 +165,16 @@ def send_message():
 
 # チャンネル一覧ページの表示
 # 最終的には"/"にする
-@app.route("/channel")
+@app.route("/message")
 def index():
     # user_id = session.get("id")
     user_id = "35d485b3-f3e0-4b34-84bd-3460487c711e"
     if user_id is None:
         return redirect('/login')
     else:
-        channels = models.getChannelAll()
+        channels = models.getChannelByUserId(user_id)
         channels.reverse()
-    return render_template('index.html', channels=channels, user_id=user_id)
+    return render_template('chat.html', channels=channels, user_id=user_id)
 
 
 # チャンネルの追加

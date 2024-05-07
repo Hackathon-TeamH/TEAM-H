@@ -114,7 +114,11 @@ class models:
     try:
         conn = DB.getConnection()
         cur = conn.cursor()
-        sql = "SELECT * FROM memberships WHERE user_id=%s;"
+        sql = "SELECT channel_id, channel_name, created_at "\
+              "FROM memberships AS ms INNER JOIN channels AS c ON ms.channel_id = c.id "\
+              "WHERE ms.user_id = %s "\
+              "ORDER BY created_at ASC"\
+          ";"
         cur.execute(sql, (user_id))
         channel = cur.fetchall()
         return channel

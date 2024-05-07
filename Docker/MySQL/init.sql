@@ -52,9 +52,17 @@ INSERT INTO messages (id, message, translated_message, created_at, user_id, chan
 
 INSERT INTO channels(id, channel_name, created_at, user_id) VALUES
     ("1", "TEST_CHANNEL1", NOW(), "35d485b3-f3e0-4b34-84bd-3460487c711e"),
-    ("2", "TEST_CHANNEL2", NOW(), "ab0bf204-3df1-4a52-b14a-89f18e8a8188");
+    ("2", "TEST_CHANNEL2", NOW(), "ab0bf204-3df1-4a52-b14a-89f18e8a8188"),
+    ("3", "ほうれんそう", NOW(), "35d485b3-f3e0-4b34-84bd-3460487c711e"),
+    ("4", "小松菜", NOW(), "35d485b3-f3e0-4b34-84bd-3460487c711e"),
+    ("5", "チンゲン菜", NOW(), "35d485b3-f3e0-4b34-84bd-3460487c711e"),
+    ("6", "配管工に赤い帽子は必要なのか", NOW(), "35d485b3-f3e0-4b34-84bd-3460487c711e");
 
 INSERT INTO memberships(user_id, channel_id) VALUES
     ("35d485b3-f3e0-4b34-84bd-3460487c711e", "1"),
     ("35d485b3-f3e0-4b34-84bd-3460487c711e", "2"),
-    ("ab0bf204-3df1-4a52-b14a-89f18e8a8188", "2")
+    ("ab0bf204-3df1-4a52-b14a-89f18e8a8188", "2"),
+    ("35d485b3-f3e0-4b34-84bd-3460487c711e", "3"),
+    ("35d485b3-f3e0-4b34-84bd-3460487c711e", "4"),
+    ("35d485b3-f3e0-4b34-84bd-3460487c711e", "5"),
+    ("35d485b3-f3e0-4b34-84bd-3460487c711e", "6");
