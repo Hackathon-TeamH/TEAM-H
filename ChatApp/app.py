@@ -1,7 +1,6 @@
 from flask import Flask, redirect, render_template, request, session, flash
-from datetime import timedelta
+from datetime import timedelta, datetime
 # datetimeモジュールのインポートが必要
-import datetime
 import hashlib
 import uuid
 import re
@@ -35,7 +34,7 @@ def user_signup():
   city = request.form.get('city')
 
 # 変数名がdatetimeだとエラーが起きたのでdtに
-  dt = datetime.datetime.now()
+  dt = datetime.now()
   last_operation_at = dt.strftime('%Y-%m-%d %H:%M:%S')
 
   pattern = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
@@ -90,7 +89,7 @@ def userLogin():
              flash('パスワードが間違っています')
           else:
              session["id"] = user["id"]
-             dt = datetime.datetime.now()
+             dt = datetime.now()
              last_operation_at = dt.strftime('%Y-%m-%d %H:%M:%S')
              models.updateLastOperationAt(user["id"],last_operation_at)
              return redirect('/')
@@ -155,6 +154,7 @@ def send_message():
 
     translated_message = translation.translation(message, source_lang, target_lang)
     models.createMessage(message, translated_message, sender_id, channel_id)
+    models.updateLastMessageAt(channel_id)
 
     return redirect(f"/message?channel_id={channel_id}")
 
@@ -168,8 +168,6 @@ def index():
         return redirect('/login')
     else:
         channels = models.getChannelByUserId(user_id)
-        channels.reverse()
-
     channel_id = session.get("channel_id")
 
     return render_template('chat.html', channels=channels, channel_id=channel_id)
@@ -187,7 +185,7 @@ def add_channel():
     channel_name = request.form.get("channel_name")
     id = uuid.uuid4()
     models.addChannel(id, channel_name, user_id)
-    models.addToUsersChannels(user_id, id)
+    models.addToMemberships(user_id, id)
     return redirect("/")
 
 
