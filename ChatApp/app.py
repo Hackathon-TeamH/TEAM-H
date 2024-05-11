@@ -57,7 +57,7 @@ def user_signup():
         UserId = str(id)
         session['id'] = UserId
         return redirect('/')
-  return redirect('/signup')
+  return redirect('/')
 
 
 @app.route('/login')
@@ -94,21 +94,14 @@ def userLogin():
              last_operation_at = dt.strftime('%Y-%m-%d %H:%M:%S')
              models.updateLastOperationAt(user["id"],last_operation_at)
              return redirect('/')
-    return redirect('/login')
-
-
-# # ハブページ用
-# @app.route('/')
-# def home():
-#     return render_template('home.html')
+    return redirect('/')
 
 
 # メッセージ一覧
 @app.route("/message")
 def all_message():
-    #user_id = session["id"]
-    #user_id = {}
-    user_id = "35d485b3-f3e0-4b34-84bd-3460487c711e"
+    user_id = session.get("id")
+    #user_id = "35d485b3-f3e0-4b34-84bd-3460487c711e"
     channel_id = request.args.get("channel_id")
     
     if user_id is None:
@@ -131,8 +124,6 @@ def all_message():
     
     messages = models.getMessageAll(channel_id)    
     channels = models.getChannelById(channel_id)
-
-    print(channel_id)
     
     return render_template('message.html', messages=messages, channel_id=channel_id, user_id=user_id, channels=channels)
 
@@ -141,8 +132,8 @@ def all_message():
 @app.route('/message', methods=['POST'])
 def send_message():
     message = request.form.get('message')
-    #sender_id = session["id"]
-    sender_id = "35d485b3-f3e0-4b34-84bd-3460487c711e"
+    sender_id = session.get("id")
+    #sender_id = "35d485b3-f3e0-4b34-84bd-3460487c711e"
     channel_id = session.get("channel_id")
     print(channel_id, message)
     
@@ -171,8 +162,8 @@ def send_message():
 # チャンネル一覧ページの表示
 @app.route("/")
 def index():
-    # user_id = session.get("id")
-    user_id = "35d485b3-f3e0-4b34-84bd-3460487c711e"
+    user_id = session.get("id")
+    #user_id = "35d485b3-f3e0-4b34-84bd-3460487c711e"
     if user_id is None:
         return redirect('/login')
     else:
@@ -189,23 +180,23 @@ def index():
 @app.route("/channel", methods=["POST"])
 def add_channel():
     # sessionからuser_id取得
-    # user_id = session.get("user_id")
-    user_id = "35d485b3-f3e0-4b34-84bd-3460487c711e"
+    user_id = session.get("id")
+    #user_id = "35d485b3-f3e0-4b34-84bd-3460487c711e"
     if user_id is None:
         return redirect("/login")
     channel_name = request.form.get("channel_name")
     id = uuid.uuid4()
     models.addChannel(id, channel_name, user_id)
     models.addToUsersChannels(user_id, id)
-    return redirect("/channel")
+    return redirect("/")
 
 
 #メッセージ削除
 #編集機能実装するなら関数として切り離して流用するorこの中でif使って編集もやる予定
 @app.route('/delete/<message_id>')
 def delete_message(message_id):
-     # user_id = session.get("id")
-    user_id = "35d485b3-f3e0-4b34-84bd-3460487c711e"
+    user_id = session.get("id")
+    #user_id = "35d485b3-f3e0-4b34-84bd-3460487c711e"
     if user_id is None:
         return redirect('/login')
     

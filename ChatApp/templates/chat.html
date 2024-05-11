@@ -20,6 +20,10 @@
                   <ion-icon name="language-outline"></ion-icon>
                 </div>
                 <h1 class="header_title">OUR LANGUAGE</h1>
+                <form action="{{url_for('add_channel')}}" method="POST">
+                    <input type="text" name="channel_name" placeholder="チャンネル名を入力してください">
+                    <button type="submit">送信</button>
+                </form>
                 <a class="header_hamburger" href="#">
                   <ion-icon name="menu-outline"></ion-icon>
                 </a>
