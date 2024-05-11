@@ -1,97 +1,95 @@
 <!--動作確認用なので変更OKです-->
 <!--正式なページ実装後は消す予定です-->
 
-
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        #chat-box {
-            width: 300px;
-            height: 500px;
-            overflow-y: scroll;
-            border: 1px solid #ccc;
-            padding: 10px;
-            margin-bottom: 10px;
-        }
-    </style>
-    <title>チャット</title>
+    <title>chatpage</title>
+    <link rel="stylesheet" href="{{url_for('static',filename='css/styles.css')}}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anta&family=Kosugi+Maru&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1>チャット</h1>
-    <div id="chat-box">
-        <ul>
-            {% for msg in messages %}
-                <li>{{ msg['user_name'] }}</li>
-                    <p><font color="#6a0080">{{ msg['message'] }}</font></p>
-                    <p><font color="#808000">{{ msg['translated_message'] }}</font></p>
-            {% endfor %}
-        </ul>
+    <div class="container">
+        <div class="header">
+            <div class="header_inner">
+                <div class="header_icon">
+                  <ion-icon name="language-outline"></ion-icon>
+                </div>
+                <h1 class="header_title">OUR LANGUAGE</h1>
+                <form action="{{url_for('add_channel')}}" method="POST">
+                    <input type="text" name="channel_name" placeholder="チャンネル名を入力してください">
+                    <button type="submit">送信</button>
+                </form>
+                <a class="header_hamburger" href="#">
+                  <ion-icon name="menu-outline"></ion-icon>
+                </a>
+            </div> 
+        </div>
+        <div class="channel">
+            <ul>
+                {% for c in channels %}
+                {% if c.channel_id == channel_id %}
+                <li class="channel_list active">
+                {% else %}
+                <li class="channel_list">
+                {% endif %}
+                    <a href="{{url_for('all_message', channel_id=c.channel_id)}}" target="message_iframe">
+                        <span class="icon"><ion-icon name="planet-outline"></ion-icon></span>
+                        <span class="channel_name">{{ c.channel_name }}</span>
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="chat_container">
+            <div class="iframe_wrapper">
+                <iframe id="message_iframe" src= "{{url_for('all_message', channel_id=channel_id)}}" name="message_iframe" height="500px" frameborder="0"></iframe>
+            </div>
+        </div>
+        <div class="input_box_area">
+            <div class="input_box_wrapper">
+                <form class="input_box" action="{{url_for('send_message')}}" method="POST" target="message_iframe">
+                    <textarea name="message" placeholder="メッセージを入力してください"></textarea>
+                    <input type="hidden" value="{{channel_id}}" name="channel_id"/>
+                    <button type="submit"><ion-icon name="rocket-outline"></ion-icon></button>
+                </form> 
+            </div>
+        </div>
     </div>
-    <form action="{{url_for('send_message')}}" method="POST">
-        <input type="text" name="message" placeholder="メッセージを入力してください">
-        <input type="hidden" value="{{channel['id']}}" name="channel_id" />
-        <button type="submit">送信</button>
-    </form>
-</body>
-</html>
 
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>    
+    <script>
+        //channel_listクラスの要素を変数listに格納
+        const list = document.querySelectorAll(".channel_list");
+        console.log(list);
 
+        //liタグをひとつずつ変数itemに格納
+        list.forEach((item) => {
+            //itemがクリックされたときactive_link関数を呼び出す
+            item.addEventListener("click", channel_activate);
+        });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!--動作確認用なので変更OKです-->
-<!--正式なページ実装後は消す予定です
-
-
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        #chat-box {
-            width: 300px;
-            height: 500px;
-            overflow-y: scroll;
-            border: 1px solid #ccc;
-            padding: 10px;
-            margin-bottom: 10px;
+        //サブクラスactiveをリンクさせる関数
+        function channel_activate() {
+            list.forEach(item => { //listの中身を1つずつ変数itemに格納
+                item.classList.remove("active") //acticeをremoveする
+            });
+            //クリックしたもの(this)のクラスにactiveをaddする
+            this.classList.add("active")
         }
-    </style>
-    <title>チャット</title>
-</head>
-<body>
-    <h1>チャット</h1>
-    <div id="chat-box">
-        <ul>
-            {% for msg in messages %}
-                <li>{{ msg['user_name'] }}</li>
-                    <p><font color="#6a0080">{{ msg['message'] }}</font></p>
-                    <p><font color="#808000">{{ msg['translated_message'] }}</font></p>
-            {% endfor %}
-        </ul>
-    </div>
-    <form action="{{url_for('send_message')}}" method="POST">
-        <input type="text" name="message" placeholder="メッセージを入力してください">
-        <input type="hidden" value="{{channel['id']}}" name="channel_id" />
-        <button type="submit">送信</button>
-    </form>
+
+    </script>
+    <script>
+        //ページ読み込み時に自動で下までスクロールする
+        window.onload = function () {
+            const messageArea = document.getElementById("message_iframe");
+            messageArea.scrollTop = messageArea.scrollHeight;
+        };
+    </script>
 </body>
 </html>
--->

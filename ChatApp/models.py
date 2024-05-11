@@ -114,7 +114,11 @@ class models:
     try:
         conn = DB.getConnection()
         cur = conn.cursor()
-        sql = "SELECT * FROM memberships WHERE user_id=%s;"
+        sql = "SELECT channel_id, channel_name, created_at "\
+              "FROM memberships AS ms INNER JOIN channels AS c ON ms.channel_id = c.id "\
+              "WHERE ms.user_id = %s "\
+              "ORDER BY created_at ASC"\
+          ";"
         cur.execute(sql, (user_id))
         channel = cur.fetchall()
         return channel
@@ -203,7 +207,7 @@ class models:
       try:
           connect = DB.getConnection()
           cursor = connect.cursor()
-          sql = "SELECT learning_language FROM users WHERE id = %s;"
+          sql = "SELECT language FROM users WHERE id = %s;"
           cursor.execute(sql, (user_id))
           dest_lang = cursor.fetchone()
           return dest_lang
@@ -235,7 +239,7 @@ class models:
       try:
           connect = DB.getConnection()
           cursor = connect.cursor()
-          sql = "UPDATE messages SET message=%s, translated_message=%s WHERE message_id=%s;"
+          sql = "UPDATE messages SET message=%s, translated_message=%s WHERE id=%s;"
           cursor.execute(sql, (new_message, new_translated_message, message_id))
           connect.commit()
       except Exception as e:

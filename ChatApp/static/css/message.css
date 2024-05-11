@@ -1,0 +1,58 @@
+.message_wrapper {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.user_name {
+    margin-block-start: 4px;
+    margin-block-end: 3px;
+    font-size: 1rem;
+}
+
+.message {
+    width: 45%;
+    border:1px solid #2F66B7;
+}
+
+.upper_message {
+    border-bottom:1px solid #2F66B7;
+    margin: 0;
+    padding: 10px;
+    font-size: 1.5rem;
+}
+
+.lower_message {
+    margin: 0;
+    padding: 10px;
+}
+
+.my_message {
+    width: 45%;
+    margin-left: auto;
+    border:1px solid #2F66B7;
+}
+
+.buttons {
+    margin-top: 5px;
+    margin-right: 5px;
+    margin-left: auto;
+    text-align: right;
+}
+
+.buttons a {
+    text-decoration: none;
+}
+
+.buttons a ion-icon {
+    font-size: 1rem;
+}
+
+.flash {
+
+}
