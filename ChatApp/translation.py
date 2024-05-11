@@ -9,7 +9,7 @@ trans = Translator()
 
 #翻訳
 def translation(message, src, dest):
-    result = trans.translate(message, src, dest)
+    result = trans.translate(message, src=src, dest=dest)
     translation_message = result.text
     
     return translation_message
@@ -25,7 +25,7 @@ def get_language_pair(user_id, channel_id):
             target_lang = models.getLearningLanguage(recipient_id).get("learning_language")
             break
         else:
-            target_lang = models.getNativeLanguage(user_id).get("learning_language")
+            target_lang = models.getNativeLanguage(user_id).get("language")
             print(target_lang)
 
     return (source_lang, target_lang)

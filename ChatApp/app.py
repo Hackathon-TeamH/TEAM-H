@@ -13,7 +13,6 @@ import translation
 from langdetect import detect
 
 
-
 app = Flask(__name__)
 app.config.from_object(config.Config)
 # config.pyのConfigクラス
@@ -98,36 +97,44 @@ def userLogin():
     return redirect('/login')
 
 
-# ハブページ用
-@app.route('/')
-def home():
-    return render_template('home.html')
+# # ハブページ用
+# @app.route('/')
+# def home():
+#     return render_template('home.html')
 
 
-# チャットページ
-@app.route('/message/<channel_id>')
-def all_message(channel_id):
+# メッセージ一覧
+@app.route("/message")
+def all_message():
     #user_id = session["id"]
-    user_id = {}
+    #user_id = {}
     user_id = "35d485b3-f3e0-4b34-84bd-3460487c711e"
+    channel_id = request.args.get("channel_id")
+    
     if user_id is None:
         return redirect('/login')
-            
+    elif channel_id is None:
+        return render_template('initial.html')
+    else:
+        session["channel_id"] = channel_id
+          
     channel_members = models.getChannelMemberId(channel_id)
 
-    if user_id not in channel_members:
+    #チャンネル内にいるのにチャンネルが削除された場合
+    if not channel_members:
+        print("チャンネルが見つかりません")
+        return redirect('/')
+    elif user_id not in channel_members:
         print("このチャンネルに参加していません")
         #flash("このチャンネルに参加していません")
         #return redirect('/') 
-     
-    messages = models.getMessageAll(channel_id)    
-    channel = models.getChannelById(channel_id)
-
-    channels = models.getChannelByUserId(user_id)
-    channels.reverse()
     
-    return render_template(
-       'chat.html', messages=messages, channel=channel, user_id=user_id, channels=channels)
+    messages = models.getMessageAll(channel_id)    
+    channels = models.getChannelById(channel_id)
+
+    print(channel_id)
+    
+    return render_template('message.html', messages=messages, channel_id=channel_id, user_id=user_id, channels=channels)
 
 
 #チャット送信
@@ -136,14 +143,14 @@ def send_message():
     message = request.form.get('message')
     #sender_id = session["id"]
     sender_id = "35d485b3-f3e0-4b34-84bd-3460487c711e"
-    channel_id = request.form.get('channel_id')
+    channel_id = session.get("channel_id")
+    print(channel_id, message)
     
-    if message is None:
-        #flash("メッセージが入力されていません")
-        print("メッセージが入力されていません")
-        return redirect("/message/{channel_id}".format(channel_id = channel_id))
-    elif sender_id is None:
+    if sender_id is None:
         return redirect('/login')
+    elif message == "":
+        flash("メッセージが入力されていません")
+        return redirect(f"/message?channel_id={channel_id}")
     else:
         source_lang, target_lang = translation.get_language_pair(sender_id, channel_id) 
         print(f"翻訳元言語は{source_lang},翻訳先言語は{target_lang}")
@@ -152,20 +159,17 @@ def send_message():
     input_lang = detect(message)
     print(f"入力言語は{input_lang}")
     if input_lang != source_lang:
-        #flash("身につけたい言語で入力してみよう")
-        print("身につけたい言語で入力してみよう")
-        return redirect("/message/{channel_id}".format(channel_id = channel_id))
+        flash("身につけたい言語で入力してみよう")
+        return redirect(f"/message?channel_id={channel_id}")
 
     translated_message = translation.translation(message, source_lang, target_lang)
     models.createMessage(message, translated_message, sender_id, channel_id)
 
-    return redirect("/message/{channel_id}".format(channel_id = channel_id))
-
+    return redirect(f"/message?channel_id={channel_id}")
 
 
 # チャンネル一覧ページの表示
-# 最終的には"/"にする
-@app.route("/message")
+@app.route("/")
 def index():
     # user_id = session.get("id")
     user_id = "35d485b3-f3e0-4b34-84bd-3460487c711e"
@@ -174,7 +178,10 @@ def index():
     else:
         channels = models.getChannelByUserId(user_id)
         channels.reverse()
-    return render_template('chat.html', channels=channels, user_id=user_id)
+
+    channel_id = session.get("channel_id")
+
+    return render_template('chat.html', channels=channels, channel_id=channel_id)
 
 
 # チャンネルの追加
@@ -195,28 +202,29 @@ def add_channel():
 
 #メッセージ削除
 #編集機能実装するなら関数として切り離して流用するorこの中でif使って編集もやる予定
-@app.route('/message/<message_id>', methods=['POST'])
+@app.route('/delete/<message_id>')
 def delete_message(message_id):
-    user_id = session.get("id")
+     # user_id = session.get("id")
+    user_id = "35d485b3-f3e0-4b34-84bd-3460487c711e"
+    if user_id is None:
+        return redirect('/login')
     
     message_info = models.getMessageById(message_id)
     sender_id = message_info["user_id"]
     channel_id = message_info["channel_id"]
 
-    if user_id != sender_id:
-        flash("あなたの投稿ではありません")
-    else:
-        new_message = "この投稿は削除されました"
-        source_lang, target_lang = translation.get_language_pair(sender_id, channel_id)
-        new_translated_message = translation.translation(new_message, source_lang, target_lang)
-        models.changeMessage(new_message, new_translated_message, message_id)
-        
+    new_message = "This message has been deleted"
+    source_lang, target_lang = translation.get_language_pair(sender_id, channel_id)
+    new_message = translation.translation(new_message, "en", source_lang)
+    new_translated_message = translation.translation(new_message, "en", target_lang)
+    models.changeMessage(new_message, new_translated_message, message_id)
+    
     #チャンネルIDをフロントに渡してメッセージ一覧ページに飛ばす
-    return redirect("/message/{channel_id}".format(channel_id = channel_id))
+    return redirect(f"/message?channel_id={channel_id}")
 
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=5002, debug=False)
+    app.run(host="0.0.0.0", port=5002, debug=True)
 
 
 

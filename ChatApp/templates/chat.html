@@ -27,52 +27,30 @@
         </div>
         <div class="channel">
             <ul>
-                {% for channel in channels %}
+                {% for c in channels %}
+                {% if c.channel_id == channel_id %}
+                <li class="channel_list active">
+                {% else %}
                 <li class="channel_list">
-                    <a href="{{url_for('all_message', channel_id=channel.channel_id)}}">
+                {% endif %}
+                    <a href="{{url_for('all_message', channel_id=c.channel_id)}}" target="message_iframe">
                         <span class="icon"><ion-icon name="planet-outline"></ion-icon></span>
-                        <span class="channel_name">{{ channel.channel_name }}</span>
+                        <span class="channel_name">{{ c.channel_name }}</span>
                     </a>
                 </li>
                 {% endfor %}
             </ul>
         </div>
         <div class="chat_container">
-            <div class="message_wrapper">
-                {% if messages|length > 0 %}
-                {% for message in messages%}
-                {% if message.user_id != user_id %}
-                <div class="messages">
-                    <p class="user_name">{{message.user_name}}</p>
-                    <div class="message">
-                        <p class="origin_message">{{message.message}}</p>
-                        <p class="translated_message">{{message.translated_message}}</p>
-                    </div>
-                </div>
-                {% else %}
-                <div class="my_messages">
-                    <div class="my_message">
-                        <p class="origin_message">{{message.message}}</p>
-                        <p class="translated_message">{{message.translated_message}}</p>
-                    </div>
-                    <div class="buttons">
-                        <a class="change_message" type="submit" href="#"><ion-icon name="pencil-outline"></ion-icon>
-                        </a>
-                        <a class="delete_message" type="submit" href="#"><ion-icon name="trash-outline"></ion-icon>
-
-                        </a>
-                    </div>
-                </div>
-                {% endif %} {% endfor %}
-                {% else %}
-                <div class="no_message"><p>投稿がありません</p></div>
-                {% endif %}
+            <div class="iframe_wrapper">
+                <iframe id="message_iframe" src= "{{url_for('all_message', channel_id=channel_id)}}" name="message_iframe" height="500px" frameborder="0"></iframe>
             </div>
+        </div>
         <div class="input_box_area">
             <div class="input_box_wrapper">
-                <form class="input_box" action="{{url_for('send_message')}}" method="POST">
+                <form class="input_box" action="{{url_for('send_message')}}" method="POST" target="message_iframe">
                     <textarea name="message" placeholder="メッセージを入力してください"></textarea>
-                    <input type="hidden" value="channel.channel_id" name="channel_id"/>
+                    <input type="hidden" value="{{channel_id}}" name="channel_id"/>
                     <button type="submit"><ion-icon name="rocket-outline"></ion-icon></button>
                 </form> 
             </div>
@@ -82,24 +60,32 @@
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>    
     <script>
-        //channel_listクラスの要素を変数リストに格納list
-        const list =document.querySelectorAll(".channel_list");
+        //channel_listクラスの要素を変数listに格納
+        const list = document.querySelectorAll(".channel_list");
         console.log(list);
-        //サブクラスactiveをリンクさせる関数
 
-        function active_link() {
-            list.forEach((item) => { //listの中身を1つずつ変数itemに格納
+        //liタグをひとつずつ変数itemに格納
+        list.forEach((item) => {
+            //itemがクリックされたときactive_link関数を呼び出す
+            item.addEventListener("click", channel_activate);
+        });
+
+        //サブクラスactiveをリンクさせる関数
+        function channel_activate() {
+            list.forEach(item => { //listの中身を1つずつ変数itemに格納
                 item.classList.remove("active") //acticeをremoveする
             });
             //クリックしたもの(this)のクラスにactiveをaddする
             this.classList.add("active")
         }
 
-        //liタグをひとつずつ変数itemに格納
-        list.forEach((item) => {
-            //itemがクリックされたときactive_link関数を呼び出す
-            item.addEventListener("click", active_link);
-        });
+    </script>
+    <script>
+        //ページ読み込み時に自動で下までスクロールする
+        window.onload = function () {
+            const messageArea = document.getElementById("message_iframe");
+            messageArea.scrollTop = messageArea.scrollHeight;
+        };
     </script>
 </body>
 </html>
