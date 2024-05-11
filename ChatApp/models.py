@@ -1,13 +1,17 @@
 from flask import abort
 from util.db import DB
+from datetime import datetime, timedelta
 
 class models:
-  def create_user(id,name,email,password,lang,learning_lang,country,city,last_operation_at):
+  def create_user(id,name,email,password,lang,learning_lang,country,city,created_at,last_operation_at,is_active):
       try:
           connect = DB.getConnection()
           cursor = connect.cursor()
-          sql = "INSERT INTO users (id, user_name, email, password, language, learning_language, country, city, last_operation_at) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);"
-          cursor.execute(sql, (id,name,email,password,lang,learning_lang,country,city,last_operation_at))
+          sql = "INSERT INTO users (id, user_name, email, \
+            password, language, learning_language, country, \
+            city,created_at, last_operation_at,is_active\
+            ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"
+          cursor.execute(sql, (id,name,email,password,lang,learning_lang,country,city,created_at,last_operation_at,is_active))
           connect.commit()
       except Exception as e:
           print(f"エラー: {e}")
@@ -28,6 +32,20 @@ class models:
       abort(500)
     finally:
       cursor.close()
+
+  def getUserWithId(id):
+    try:
+        connect = DB.getConnection()
+        cursor = connect.cursor()
+        sql = "SELECT * FROM users WHERE id=%s;"
+        cursor.execute(sql, (id))
+        user = cursor.fetchone()
+        return user
+    except Exception as e:
+        print(f"エラー: {e}")
+        abort(500)
+    finally:
+        cursor.close()
 
   # 最後に操作した日時を更新
   def updateLastOperationAt(id,last_operation_at):
@@ -92,8 +110,8 @@ class models:
         print(f"エラー: {e}")
         abort(500)
     finally:
-        cur.close()         
-  
+        cur.close()
+
   #指定したchannel_idに対応するチャンネルを取得
   def getChannelById(channel_id):
     try:
@@ -108,7 +126,7 @@ class models:
         abort(500)
     finally:
         cur.close()
- 
+
   #指定したユーザーが参加しているチャンネルを取得
   def getChannelByUserId(user_id):
     try:
@@ -128,7 +146,7 @@ class models:
     finally:
         cur.close()
 
-#   チャンネル名にUNIQUE制約を課さないなら不要？      
+#   チャンネル名にUNIQUE制約を課さないなら不要？
   def getChannelByName(channel_name):
     try:
         conn = DB.getConnection()
@@ -202,7 +220,7 @@ class models:
       finally:
           cursor.close()
 
-  #話せる言語を取得          
+  #話せる言語を取得
   def getNativeLanguage(user_id):
       try:
           connect = DB.getConnection()
@@ -249,5 +267,43 @@ class models:
           cursor.close()
 
 
- 
-     
+  def changeInactive(id):
+      try:
+          connect = DB.getConnection()
+          cursor = connect.cursor()
+          sql = "UPDATE users SET is_active=%s WHERE id=%s;"
+          cursor.execute(sql, (0,id,))
+          connect.commit()
+      except Exception as e:
+          print(f"エラー:{e}")
+          abort(500)
+      finally:
+          cursor.close()
+
+  def updateStatus():
+      threshold_time = datetime.now() - timedelta(hours=1)
+      try:
+          connect = DB.getConnection()
+          cursor = connect.cursor()
+          sql = "UPDATE users SET is_active = 0 WHERE last_operation_at < %s;"
+          cursor.execute(sql, (threshold_time,))
+          connect.commit()
+      except Exception as e:
+          print(f"エラー:{e}")
+          abort(500)
+      finally:
+          cursor.close()
+
+  def getOtherLanguageUserList(lang):
+      try:
+          conn = DB.getConnection()
+          cur = conn.cursor()
+          sql = "SELECT * FROM users WHERE language=%s AND is_active = 1;"
+          cur.execute(sql, (lang,))
+          users = cur.fetchall()
+          return users
+      except Exception as e:
+          print(f"エラー: {e}")
+          abort(500)
+      finally:
+          cur.close()
