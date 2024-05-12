@@ -1,7 +1,12 @@
-.message_wrapper {
+#message_wrapper {
     position: absolute;
+    padding-top: 145px;
+    padding-left: calc(25vw + 20px);
+    padding-right: 20px;
+    padding-bottom: calc(20vh + 10px);
     height: 100%;
     width: 100%;
+
     overflow-y: auto;
     overflow-x: hidden;
     display: flex;

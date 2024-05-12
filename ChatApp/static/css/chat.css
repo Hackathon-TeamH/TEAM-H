@@ -44,13 +44,12 @@
 
 
 /*-------------channel-------------------------------*/
-.channel {
+.channel_container {
     position: absolute;
     top: 0;
     left: 0;
-    width: 25vw; /* 50% of viewport width */
-    /* min-width: 200px; */
-    height: 100vh; /* 80% of viewport height */
+    width: 25vw;
+    height: 100vh; 
     background-color: #C3F1FF;
     z-index: 3;
     overflow-y: auto
@@ -60,7 +59,7 @@
     width: 0px;
   }
 
-.channel ul {
+.channel_wrapper ul {
     position: absolute;
     padding: 0; /*why?*/
     margin: 0;
@@ -70,7 +69,7 @@
     width: 100%;
 }
 
-.channel ul li {
+.channel_wrapper ul li {
     list-style: none;
     display: block;
     width: 100%;
@@ -79,15 +78,15 @@
     background-color: #B1DEF7;
 }
 
-.channel ul li:hover {
+.channel_wrapper ul li:hover {
     background-color: #8bcff4;
 }
 
-.channel ul li.active {
+.channel_wrapper ul li.active {
     background-color: #2F66B7;
 }
 
-.channel ul li a {
+.channel_wrapper ul li a {
     text-decoration: none;
     color: #FFFFFF;
     width: 100%;
@@ -97,7 +96,7 @@
     position: relative;
 }
 
-.channel ul li a .icon {
+.channel_wrapper ul li a .icon {
     min-width: 45px;
     height: 133px;
     line-height: 133px;
@@ -106,11 +105,11 @@
     align-items: center;
 }
 
-.channel ul li a .icon ion-icon {
+.channel_wrapper ul li a .icon ion-icon {
     font-size: 3rem;
 }
 
-.channel ul li a .channel_name {
+.channel_wrapper ul li a .channel_name {
     padding-left: 30px;
     height: 133px;
     line-height: 133px;
@@ -123,32 +122,14 @@
 
 
 /*-------------chat-------------------------------*/
-.chat_container {
+.message_container {
     position: absolute;
     top: 0px;
     right: 0;
     width: 100vw;
-    height: 100vh; /* 60% of viewport height */
+    height: 100vh;
     background-color: #E3F8FF;
     z-index: 1;
-}
-
-.iframe_wrapper {
-    position: absolute;
-    height: 100vh;
-    width: 100%;
-    padding-top: calc(135px + 20px);
-    padding-right: 20px;
-    padding-bottom: calc(20vh + 10px);
-    padding-left: calc(25vw + 20px);
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
-}
-
-.iframe_wrapper iframe {
-   width: 100%;
-   height: 100%; 
 }
 
 /*-------------input-------------------------------*/
@@ -157,7 +138,7 @@
     bottom: 0;
     right: 0;
     width: 100vw;
-    height: 20vh; /* 40% of viewport height */
+    height: 20vh;
     min-width: 80px;
     background-color: #E8F1FE;
     z-index: 2;

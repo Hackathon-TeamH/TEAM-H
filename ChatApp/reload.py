@@ -1,6 +1,11 @@
+from jinja2 import Template
+from models import models
 
-        <div id="message_wrapper">
-            {% if messages|length > 0 %}
+def make_HTML(user_id, channel_id):
+    messages = models.getMessageAll(channel_id)
+
+    html = '''
+            {% if messages %}
             {% for msg in messages%}
             {% if msg.user_id != user_id %}
             <div class="messages">
@@ -19,7 +24,7 @@
                 <div class="buttons">
                     <a class="change_message" type="submit" href="#"><ion-icon name="pencil-outline"></ion-icon>
                     </a>
-                    <a class="delete_message" type="submit" href="{{url_for('delete_message', message_id=msg.id)}}">
+                    <a class="delete_message" type="submit" href="/delete/{{msg.id}}">
                         <ion-icon name="trash-outline"></ion-icon>
                     </a>
                 </div>
@@ -28,13 +33,9 @@
             {% else %}
             <div class="no_message"><p>投稿がありません</p></div>
             {% endif %}
-        </div>
-        <div>
-            {% with messages = get_flashed_messages() %}
-            {% for message in messages %}
-            <li class="flashes">
-                <font color="orange">{{ message }}</font>
-            </li>
-            {% endfor %}
-            {% endwith %}
-        </div>
+    '''
+
+    template = Template(html)
+    data = {"messages" : messages, "user_id" : user_id}
+    result = template.render(data)
+    return result

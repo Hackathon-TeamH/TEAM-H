@@ -1,4 +1,4 @@
-from flask import Flask, redirect, render_template, request, session, flash, jsonify
+from flask import Flask, redirect, render_template, request, session, flash, jsonify, url_for
 from datetime import datetime
 from apscheduler.schedulers.background import BackgroundScheduler
 # datetimeモジュールのインポートが必要
@@ -11,6 +11,7 @@ from config import config
 from models import models
 
 import translation
+import reload
 from langdetect import detect
 
 
@@ -123,7 +124,7 @@ def all_message():
     messages = models.getMessageAll(channel_id)    
     channels = models.getChannelById(channel_id)
     
-    return render_template('message.html', messages=messages, channel_id=channel_id, user_id=user_id, channels=channels)
+    return render_template('chat.html', messages=messages, channel_id=channel_id, user_id=user_id, channels=channels)
 
 
 #チャット送信
@@ -158,7 +159,7 @@ def send_message():
     models.createMessage(message, translated_message, sender_id, channel_id)
     last_operation_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     models.updateLastOperationAt(sender_id,last_operation_at)
-    return redirect("/message?channel_id={channel_id}".format(channel_id = channel_id))
+    return redirect(f"/message?channel_id={channel_id}")
 
 
 
@@ -242,13 +243,23 @@ def get_list_user():
     return jsonify(users)
 
 
+#チャンネル選択時HTMLを書き換える
+@app.route('/reload/<channel_id>')
+def message_reload(channel_id):
+    user_id = session.get("id")
+    # todo：JSにURLを返して遷移する必要があるがHTMLをテキストで渡すので以下はできない
+    if user_id is None:
+        redirect_url = url_for(login)
+        return jsonify({'redirect_url': redirect_url})
+    else:
+        session["channel_id"] = channel_id
+        new_HTML = reload.make_HTML(user_id, channel_id)
+        return new_HTML
+    
+
+
 if __name__ == '__main__':
+    app.run(host="0.0.0.0", port=5002, debug=True)
     scheduler = BackgroundScheduler()
     scheduler.add_job(id="check_status", func= models.updateStatus, trigger='interval', hours=1) #一時間に一回ユーザーの操作を確認する
     scheduler.start()
-    app.run(host="0.0.0.0", port=5002, debug=True)
-
-
-
-
-

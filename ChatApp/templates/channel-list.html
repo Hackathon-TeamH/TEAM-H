@@ -1,0 +1,20 @@
+    <div class="channel_wrapper">
+        <ul>
+          {% for c in channels %} {% if c.channel_id == channel_id %}
+          <li class="channel_list active"></li>
+          {% else %}
+          <li class="channel_list">
+            {% endif %}
+            <a
+              href="#"
+              onclick="message_reload('{{c.channel_id}}')">
+            >
+              <span class="icon"
+                ><ion-icon name="planet-outline"></ion-icon
+              ></span>
+              <span class="channel_name">{{ c.channel_name }}</span>
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+    </div>
