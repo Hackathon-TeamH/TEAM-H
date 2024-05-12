@@ -3,15 +3,15 @@ from util.db import DB
 from datetime import datetime, timedelta
 
 class models:
-  def create_user(id,name,email,password,lang,learning_lang,country,city,created_at,last_operation_at,is_active):
+  def create_user(id,name,email,password,lang,learning_lang,country,city,user_created_at,last_operation_at,is_active):
       try:
           connect = DB.getConnection()
           cursor = connect.cursor()
           sql = "INSERT INTO users (id, user_name, email, \
             password, language, learning_language, country, \
-            city,created_at, last_operation_at,is_active\
+            city,user_created_at, last_operation_at,is_active\
             ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"
-          cursor.execute(sql, (id,name,email,password,lang,learning_lang,country,city,created_at,last_operation_at,is_active))
+          cursor.execute(sql, (id,name,email,password,lang,learning_lang,country,city,user_created_at,last_operation_at,is_active))
           connect.commit()
       except Exception as e:
           print(f"エラー: {e}")
@@ -68,7 +68,7 @@ class models:
       try:
           connect = DB.getConnection()
           cursor = connect.cursor()
-          sql = "SELECT m.id, user_id, user_name, message, translated_message, created_at "\
+          sql = "SELECT m.id, user_id, user_name, message, translated_message, m.created_at "\
               "FROM messages AS m INNER JOIN users AS u ON m.user_id = u.id "\
               "WHERE channel_id = %s "\
               "ORDER BY created_at ASC"\
