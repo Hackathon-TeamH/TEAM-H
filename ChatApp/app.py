@@ -220,7 +220,7 @@ def delete_message(message_id):
     #チャンネルIDをフロントに渡してメッセージ一覧ページに飛ばす
     return redirect(f"/message?channel_id={channel_id}")
 
-@app.route('/logout')
+@app.route('/logout', methods=["POST"])
 def logout():
     user_id = session.get("id")
     if user_id:
