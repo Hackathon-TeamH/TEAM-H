@@ -3,19 +3,19 @@ from util.db import DB
 from datetime import datetime, timedelta
 
 class models:
-  def create_user(id,name,email,password,lang,learning_lang,country,city,user_created_at,last_operation_at,is_active):
+  def create_user(id,name,email,password,lang,learning_lang,country,city,created_at,last_operation_at,is_active):
       try:
           connect = DB.getConnection()
           cursor = connect.cursor()
           sql = "INSERT INTO users (id, user_name, email, \
             password, language, learning_language, country, \
-            city,user_created_at, last_operation_at,is_active\
+            city,created_at, last_operation_at,is_active\
             ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"
-          cursor.execute(sql, (id,name,email,password,lang,learning_lang,country,city,user_created_at,last_operation_at,is_active))
+          cursor.execute(sql, (id,name,email,password,lang,learning_lang,country,city,created_at,last_operation_at,is_active))
           connect.commit()
       except Exception as e:
           print(f"エラー: {e}")
-          abort(5000)
+          abort(500)
       finally:
           cursor.close()
 
