@@ -15,7 +15,7 @@ class models:
           connect.commit()
       except Exception as e:
           print(f"エラー: {e}")
-          abort(5000)
+          abort(500)
       finally:
           cursor.close()
 
@@ -68,7 +68,7 @@ class models:
       try:
           connect = DB.getConnection()
           cursor = connect.cursor()
-          sql = "SELECT m.id, user_id, user_name, message, translated_message, created_at "\
+          sql = "SELECT m.id, user_id, user_name, message, translated_message, m.created_at "\
               "FROM messages AS m INNER JOIN users AS u ON m.user_id = u.id "\
               "WHERE channel_id = %s "\
               "ORDER BY created_at ASC"\
