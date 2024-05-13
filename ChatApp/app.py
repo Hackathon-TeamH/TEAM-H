@@ -168,8 +168,8 @@ def index():
         return redirect('/login')
     else:
         channels = models.getChannelByUserId(user_id)
+    if channels:
         channels.reverse()
-
     channel_id = session.get("channel_id")
 
     return render_template('chat.html', channels=channels, channel_id=channel_id)

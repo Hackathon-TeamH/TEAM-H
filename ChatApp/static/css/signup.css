@@ -1,0 +1,16 @@
+/* 新規会員登録画面のCSS */
+
+
+/* -------------signup-form------------------------------- */
+.signup-form-wrapper {
+  background-color: #c1f095;
+  width: 734px;
+  height: 968px;
+  border-radius: 8px;
+  padding-top: 40px;
+  /* position: absolute;
+  top: 55%;
+  left: 50%;
+  transform: translate(-50%, -50%); */
+  text-align: center;
+}
