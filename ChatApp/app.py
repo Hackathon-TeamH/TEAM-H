@@ -137,6 +137,9 @@ def send_message():
     
     if sender_id is None:
         return redirect('/login')
+    elif channel_id is None:
+        flash("チャンネルが選択されていません")
+        return redirect(f"/message?channel_id={channel_id}") #todo:HTML修正
     elif message == "":
         flash("メッセージが入力されていません")
         return redirect(f"/message?channel_id={channel_id}")
@@ -220,7 +223,7 @@ def delete_message(message_id):
     #チャンネルIDをフロントに渡してメッセージ一覧ページに飛ばす
     return redirect(f"/message?channel_id={channel_id}")
 
-@app.route('/logout')
+@app.route('/logout', methods=["POST"])
 def logout():
     user_id = session.get("id")
     if user_id:
