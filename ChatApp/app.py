@@ -155,6 +155,7 @@ def send_message():
 
     translated_message = translation.translation(message, source_lang, target_lang)
     models.createMessage(message, translated_message, sender_id, channel_id)
+    models.updateLastMessageAt(channel_id)
     last_operation_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     models.updateLastOperationAt(sender_id,last_operation_at)
     return redirect("/")
@@ -169,10 +170,6 @@ def index():
         return redirect('/login')
     else:
         channels = models.getChannelByUserId(user_id)
-        if channels:
-            channels.reverse()
-
-    #画面更新の時にアクティブ表示を維持する
     channel_id = session.get("channel_id")
     if channel_id is None:
         messages = None
@@ -197,8 +194,7 @@ def add_channel():
     channel_name = request.form.get("channel_name")
     id = uuid.uuid4()
     models.addChannel(id, channel_name, user_id)
-    models.addToUsersChannels(user_id, id)
-
+    models.addToMemberships(user_id, id)
     last_operation_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     models.updateLastOperationAt(user_id,last_operation_at)
     return redirect("/")

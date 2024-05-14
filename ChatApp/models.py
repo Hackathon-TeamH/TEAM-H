@@ -132,10 +132,10 @@ class models:
     try:
         conn = DB.getConnection()
         cur = conn.cursor()
-        sql = "SELECT channel_id, channel_name, created_at "\
+        sql = "SELECT channel_id, channel_name, created_at, last_message_at "\
               "FROM memberships AS ms INNER JOIN channels AS c ON ms.channel_id = c.id "\
               "WHERE ms.user_id = %s "\
-              "ORDER BY created_at ASC"\
+              "ORDER BY last_message_at DESC"\
           ";"
         cur.execute(sql, (user_id))
         channel = cur.fetchall()
@@ -174,8 +174,8 @@ class models:
     finally:
         cur.close()
 
-# users_channelsテーブルに追加
-  def addToUsersChannels(user_id, channel_id):
+# membershipsテーブルに追加
+  def addToMemberships(user_id, channel_id):
     try:
         conn = DB.getConnection()
         cur = conn.cursor()
@@ -189,7 +189,7 @@ class models:
         cur.close()
 
 
- #user_channnelテーブルからそのチャンネルにいるユーザーを取得
+ #membershipsテーブルからそのチャンネルにいるユーザーを取得
   def getChannelMemberId(channel_id):
       try:
           connect = DB.getConnection()
@@ -203,6 +203,21 @@ class models:
           abort(500)
       finally:
           cursor.close()
+
+
+  # 最後にメッセージが送信された日時を更新
+  def updateLastMessageAt(id):
+    try:
+      connect = DB.getConnection()
+      cursor = connect.cursor()
+      sql = "UPDATE channels SET last_message_at=NOW() WHERE id=%s;"
+      cursor.execute(sql, (id))
+      connect.commit()
+    except Exception as e:
+      print(f"エラー: {e}")
+      abort(500)
+    finally:
+      cursor.close()
 
 
   #学びたい言語を取得
