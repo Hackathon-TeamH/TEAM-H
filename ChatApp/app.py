@@ -10,6 +10,8 @@ import re
 from config import config
 from models import models
 
+import channels
+
 import translation
 from langdetect import detect
 
@@ -232,12 +234,11 @@ def logout():
 @app.route('/list-user', methods=["GET"])
 def get_list_user():
     user_id = session.get("id")
-    learning_lang = models.getLearningLanguage(user_id)
-    users = models.getOtherLanguageUserList(learning_lang)
+    learning_lang = models.getLearningLanguage(user_id).get('learning_language')
     last_operation_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     models.updateLastOperationAt(user_id,last_operation_at)
-    return jsonify(users)
-
+    list_user = channels.renderUsers(learning_lang)
+    return list_user
 
 if __name__ == '__main__':
     scheduler = BackgroundScheduler()
