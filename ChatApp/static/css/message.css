@@ -14,7 +14,7 @@
     gap: 1rem;
 }
 
-.user_name {
+#message_wrapper .user_name {
     margin-block-start: 4px;
     margin-block-end: 3px;
     font-size: 0.8rem;

@@ -58,8 +58,8 @@ def user_signup():
         models.create_user(id,name,email,password,lng,learning_lng,country,city,dt,dt,is_active = True)
         UserId = str(id)
         session['id'] = UserId
-        return redirect('/')
-  return redirect('/')
+        return redirect('/login')
+  return redirect('/login')
 
 
 @app.route('/login')
@@ -258,6 +258,47 @@ def message_reload():
 
     new_HTML = reload.make_HTML(user_id, channel_id)
     return new_HTML
+
+
+#条件の合う相手とのチャット作成
+@app.route('/matching', methods=["POST"])
+def matching():
+    user_id = session.get("id")
+    if user_id is None:
+        return redirect('/login')
+    
+    partner_id = request.form.get("partner_id")
+
+    user_name = models.getUserWithId(user_id).get("user_name")
+    partner_name = models.getUserWithId(partner_id).get("user_name")
+
+    channel_name = f"{user_name}&{partner_name}"
+    print(channel_name)
+
+    channel_id = uuid.uuid4()
+    models.addChannel(channel_id, channel_name, user_id)
+
+    models.addToMemberships(user_id, channel_id)
+    models.addToMemberships(partner_id, channel_id)
+    
+    last_operation_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    models.updateLastOperationAt(user_id,last_operation_at)
+    
+    session["channel_id"] = channel_id
+
+    return redirect("/")
+
+
+#profile用データを渡す？
+@app.route('/profile')
+def profile():
+    user_id = session.get("id")
+    if user_id is None:
+        return redirect('/login')
+    
+    user_info = models.getUserWithId(user_id)
+
+    return jsonify(user_info)
 
 
 
