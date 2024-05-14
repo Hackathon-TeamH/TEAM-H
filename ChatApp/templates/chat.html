@@ -40,10 +40,19 @@
             </div>
           </a>
         </div>
+        <section class="select_user_dialog">
+          <div class="dli-close"></div>
+          <ul class="list_user_wrapper"></ul>
+          <div class="select_user_dialog_title_container">
+            <h3 class="select_user_dialog_title">
+              参加したいチャットを選んでください
+            </h3>
+          </div>
+        </section>
         <section class="hamburger_menu">
           <div class="button_container">
             <button class="menu_button">プロフィール</button>
-            <button class="menu_button">チャットに参加する</button>
+            <button class="menu_button join_channel">チャットに参加する</button>
             <form action="/logout" method="POST">
               <button type="submit" class="menu_button">ログアウト</button>
             </form>
@@ -143,6 +152,28 @@
             .querySelector(".hamburger_menu_button")
             .classList.toggle("active_menu");
         });
+
+      document.querySelector(".join_channel").addEventListener("click", () => {
+        getActiveUsers();
+        document
+          .querySelector(".select_user_dialog")
+          .classList.add("select_user_dialog_active");
+      });
+
+      document.querySelector(".dli-close").addEventListener("click", () => {
+        document
+          .querySelector(".select_user_dialog")
+          .classList.remove("select_user_dialog_active");
+      });
+
+      const getActiveUsers = () => {
+        fetch("/list-user")
+          .then((res) => res.text())
+          .then((html) => {
+            document.querySelector(".list_user_wrapper").innerHTML = html;
+          })
+          .catch((error) => console.error("Error:", error));
+      };
     </script>
     <script>
       //ページ読み込み時に自動で下までスクロールする

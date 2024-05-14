@@ -52,10 +52,10 @@ class models:
     try:
       connect = DB.getConnection()
       cursor = connect.cursor()
-      sql = "UPDATE users SET last_operation_at=%s WHERE id=%s;"
+      sql = "UPDATE users SET last_operation_at=%s, is_active=1 WHERE id=%s;"
       cursor.execute(sql, (last_operation_at,id))
-      user = cursor.fetchone()
-      return user
+      connect.commit()
+      print('success')
     except Exception as e:
       print(f"エラー: {e}")
       abort(500)
@@ -298,8 +298,8 @@ class models:
       try:
           conn = DB.getConnection()
           cur = conn.cursor()
-          sql = "SELECT * FROM users WHERE language=%s AND is_active = 1;"
-          cur.execute(sql, (lang,))
+          sql = "SELECT * FROM users WHERE language=%s AND is_active=1;"
+          cur.execute(sql, (lang))
           users = cur.fetchall()
           return users
       except Exception as e:

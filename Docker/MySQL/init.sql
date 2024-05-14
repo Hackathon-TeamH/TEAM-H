@@ -45,9 +45,9 @@ CREATE TABLE memberships(
 
 -- mysqlでは0がfalse0以外がtrueとして登録されるため1をインサート
 -- パスワードはpasswordをハッシュ化したもの
-INSERT INTO users(id, user_name, password, email, language, learning_language, country, city, created_at,last_operation_at, is_active) VALUES
+INSERT INTO users(id, user_name, password, email, language, learning_language, country, city, created_at, last_operation_at, is_active) VALUES
     ("35d485b3-f3e0-4b34-84bd-3460487c711e", "TEST_USER1", "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8", "test1@email.com", "ja", "en", "日本", "東京", '2024-04-14 22:00:00', '2024-04-14 22:00:00', 1);
-INSERT INTO users(id, user_name, password, email, language, learning_language, country, city, created_at,last_operation_at, is_active) VALUES
+INSERT INTO users(id, user_name, password, email, language, learning_language, country, city, created_at, last_operation_at, is_active) VALUES
     ("ab0bf204-3df1-4a52-b14a-89f18e8a8188", "TEST_USER2", "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8", "test2@email.com", "en", "ja", "US", "LosAngeles", '2024-04-14 22:00:00', '2024-04-14 22:00:00', 1);
 
 
