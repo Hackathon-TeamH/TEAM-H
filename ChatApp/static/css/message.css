@@ -1,8 +1,8 @@
 #message_wrapper {
     position: absolute;
-    padding-top: 145px;
-    padding-left: calc(25vw + 20px);
-    padding-right: 20px;
+    padding-top: calc(96px + 30px);
+    padding-left: calc(300px + 40px);
+    padding-right: 40px;
     padding-bottom: calc(20vh + 10px);
     height: 100%;
     width: 100%;
@@ -11,53 +11,84 @@
     overflow-x: hidden;
     display: flex;
     flex-direction: column;
-    gap: 0.6rem;
+    gap: 1rem;
 }
 
 .user_name {
     margin-block-start: 4px;
     margin-block-end: 3px;
-    font-size: 1rem;
+    font-size: 0.8rem;
 }
 
 .message {
-    width: 45%;
+    width: 46%;
     border:1px solid #2F66B7;
+    border-radius: 8px 8px 8px 0px;
 }
 
-.upper_message {
+.message .upper_message {
     border-bottom:1px solid #2F66B7;
     margin: 0;
     padding: 10px;
-    font-size: 1.5rem;
+    background-color: var(--uppermessage);
+    border-radius: 8px 8px 0px 0px;
+    
 }
 
-.lower_message {
+.message .lower_message {
     margin: 0;
     padding: 10px;
+    background-color: var(--lowermessage);
+    border-radius: 0px 0px 8px 0px;
 }
 
-.my_message {
-    width: 45%;
-    margin-left: auto;
-    border:1px solid #2F66B7;
-}
 
-.buttons {
-    margin-top: 5px;
-    margin-right: 5px;
-    margin-left: auto;
+
+.my_message_box {
     text-align: right;
 }
 
-.buttons a {
-    text-decoration: none;
+.my_message {
+    margin-left: auto;
+    width: 46%;
+    border:1px solid #2F66B7;
+    border-radius: 8px 8px 0px 8px;
+    display: inline-block;
+    text-align: left;
+    color: var(--whitetext);
 }
 
-.buttons a ion-icon {
+
+.my_message .upper_message {
+    border-bottom:1px solid #2F66B7;
+    margin: 0;
+    padding: 10px;
+    background-color:  var(--myuppermessage);
+    border-radius: 8px 8px 0px 0px; 
+}
+
+
+.my_message .lower_message {
+    margin: 0;
+    padding: 10px;
+    background-color:  var(--mylowermessage);
+    border-radius: 0px 0px 0px 8px;  
+}
+
+.my_message_box .buttons {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+}
+
+.my_message_box .buttons button {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+.my_message_box .buttons ion-icon {
     font-size: 1rem;
+    margin-top: 5px;
 }
 
-.flash {
-
-}

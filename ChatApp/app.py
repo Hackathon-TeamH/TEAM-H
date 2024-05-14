@@ -100,7 +100,6 @@ def userLogin():
 @app.route("/message")
 def all_message():
     user_id = session.get("id")
-    #user_id = "35d485b3-f3e0-4b34-84bd-3460487c711e"
     channel_id = request.args.get("channel_id")
     
     if user_id is None:
@@ -114,17 +113,16 @@ def all_message():
 
     #チャンネル内にいるのにチャンネルが削除された場合
     if not channel_members:
-        print("チャンネルが見つかりません")
+        flash("チャンネルが見つかりません")
         return redirect('/')
-    elif user_id not in channel_members:
-        print("このチャンネルに参加していません")
-        #flash("このチャンネルに参加していません")
-        #return redirect('/') 
-    
-    messages = models.getMessageAll(channel_id)    
-    channels = models.getChannelById(channel_id)
-    
-    return render_template('chat.html', messages=messages, channel_id=channel_id, user_id=user_id, channels=channels)
+    elif user_id not in  [m["user_id"] for m in channel_members]:
+        flash("このチャンネルに参加していません")
+        return redirect('/')
+    else:
+        messages = models.getMessageAll(channel_id)    
+        channels = models.getChannelByUserId(user_id)
+        
+    return render_template('chat.html', user_id=user_id, channel_id=channel_id, channels=channels, messages=messages)
 
 
 #チャット送信
@@ -132,7 +130,6 @@ def all_message():
 def send_message():
     message = request.form.get('message')
     sender_id = session.get("id")
-    #sender_id = "35d485b3-f3e0-4b34-84bd-3460487c711e"
     channel_id = session.get("channel_id")
     print(channel_id, message)
     
@@ -148,6 +145,7 @@ def send_message():
         source_lang, target_lang = translation.get_language_pair(sender_id, channel_id)
         print(f"翻訳元言語は{source_lang},翻訳先言語は{target_lang}")
 
+
     #入力言語判定
     input_lang = detect(message)
     print(f"入力言語は{input_lang}")
@@ -159,7 +157,7 @@ def send_message():
     models.createMessage(message, translated_message, sender_id, channel_id)
     last_operation_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     models.updateLastOperationAt(sender_id,last_operation_at)
-    return redirect(f"/message?channel_id={channel_id}")
+    return redirect("/")
 
 
 
@@ -167,7 +165,6 @@ def send_message():
 @app.route("/")
 def index():
     user_id = session.get("id")
-    #user_id = "35d485b3-f3e0-4b34-84bd-3460487c711e"
     if user_id is None:
         return redirect('/login')
     else:
@@ -175,15 +172,21 @@ def index():
         if channels:
             channels.reverse()
 
+    #画面更新の時にアクティブ表示を維持する
     channel_id = session.get("channel_id")
+    if channel_id is None:
+        messages = None
+    else:
+        messages = models.getMessageAll(channel_id)    
+        channels = models.getChannelByUserId(user_id)
+ 
 
     last_operation_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     models.updateLastOperationAt(user_id,last_operation_at)
-    return render_template('chat.html', channels=channels, channel_id=channel_id)
+    return render_template('chat.html', user_id=user_id, channel_id=channel_id, channels=channels, messages=messages)
 
 
 # チャンネルの追加
-# 最終的には"/"にする
 @app.route("/channel", methods=["POST"])
 def add_channel():
     # sessionからuser_id取得
@@ -195,35 +198,31 @@ def add_channel():
     id = uuid.uuid4()
     models.addChannel(id, channel_name, user_id)
     models.addToUsersChannels(user_id, id)
+
     last_operation_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     models.updateLastOperationAt(user_id,last_operation_at)
     return redirect("/")
 
 
 #メッセージ削除
-#編集機能実装するなら関数として切り離して流用するorこの中でif使って編集もやる予定
-@app.route('/delete/<message_id>')
-def delete_message(message_id):
+@app.route("/delete", methods=["POST"])
+def delete_message():
     user_id = session.get("id")
-    #user_id = "35d485b3-f3e0-4b34-84bd-3460487c711e"
     if user_id is None:
         return redirect('/login')
-
-    message_info = models.getMessageById(message_id)
-    sender_id = message_info["user_id"]
-    channel_id = message_info["channel_id"]
-
-    new_message = "This message has been deleted"
-    source_lang, target_lang = translation.get_language_pair(sender_id, channel_id)
-    new_message = translation.translation(new_message, "en", source_lang)
-    new_translated_message = translation.translation(new_message, "en", target_lang)
-    models.changeMessage(new_message, new_translated_message, message_id)
+    
+    message_id = request.form.get("message_id")
+    models.deleteMessage(message_id)
+    print(message_id)
+    channel_id = session.get("channel_id")
 
     last_operation_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     models.updateLastOperationAt(user_id,last_operation_at)
-    #チャンネルIDをフロントに渡してメッセージ一覧ページに飛ばす
+
     return redirect(f"/message?channel_id={channel_id}")
 
+
+#ログアウト
 @app.route('/logout', methods=["POST"])
 def logout():
     user_id = session.get("id")
@@ -244,18 +243,25 @@ def get_list_user():
 
 
 #チャンネル選択時HTMLを書き換える
-@app.route('/reload/<channel_id>')
-def message_reload(channel_id):
+@app.route('/reload')
+def message_reload():
     user_id = session.get("id")
-    # todo：JSにURLを返して遷移する必要があるがHTMLをテキストで渡すので以下はできない
+    channel_id = request.args.get("channel_id")
+    # todo：JSにURLを返して遷移する必要があるが今回はHTMLをテキストで渡すので以下はできない
     if user_id is None:
         redirect_url = url_for(login)
         return jsonify({'redirect_url': redirect_url})
+    elif channel_id is None:
+        channel_id = session.get("channel_id")
+        if channel_id is None:
+            redirect_url = url_for(login)
+            return jsonify({'redirect_url': redirect_url})
     else:
         session["channel_id"] = channel_id
-        new_HTML = reload.make_HTML(user_id, channel_id)
-        return new_HTML
-    
+
+    new_HTML = reload.make_HTML(user_id, channel_id)
+    return new_HTML
+
 
 
 if __name__ == '__main__':
