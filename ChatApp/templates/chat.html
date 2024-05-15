@@ -22,7 +22,7 @@
     <div class="container">
       <div class="header">
         <div class="header_inner">
-          <h1 class="header_title">OUR LANGUAGE</h1>
+          <h1 class="header_title">OUR<span> </span>LANGUAGE</h1>
           <a class="header_hamburger" href="#">
             <div class="hamburger_menu_button">
               <span></span><span></span><span></span>
@@ -95,7 +95,6 @@
     <script>
       //channel_listクラスの要素を変数listに格納
       const list = document.querySelectorAll(".channel_list");
-      console.log(list);
 
       //liタグをひとつずつ変数itemに格納
       list.forEach((item) => {
@@ -188,26 +187,26 @@
     </script>
 
     <script>
-    function message_send() {
-      const message = document.getElementById("textarea").value;
-      fetch("/message", {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({text: text})
-      })
-      .then(response => response.json())
-      .then(data => {
-          console.log(data); // サーバーサイドからの応答をコンソールに出力する（任意）
-          // サーバーサイドからの応答に応じてクライアントサイドで必要な処理を行う
-          // ここでは、サーバーサイドから受け取ったテキストをアラートで表示する
-          alert('Received text from server: ' + data.text);
-      })
-      .catch(error => {
-          console.error('Error:', error);
-      });
-    }
+    // function message_send() {
+    //   const message = document.getElementById("textarea").value;
+    //   fetch("/message", {
+    //       method: 'POST',
+    //       headers: {
+    //           'Content-Type': 'application/json'
+    //       },
+    //       body: JSON.stringify({text: text})
+    //   })
+    //   .then(response => response.json())
+    //   .then(data => {
+    //       console.log(data); // サーバーサイドからの応答をコンソールに出力する（任意）
+    //       // サーバーサイドからの応答に応じてクライアントサイドで必要な処理を行う
+    //       // ここでは、サーバーサイドから受け取ったテキストをアラートで表示する
+    //       alert('Received text from server: ' + data.text);
+    //   })
+    //   .catch(error => {
+    //       console.error('Error:', error);
+    //   });
+    // }
     </script>
   </body>
 </html>

@@ -1,72 +1,78 @@
 from flask import Flask, redirect, render_template, request, session, flash, jsonify, url_for
 from datetime import datetime
 from apscheduler.schedulers.background import BackgroundScheduler
-# datetimeモジュールのインポートが必要
+from config import config
 import datetime
 import hashlib
 import uuid
 import re
 
-from config import config
 from models import models
-
 import channels
+import reload
 
 import translation
-import reload
 from langdetect import detect
 
 
 app = Flask(__name__)
-app.config.from_object(config.Config)# config.pyのConfigクラス
+app.config.from_object(config.Config)
 
+
+#サインアップ画面へ遷移
 @app.route('/signup')
 def signup():
     return render_template('registration/signup.html')
 
 
+#サインアップ処理
 @app.route('/signup', methods=['POST'])
 def user_signup():
-  id = uuid.uuid4()
-  name = request.form.get('name')
-  email = request.form.get('email')
-  password1 = request.form.get('password1')
-  password2 = request.form.get('password2')
-  lng = request.form.get('language')
-  learning_lng = request.form.get('learning_language')
-  country = request.form.get('country')
-  city = request.form.get('city')
+    id = uuid.uuid4()
+    name = request.form.get('name')
+    email = request.form.get('email')
+    password1 = request.form.get('password1')
+    password2 = request.form.get('password2')
+    lng = request.form.get('language')
+    learning_lng = request.form.get('learning_language')
+    country = request.form.get('country')
+    city = request.form.get('city')
 
-# 変数名がdatetimeだとエラーが起きたのでdtに
-  dt = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    dt = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
-  pattern = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
+    pattern = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
 
-  if(name == "" or email == "" or password1 == "" or password2 == "" or lng == "" or learning_lng == ""):
-    flash("必須項目をすべて入力してください")
-  elif(password1 != password2):
-    flash("同じパスワードを入力してください")
-  elif(re.match(pattern,email) is None):
-    flash("正しいメールアドレスを入力してください")
-  else:
-    password = hashlib.sha256(password1.encode('utf-8')).hexdigest()
-    user = models.getUser(email)
+    if(name == "" or email == "" or password1 == "" or password2 == "" or lng == "" or learning_lng == ""):
+        flash("必須項目をすべて入力してください")
+        redirect("/signup")
+    elif(password1 != password2):
+        flash("同じパスワードを入力してください")
+        redirect("/signup")
+    elif(re.match(pattern,email) is None):
+        flash("正しいメールアドレスを入力してください")
+        redirect("/signup")
+    else:
+        password = hashlib.sha256(password1.encode('utf-8')).hexdigest()
+        user = models.getUser(email)
 
     if user != None:
         flash('既に使用されているアドレスです')
+        redirect("/signup")
     else:
         models.create_user(id,name,email,password,lng,learning_lng,country,city,dt,dt,is_active = True)
         UserId = str(id)
         session['id'] = UserId
         return redirect('/login')
-  return redirect('/login')
+    return redirect('/login')
 
 
+#ログイン画面へ遷移
 @app.route('/login')
 def login():
     return render_template('registration/login.html')
 
 
+#ログイン処理
 @app.route('/login', methods=['POST'])
 def userLogin():
     email = request.form.get('email')
@@ -99,35 +105,35 @@ def userLogin():
 
 
 # メッセージ一覧
-@app.route("/message")
-def all_message():
-    user_id = session.get("id")
-    channel_id = request.args.get("channel_id")
+# @app.route("/message")
+# def all_message():
+#     user_id = session.get("id")
+#     channel_id = request.args.get("channel_id")
     
-    if user_id is None:
-        return redirect('/login')
-    elif channel_id is None:
-        return render_template('initial.html')
-    else:
-        session["channel_id"] = channel_id
+#     if user_id is None:
+#         return redirect('/login')
+#     elif channel_id is None:
+#         return render_template('initial.html')
+#     else:
+#         session["channel_id"] = channel_id
           
-    channel_members = models.getChannelMemberId(channel_id)
+#     channel_members = models.getChannelMemberId(channel_id)
 
-    #チャンネル内にいるのにチャンネルが削除された場合
-    if not channel_members:
-        flash("チャンネルが見つかりません")
-        return redirect('/')
-    elif user_id not in  [m["user_id"] for m in channel_members]:
-        flash("このチャンネルに参加していません")
-        return redirect('/')
-    else:
-        messages = models.getMessageAll(channel_id)    
-        channels = models.getChannelByUserId(user_id)
+#     #チャンネル内にいるのにチャンネルが削除された場合
+#     if not channel_members:
+#         flash("チャンネルが見つかりません")
+#         return redirect('/')
+#     elif user_id not in  [m["user_id"] for m in channel_members]:
+#         flash("このチャンネルに参加していません")
+#         return redirect('/')
+#     else:
+#         messages = models.getMessageAll(channel_id)    
+#         channels = models.getChannelByUserId(user_id)
         
-    return render_template('chat.html', user_id=user_id, channel_id=channel_id, channels=channels, messages=messages)
+#     return render_template('chat.html', user_id=user_id, channel_id=channel_id, channels=channels, messages=messages)
 
 
-#チャット送信
+#メッセージ送信
 @app.route('/message', methods=['POST'])
 def send_message():
     message = request.form.get('message')
@@ -138,22 +144,21 @@ def send_message():
     if sender_id is None:
         return redirect('/login')
     elif channel_id is None:
-        flash("チャンネルが選択されていません")
-        return redirect(f"/message?channel_id={channel_id}") #todo:HTML修正
+        flash(translation.flash_trans(sender_id, "チャンネルが選択されていません"))
+        return redirect("/")
     elif message == "":
-        flash("メッセージが入力されていません")
-        return redirect(f"/message?channel_id={channel_id}")
+        flash(translation.flash_trans(sender_id, "メッセージが入力されていません"))
+        return redirect("/")
     else:
         source_lang, target_lang = translation.get_language_pair(sender_id, channel_id)
-        print(f"翻訳元言語は{source_lang},翻訳先言語は{target_lang}")
 
 
     #入力言語判定
     input_lang = detect(message)
     print(f"入力言語は{input_lang}")
     if input_lang != source_lang:
-        flash("身につけたい言語で入力してみよう")
-        return redirect(f"/message?channel_id={channel_id}")
+        flash(translation.flash_trans(sender_id, "学びたい言語で入力しよう"))
+        return redirect("/")
 
     translated_message = translation.translation(message, source_lang, target_lang)
     models.createMessage(message, translated_message, sender_id, channel_id)
@@ -179,7 +184,6 @@ def index():
         messages = models.getMessageAll(channel_id)    
         channels = models.getChannelByUserId(user_id)
  
-
     last_operation_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     models.updateLastOperationAt(user_id,last_operation_at)
     return render_template('chat.html', user_id=user_id, channel_id=channel_id, channels=channels, messages=messages)
@@ -188,22 +192,22 @@ def index():
 # チャンネルの追加
 @app.route("/channel", methods=["POST"])
 def add_channel():
-    # sessionからuser_id取得
     user_id = session.get("id")
-    #user_id = "35d485b3-f3e0-4b34-84bd-3460487c711e"
     if user_id is None:
         return redirect("/login")
     channel_name = request.form.get("channel_name")
     id = uuid.uuid4()
+
     models.addChannel(id, channel_name, user_id)
     models.addToMemberships(user_id, id)
+    
     last_operation_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     models.updateLastOperationAt(user_id,last_operation_at)
     return redirect("/")
 
 
 #メッセージ削除
-@app.route("/delete", methods=["POST"])
+@app.route("/deletemessage", methods=["POST"])
 def delete_message():
     user_id = session.get("id")
     if user_id is None:
@@ -211,13 +215,11 @@ def delete_message():
     
     message_id = request.form.get("message_id")
     models.deleteMessage(message_id)
-    print(message_id)
-    channel_id = session.get("channel_id")
 
     last_operation_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     models.updateLastOperationAt(user_id,last_operation_at)
 
-    return redirect(f"/message?channel_id={channel_id}")
+    return redirect("/")
 
 
 #ログアウト
@@ -230,6 +232,7 @@ def logout():
     return redirect('/login') #TODO: ログアウトページがあれば/logoutになる
 
 
+#参加可能チャンネル取得
 @app.route('/list-user', methods=["GET"])
 def get_list_user():
     user_id = session.get("id")
@@ -239,12 +242,14 @@ def get_list_user():
     list_user = channels.renderUsers(learning_lang)
     return list_user
 
+
 #チャンネル選択時HTMLを書き換える
 @app.route('/reload')
 def message_reload():
     user_id = session.get("id")
     channel_id = request.args.get("channel_id")
-    # todo：JSにURLを返して遷移する必要があるが今回はHTMLをテキストで渡すので以下はできない
+    # todo：エラー対処
+    # JSにURLを返して遷移する必要があるが今回はHTMLをテキストで渡すので以下はできない
     if user_id is None:
         redirect_url = url_for(login)
         return jsonify({'redirect_url': redirect_url})
@@ -260,33 +265,69 @@ def message_reload():
     return new_HTML
 
 
-#条件の合う相手とのチャット作成
+#条件の合う相手とのマッチング・チャット作成
 @app.route('/matching', methods=["POST"])
 def matching():
     user_id = session.get("id")
     if user_id is None:
         return redirect('/login')
     
-    partner_id = request.form.get("partner_id")
-
-    user_name = models.getUserWithId(user_id).get("user_name")
-    partner_name = models.getUserWithId(partner_id).get("user_name")
-
-    channel_name = f"{user_name}&{partner_name}"
-    print(channel_name)
-
-    channel_id = uuid.uuid4()
-    models.addChannel(channel_id, channel_name, user_id)
+    channel_id = request.form.get("channel_id")
 
     models.addToMemberships(user_id, channel_id)
-    models.addToMemberships(partner_id, channel_id)
-    
+
     last_operation_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     models.updateLastOperationAt(user_id,last_operation_at)
     
     session["channel_id"] = channel_id
 
     return redirect("/")
+
+
+#チャンネル削除
+@app.route('/deletechannel', methods=["POST"])
+def delete_channel():
+    user_id = session.get("id")
+    if user_id is None:
+        return redirect('/login')
+    
+    channel_id = request.form.get("channel_id")
+    channel_detail = models.getChannelById(channel_id)
+
+    if user_id != channel_detail["user_id"]:
+        flash(translation.flash_trans(user_id, "あなたの作ったチャンネルではありません"))
+        return redirect("/")
+    else:
+        models.deletechannel(channel_id)
+        session["channel_id"] = None
+        return redirect("/")
+
+
+
+
+
+
+    
+    # partner_id = request.form.get("partner_id")
+
+    # user_name = models.getUserWithId(user_id).get("user_name")
+    # partner_name = models.getUserWithId(partner_id).get("user_name")
+
+    # channel_name = f"{user_name}&{partner_name}"
+    # print(channel_name)
+
+    # channel_id = uuid.uuid4()
+    # models.addChannel(channel_id, channel_name, user_id)
+
+    # models.addToMemberships(user_id, channel_id)
+    # models.addToMemberships(partner_id, channel_id)
+    
+    # last_operation_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    # models.updateLastOperationAt(user_id,last_operation_at)
+    
+    # session["channel_id"] = channel_id
+
+    # return redirect("/")
 
 
 #profile用データを渡す？

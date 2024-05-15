@@ -1,6 +1,6 @@
 #message_wrapper {
     position: absolute;
-    padding-top: calc(96px + 30px);
+    padding-top: calc(96px + 40px);
     padding-left: calc(300px + 40px);
     padding-right: 40px;
     padding-bottom: calc(20vh + 10px);
@@ -14,7 +14,7 @@
     gap: 1rem;
 }
 
-#message_wrapper .user_name {
+.sender_name {
     margin-block-start: 4px;
     margin-block-end: 3px;
     font-size: 0.8rem;
@@ -40,9 +40,8 @@
     padding: 10px;
     background-color: var(--lowermessage);
     border-radius: 0px 0px 8px 0px;
+    font-size: 12px;
 }
-
-
 
 .my_message_box {
     text-align: right;
@@ -58,7 +57,6 @@
     color: var(--whitetext);
 }
 
-
 .my_message .upper_message {
     border-bottom:1px solid #2F66B7;
     margin: 0;
@@ -67,12 +65,12 @@
     border-radius: 8px 8px 0px 0px; 
 }
 
-
 .my_message .lower_message {
     margin: 0;
     padding: 10px;
     background-color:  var(--mylowermessage);
     border-radius: 0px 0px 0px 8px;  
+    font-size: 12px;
 }
 
 .my_message_box .buttons {

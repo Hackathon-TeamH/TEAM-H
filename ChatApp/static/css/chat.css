@@ -24,29 +24,37 @@
     padding: 0 20px; /*左右の余白確保*/
     display: flex; /*要素を横に並べる*/
     align-items: center;
+    justify-content: center;
     height: 100%;
   }
   
 
   /* ヘッダータイトル */
   .header_title {
-    margin: auto;
     padding: 0 20px; /*左右の余白確保*/
+    letter-spacing: 20px;
+    transform : scale(1.5, 1);   /* 変形 横,縦 */
+    color: var(--whitetext);
+    opacity: 0.75;
   }
-   
-  /* ハンバーガーメニュー */
-  .header_hamburger ion-icon {
-    font-size: 3rem;
-  }
+
+  .header_title span{
+    font-size: 5px;
+    transform : scale(0.01, 1);
+    }
+
+
 
 
 /*-------------channel-------------------------------*/
 .channel_container {
-    position: absolute;
-    top: 0;
+    position: fixed;
     left: 0;
+    top: 96px;
+    margin: 0;
+    padding: 0;
     width: 300px;
-    height: 100vh; 
+    height: calc(100vh - 50px); 
     background-color: var(--channelbackground);
     overflow-y: auto;
     border-right: solid 4px var(--border);
@@ -57,15 +65,18 @@
     width: 0px;
   }
 
+.channel_wrapper {
+    margin: 0;
+    padding: 0;
+} 
+
+
 .channel_wrapper ul {
-    position: absolute;
     padding: 0; /*why?*/
     margin: 0;
-    top: 96px;
-    right: 0;
-    height: calc(100vh - 96px); 
+    height: 100%; 
     width: 100%;
-    
+
 }
 
 .add_channel {
@@ -84,8 +95,16 @@
 .add_channel input {
     height: 50%;
     width: 70%;
-    border:none
+    border:none;
+    background-color: var(--background);
+    border-radius: 3px;
+    font-size: 16px;
 }
+
+.add_channel input:focus {
+    outline: 2px solid var(--activechannel);
+}  
+
 
 .add_channel button {
     padding-left: 23px;
@@ -109,15 +128,16 @@
     color: var(--activechannel);
 }
 
-
 .channel_wrapper ul li {
     list-style: none;
-    display: block;
+    display: flex;
+    align-items: center;
     width: 100%;
     position: relative;
     border-bottom: 2px solid var(--border);
     background-color: var(--channel);
 }
+
 
 .channel_wrapper ul li:hover {
     background-color: #8bcff4;
@@ -131,19 +151,20 @@
     text-decoration: none;
     color: var(--activechannel);
     height: 72px;
-    width: 100%;
-    padding-left: 20px;
+    width: 85%;
+    padding-left: 30px;
     display: flex;
     align-items: center;
     position: relative;
+    overflow: hidden;
 }
 
 .channel_wrapper ul li.active a {
     text-decoration: none;
     color: var(--whitetext);
     height: 72px;
-    width: 100%;
-    padding-left: 20px;
+    width: 85%;
+    padding-left: 30px;
     display: flex;
     align-items: center;
     position: relative;
@@ -153,7 +174,6 @@
 
 
 .channel_wrapper ul li a .icon {
-    min-width: 45px;
     height: 100%;
     line-height: 72px;
     display: flex;
@@ -161,11 +181,34 @@
     align-items: center;
 }
 
-.channel_wrapper ul li a .icon ion-icon {
-    font-size: 2rem;
+
+.channel_wrapper ul li a .icon .channel_icon{
+    border-radius: 50%;
+    border: 2px solid var(--activechannel);
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    font-size: 20px;
+    line-height: 27px;
+    background-color: transparent;
+    color: var(--activechannel);
 }
 
-.channel_wrapper ul li a .channel_name {
+
+.channel_wrapper ul li.active a .icon .channel_icon{
+    border-radius: 50%;
+    border: 2px solid var(--whitetext);
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    font-size: 20px;
+    line-height: 27px;
+    background-color: transparent;
+    color: var(--whitetext);
+}
+
+
+.channel_wrapper ul li a .list_channel_name {
     padding-left: 10px;
     height: 100%;
     line-height: 133px;
@@ -174,6 +217,31 @@
     justify-content: center;
     align-items: center;
 }
+
+.channel_wrapper ul li .delete_button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    margin-left: auto;
+    height: 41.5px;
+    width: 41.5px;
+    color: var(--activechannel)
+}
+
+
+.channel_wrapper ul li.active .delete_button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    margin-left: auto;
+    height: 41.5px;
+    width: 41.5px;
+    color: var(--whitetext);
+}
+
+
+
+
 
 
 /*-------------chat-------------------------------*/
@@ -210,33 +278,51 @@
 }
 
 .flashes {
-    color:orange;
-    margin-top: 5px;
+    color: var(--redtext);
+    list-style-type: none;
+    padding: 0;
+}
+
+.flashes span {
+    font-size: 30px;
 }
 
 .input_box {
     height: 60%;
     width: 80%;
-    margin: auto;
+    margin-left: auto;
+    margin-right: auto;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 .input_box textarea {
+    padding: 10px;
     resize: none;
     height: 80px;
     width: 80%;
     margin-left: auto;
-    font-size:100%
+    font-size:16px;
+    border-radius: 5px 0px 0px 5px;
+    border: 1px solid var(--myuppermessage);
+}
+
+.input_box textarea:focus {
+    outline: none;
 }
 
 .input_box button {
     height: 80px;
     width: 80px;
     margin-right: auto;
+    border-radius: 0px 5px 5px 0px;
+    border: 1px solid var(--myuppermessage);
+    border-left: none;
+    background-color: var(--activechannel);
 }
 
 .input_box button ion-icon {
-    font-size: 1.5rem;
+    font-size: 3rem;
+    color: #ffffff;
 }

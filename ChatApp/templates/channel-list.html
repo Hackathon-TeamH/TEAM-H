@@ -1,3 +1,5 @@
+
+
 <div class="channel_wrapper">
   <ul>
     <li class="add_channel">
@@ -25,11 +27,21 @@
         href="#"
         onclick="message_reload('{{c.channel_id}}')"
       >
-        <span class="icon"
-          ><ion-icon name="planet-outline"></ion-icon
-        ></span>
-        <span class="channel_name">{{ c.channel_name }}</span>
+        <span class="icon">
+          <div class="channel_icon">{{ c.channel_name[0].upper() if c.channel_name else '' }}</div>
+        </span>
+        <span class="list_channel_name">{{ c.channel_name }}</span>
       </a>
+      <form
+          class="delete_channel"
+          action="{{url_for('delete_channel')}}"
+          method="POST"
+          >
+          <input type="hidden" value="{{c.channel_id}}" name="channel_id" />
+          <button class="delete_button" type="submit">
+              <ion-icon name="close-outline"></ion-icon>
+          </button>
+      </form>
     </li>
     {% endfor %}
   </ul>

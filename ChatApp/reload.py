@@ -9,7 +9,7 @@ def make_HTML(user_id, channel_id):
             {% for msg in messages %}
             {% if msg.user_id != user_id %}
             <div class="message_box">
-                <p class="user_name">{{msg.user_name}}</p>
+                <p class="sender_name">{{msg.user_name}}</p>
                 <div class="message">
                     <p class="upper_message">{{msg.translated_message}}</p>
                     <p class="lower_message" data-hidden-message="{{msg.message}}">原文表示</p>
