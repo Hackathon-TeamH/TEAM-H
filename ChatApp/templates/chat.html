@@ -22,18 +22,7 @@
     <div class="container">
       <div class="header">
         <div class="header_inner">
-          <div class="header_icon">
-            <ion-icon name="language-outline"></ion-icon>
-          </div>
           <h1 class="header_title">OUR LANGUAGE</h1>
-          <form action="{{url_for('add_channel')}}" method="POST">
-            <input
-              type="text"
-              name="channel_name"
-              placeholder="チャンネル名を入力してください"
-            />
-            <button type="submit">送信</button>
-          </form>
           <a class="header_hamburger" href="#">
             <div class="hamburger_menu_button">
               <span></span><span></span><span></span>
@@ -66,48 +55,30 @@
           <h3>Menu</h3>
         </section>
       </div>
-      <div class="channel">
-        <ul>
-          {% for c in channels %} {% if c.channel_id == channel_id %}
-          <li class="channel_list active">{% else %}</li>
-
-          <li class="channel_list">
-            {% endif %}
-            <a
-              href="{{url_for('all_message', channel_id=c.channel_id)}}"
-              target="message_iframe"
-            >
-              <span class="icon"
-                ><ion-icon name="planet-outline"></ion-icon
-              ></span>
-              <span class="channel_name">{{ c.channel_name }}</span>
-            </a>
-          </li>
-          {% endfor %}
-        </ul>
+      <div class="channel_container">
+        {% include "channel-list.html" %}
       </div>
-      <div class="chat_container">
-        <div class="iframe_wrapper">
-          <iframe
-            id="message_iframe"
-            src="{{url_for('all_message', channel_id=channel_id)}}"
-            name="message_iframe"
-            height="500px"
-            frameborder="0"
-          ></iframe>
-        </div>
+      <div class="message_container">
+        {% include "message.html" %}
       </div>
       <div class="input_box_area">
         <div class="input_box_wrapper">
+          <div>
+            {% with messages = get_flashed_messages() %}
+            {% for message in messages %}
+            <li class="flashes">
+                <span>{{ message }}</span>
+            </li>
+            {% endfor %}
+            {% endwith %}
+          </div>
           <form
             class="input_box"
             action="{{url_for('send_message')}}"
             method="POST"
-            target="message_iframe"
           >
             <textarea
               name="message"
-              placeholder="メッセージを入力してください"
             ></textarea>
             <input type="hidden" value="{{channel_id}}" name="channel_id" />
             <button type="submit">
@@ -206,12 +177,68 @@
           .catch((error) => console.error("Error:", error));
       };
     </script>
+
     <script>
       //ページ読み込み時に自動で下までスクロールする
       window.onload = function () {
         const messageArea = document.getElementById("message_iframe");
         messageArea.scrollTop = messageArea.scrollHeight;
       };
+    </script>
+
+    <script>
+       document.querySelector(".message_container").addEventListener("click", function(event) {
+          if (event.target.classList.contains("lower_message")) {
+              switch_message.call(event.target);
+          }
+      });
+
+
+      function switch_message() {
+          //クリックした要素のdata属性を取得
+          const datavalue = this.dataset.hiddenMessage;
+          //クリックした要素のinnerHTMLを取得
+          const innervalue = this.innerHTML;
+          //それぞれを入れ替えてセット
+          this.dataset.hiddenMessage = innervalue;
+          this.innerHTML = datavalue;
+      }
+        
+    </script>
+
+    <script>
+      //message_wrapperの中を書き換える
+       function message_reload(channel_id) {
+            fetch("/reload?channel_id=" + channel_id)
+                .then(res => res.text())
+                .then(html => {
+                    document.getElementById("message_wrapper").innerHTML = html;
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
+
+    <script>
+    function message_send() {
+      const message = document.getElementById("textarea").value;
+      fetch("/message", {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({text: text})
+      })
+      .then(response => response.json())
+      .then(data => {
+          console.log(data); // サーバーサイドからの応答をコンソールに出力する（任意）
+          // サーバーサイドからの応答に応じてクライアントサイドで必要な処理を行う
+          // ここでは、サーバーサイドから受け取ったテキストをアラートで表示する
+          alert('Received text from server: ' + data.text);
+      })
+      .catch(error => {
+          console.error('Error:', error);
+      });
+    }
     </script>
   </body>
 </html>

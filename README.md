@@ -8,6 +8,4 @@ mayuu
 koudai
 taga
 
-### staging
-
 ### develop/1

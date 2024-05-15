@@ -1,81 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>message</title>
-    <link rel="stylesheet" href="{{url_for('static',filename='css/styles.css')}}">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Anta&family=Kosugi+Maru&display=swap" rel="stylesheet">
-</head>
-<body>
-    <div class="frame">
-        <div id="message_wrapper">
-            {% if messages|length > 0 %}
-            {% for msg in messages%}
-            {% if msg.user_id != user_id %}
-            <div class="messages">
-                <p class="user_name">{{msg.user_name}}</p>
-                <div class="message">
-                    <p class="upper_message">{{msg.translated_message}}</p>
-                    <a class="lower_message" data-hidden-message="{{msg.message}}">原文表示</a>
-                </div>
-            </div>
-            {% else %}
-            <div class="my_messages">
-                <div class="my_message">
-                    <p class="upper_message">{{msg.message}}</p>
-                    <a class="lower_message" data-hidden-message="{{msg.translated_message}}">翻訳文表示</a>
-                </div>
-                <div class="buttons">
-                    <a class="change_message" type="submit" href="#"><ion-icon name="pencil-outline"></ion-icon>
-                    </a>
-                    <a class="delete_message" type="submit" href="{{url_for('delete_message', message_id=msg.id)}}">
-                        <ion-icon name="trash-outline"></ion-icon>
-                    </a>
-                </div>
-            </div>
-            {% endif %} {% endfor %}
-            {% else %}
-            <div class="no_message"><p>投稿がありません</p></div>
-            {% endif %}
 
-            {% with messages = get_flashed_messages() %}
-            {% for message in messages %}
-            <li class="flashes">
-                <font color="orange">{{ message }}</font>
-            </li>
-            {% endfor %}
-            {% endwith %}
+<div id="message_wrapper">
+    {% if messages %}
+    {% for msg in messages %}
+    {% if msg.user_id != user_id %}
+    <div class="message_box">
+        <p class="user_name">{{msg.user_name}}</p>
+        <div class="message">
+            <p class="upper_message">{{msg.translated_message}}</p>
+            <p class="lower_message" data-hidden-message="{{msg.message}}">原文表示</p>
         </div>
     </div>
-        
-
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>    
-    
-    <script>
-         //lower_messageクラスの要素を変数listに格納
-         const list = document.querySelectorAll(".lower_message");
-
-        //liタグをひとつずつ変数itemに格納
-        list.forEach((item) => {
-            //itemがクリックされたときswitch_message関数を呼び出す
-            item.addEventListener("click", switch_message);
-        });
-
-        function switch_message() {
-            //クリックした要素のdata属性を取得
-            const datavalue = this.dataset.hiddenMessage;
-            //クリックした要素のinnerHTMLを取得
-            const innervalue = this.innerHTML;
-            //それぞれを入れ替えてセット
-            this.dataset.hiddenMessage = innervalue;
-            this.innerHTML = datavalue;
-        }
-            
-    </script>
-    
-</body>
-</html>
+    {% else %}
+    <div class="my_message_box">
+        <div class="my_message">
+            <p class="upper_message">{{msg.message}}</p>
+            <p class="lower_message" data-hidden-message="{{msg.translated_message}}">翻訳文表示</p>
+        </div>
+        <div class="buttons">
+            <button class="change_message" type="submit"><ion-icon name="pencil-outline"></ion-icon>
+            </button>
+            <form class="delete_message" action="/delete" method="POST">
+                <input type="hidden" name="message_id" value="{{msg.id}}">
+                <button type="submit"><ion-icon name="trash-outline"></ion-icon></button>
+            </form>
+        </div>
+    </div>
+    {% endif %} 
+    {% endfor %}
+    {% else %}
+    <div class="no_message"><p>投稿がありません</p></div>
+    {% endif %}
+</div>
