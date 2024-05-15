@@ -268,12 +268,12 @@ class models:
 
 
   #メッセージ編集
-  def changeMessage(new_message, new_translated_message, message_id):
+  def deleteMessage(message_id):
       try:
           connect = DB.getConnection()
           cursor = connect.cursor()
-          sql = "UPDATE messages SET message=%s, translated_message=%s WHERE id=%s;"
-          cursor.execute(sql, (new_message, new_translated_message, message_id))
+          sql = "DELETE FROM messages WHERE id=%s;"
+          cursor.execute(sql, (message_id))
           connect.commit()
       except Exception as e:
           print(f"エラー:{e}")

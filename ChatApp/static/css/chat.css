@@ -2,6 +2,7 @@
 .container {
     position: relative;
     height: 100vh;
+    background-color: var(--background);
 }
 
 
@@ -11,29 +12,25 @@
     top: 0;
     left: 0;
     width: 100%;
-    height: 135px; /* 20% of viewport height */
+    height: 96px;
     background-color: #32C2EF;
     z-index: 4;
+    border-bottom: solid 4px var(--border);
 }
 
 /*header部品の枠*/
 .header_inner {
     position: relative;
-    border-bottom: 2px solid black;
     padding: 0 20px; /*左右の余白確保*/
-    display: flex; /*ロゴとハンバーガーメニューを横に並べる*/
+    display: flex; /*要素を横に並べる*/
     align-items: center;
-    justify-content: space-between;
-    height: 135px;
+    height: 100%;
   }
   
-  /*headerアイコン*/
-  .header_icon ion-icon {
-    font-size: 3rem;
-  }
 
   /* ヘッダータイトル */
   .header_title {
+    margin: auto;
     padding: 0 20px; /*左右の余白確保*/
   }
    
@@ -44,111 +41,150 @@
 
 
 /*-------------channel-------------------------------*/
-.channel {
+.channel_container {
     position: absolute;
     top: 0;
     left: 0;
-    width: 25vw; /* 50% of viewport width */
-    /* min-width: 200px; */
-    height: 100vh; /* 80% of viewport height */
-    background-color: #C3F1FF;
+    width: 300px;
+    height: 100vh; 
+    background-color: var(--channelbackground);
+    overflow-y: auto;
+    border-right: solid 4px var(--border);
     z-index: 3;
-    overflow-y: auto
 }
 
 ::-webkit-scrollbar {
     width: 0px;
   }
 
-.channel ul {
+.channel_wrapper ul {
     position: absolute;
     padding: 0; /*why?*/
     margin: 0;
-    top: 135px;
+    top: 96px;
     right: 0;
-    height: calc(100vh - 135px); 
+    height: calc(100vh - 96px); 
     width: 100%;
+    
 }
 
-.channel ul li {
+.add_channel {
+    height: 72px;
+    display: flex;
+    align-items: center;
+}
+
+.add_channel_container {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    background-color: var(--channel);
+}
+
+.add_channel input {
+    height: 50%;
+    width: 70%;
+    border:none
+}
+
+.add_channel button {
+    padding-left: 23px;
+    padding-right: 0px;
+    border: none;
+    background: transparent;
+    
+}
+
+.add_channel button .icon {
+    width: 45px;
+    height: 100%;
+    line-height: 72px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.add_channel button .icon ion-icon{
+    font-size: 2rem;
+    color: var(--activechannel);
+}
+
+
+.channel_wrapper ul li {
     list-style: none;
     display: block;
     width: 100%;
     position: relative;
-    border: 1px solid #2F66B7;
-    background-color: #B1DEF7;
+    border-bottom: 2px solid var(--border);
+    background-color: var(--channel);
 }
 
-.channel ul li:hover {
+.channel_wrapper ul li:hover {
     background-color: #8bcff4;
 }
 
-.channel ul li.active {
+.channel_wrapper ul li.active {
     background-color: #2F66B7;
 }
 
-.channel ul li a {
+.channel_wrapper ul li a {
     text-decoration: none;
-    color: #FFFFFF;
+    color: var(--activechannel);
+    height: 72px;
     width: 100%;
+    padding-left: 20px;
     display: flex;
-    justify-content: center;
     align-items: center;
     position: relative;
 }
 
-.channel ul li a .icon {
+.channel_wrapper ul li.active a {
+    text-decoration: none;
+    color: var(--whitetext);
+    height: 72px;
+    width: 100%;
+    padding-left: 20px;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+
+
+
+.channel_wrapper ul li a .icon {
     min-width: 45px;
-    height: 133px;
-    line-height: 133px;
+    height: 100%;
+    line-height: 72px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.channel ul li a .icon ion-icon {
-    font-size: 3rem;
+.channel_wrapper ul li a .icon ion-icon {
+    font-size: 2rem;
 }
 
-.channel ul li a .channel_name {
-    padding-left: 30px;
-    height: 133px;
+.channel_wrapper ul li a .channel_name {
+    padding-left: 10px;
+    height: 100%;
     line-height: 133px;
     white-space: nowrap;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 30px;
 }
 
 
 /*-------------chat-------------------------------*/
-.chat_container {
+.message_container {
     position: absolute;
     top: 0px;
     right: 0;
     width: 100vw;
-    height: 100vh; /* 60% of viewport height */
-    background-color: #E3F8FF;
-    z-index: 1;
-}
-
-.iframe_wrapper {
-    position: absolute;
     height: 100vh;
-    width: 100%;
-    padding-top: calc(135px + 20px);
-    padding-right: 20px;
-    padding-bottom: calc(20vh + 10px);
-    padding-left: calc(25vw + 20px);
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
-}
-
-.iframe_wrapper iframe {
-   width: 100%;
-   height: 100%; 
+    background-color: var(--background);
+    z-index: 1;
 }
 
 /*-------------input-------------------------------*/
@@ -157,38 +193,48 @@
     bottom: 0;
     right: 0;
     width: 100vw;
-    height: 20vh; /* 40% of viewport height */
-    min-width: 80px;
-    background-color: #E8F1FE;
+    height: 160px;
+    border-top: 4px solid var(--border);
+    background-color: var(--background);
     z-index: 2;
 }
 
 .input_box_wrapper {
     height: 100%;
-    margin-left:calc(25vw + 10px);
-    right: 10px;
+    margin-left:calc(300px + 10px);
+    margin-right: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.flashes {
+    color:orange;
+    margin-top: 5px;
+}
+
+.input_box {
+    height: 60%;
+    width: 80%;
+    margin: auto;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.input_box {
-    height: 80%;
-    width: 90%;
-    margin: auto;
-}
-
 .input_box textarea {
-    height: 100%;
-    width: 90%;
-    margin-right: auto;
-    vertical-align : top;
+    resize: none;
+    height: 80px;
+    width: 80%;
+    margin-left: auto;
+    font-size:100%
 }
 
 .input_box button {
-    height: 100%;
-
-    vertical-align : top;
+    height: 80px;
+    width: 80px;
+    margin-right: auto;
 }
 
 .input_box button ion-icon {
