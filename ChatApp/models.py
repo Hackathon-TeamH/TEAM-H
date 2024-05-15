@@ -55,7 +55,6 @@ class models:
       sql = "UPDATE users SET last_operation_at=%s, is_active=1 WHERE id=%s;"
       cursor.execute(sql, (last_operation_at,id))
       connect.commit()
-      print('success')
     except Exception as e:
       print(f"エラー: {e}")
       abort(500)
