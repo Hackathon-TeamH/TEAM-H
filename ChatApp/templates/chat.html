@@ -40,6 +40,11 @@
             </div>
           </a>
         </div>
+        <section class="profile_dialog">
+          <div class="dli_close_profile"></div>
+          <div class="profile_render"></div>
+          <p class="profile_dialog_title">Profile</p>
+        </section>
         <section class="select_user_dialog">
           <div class="dli-close"></div>
           <ul class="list_user_wrapper"></ul>
@@ -51,7 +56,7 @@
         </section>
         <section class="hamburger_menu">
           <div class="button_container">
-            <button class="menu_button">プロフィール</button>
+            <button class="menu_button active_profile">プロフィール</button>
             <button class="menu_button join_channel">チャットに参加する</button>
             <form action="/logout" method="POST">
               <button type="submit" class="menu_button">ログアウト</button>
@@ -171,6 +176,32 @@
           .then((res) => res.text())
           .then((html) => {
             document.querySelector(".list_user_wrapper").innerHTML = html;
+          })
+          .catch((error) => console.error("Error:", error));
+      };
+
+      document
+        .querySelector(".active_profile")
+        .addEventListener("click", () => {
+          getProfile();
+          document
+            .querySelector(".profile_dialog")
+            .classList.add("profile_dialog_active");
+        });
+
+      document
+        .querySelector(".dli_close_profile")
+        .addEventListener("click", () => {
+          document
+            .querySelector(".profile_dialog")
+            .classList.remove("profile_dialog_active");
+        });
+
+      const getProfile = () => {
+        fetch("/profile")
+          .then((res) => res.text())
+          .then((html) => {
+            document.querySelector(".profile_render").innerHTML = html;
           })
           .catch((error) => console.error("Error:", error));
       };

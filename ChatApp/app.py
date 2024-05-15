@@ -11,6 +11,7 @@ from config import config
 from models import models
 
 import channels
+import renderProfile
 
 import translation
 from langdetect import detect
@@ -239,6 +240,14 @@ def get_list_user():
     models.updateLastOperationAt(user_id,last_operation_at)
     list_user = channels.renderUsers(learning_lang)
     return list_user
+
+@app.route('/profile', methods=["GET"])
+def get_profile():
+    user_id = session.get("id")
+    last_operation_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    models.updateLastOperationAt(user_id,last_operation_at)
+    profile = renderProfile.renderProfile(user_id)
+    return profile
 
 if __name__ == '__main__':
     scheduler = BackgroundScheduler()
