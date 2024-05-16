@@ -29,6 +29,7 @@
         document
           .querySelector(".hamburger_menu")
           .classList.add("active_hamburger_menu");
+          set_language()
       });
 
     document
@@ -117,3 +118,18 @@
               })
               .catch(error => console.error('Error:', error));
       }
+
+
+//ハンバーガーメニュー内のテキスト変換
+    const set_language = () => {
+        const language = window.navigator.language === "ja-JP"
+        const profile = document.querySelector(".active_profile")
+        const channel = document.querySelector(".join_channel")
+        const logout = document.querySelector(".logout_button")
+
+        profile.innerHTML = language ? "Profile" : "プロフィール"
+        channel.innerHTML = language ? "Join Channel" : "チャットに参加する"
+        logout.innerHTML = language ? "Logout" : "ログアウト"         
+    }
+
+    set_language();

@@ -13,5 +13,4 @@ class DB:
         )
             return conn
         except (ConnectionError):
-            print("コネクションエラーです")
             conn.close()

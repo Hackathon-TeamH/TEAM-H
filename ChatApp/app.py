@@ -114,8 +114,7 @@ def send_message():
     message = request.form.get('message')
     sender_id = session.get("id")
     channel_id = session.get("channel_id")
-    print(channel_id, message)
-    
+
     if sender_id is None:
         return redirect('/login')
     elif channel_id is None:
@@ -130,7 +129,6 @@ def send_message():
 
     #入力言語判定
     input_lang = detect(message)
-    print(f"入力言語は{input_lang}")
     if input_lang != source_lang:
         flash(translation.flash_trans(sender_id, "学びたい言語で入力しよう"))
         return redirect("/")
@@ -170,8 +168,11 @@ def add_channel():
     if user_id is None:
         return redirect("/login")
     channel_name = request.form.get("channel_name")
+    if channel_name == "" or None:
+       flash(translation.flash_trans(user_id, "チャンネル名を入力してください"))
+       return redirect("/") 
+    
     id = uuid.uuid4()
-
     models.addChannel(id, channel_name, user_id)
     models.addToMemberships(user_id, id)
     
@@ -290,4 +291,4 @@ if __name__ == '__main__':
     scheduler = BackgroundScheduler()
     scheduler.add_job(id="check_status", func= models.updateStatus, trigger='interval', hours=1) #一時間に一回ユーザーの操作を確認する
     scheduler.start()
-    app.run(host="0.0.0.0", port=5002, debug=True)
+    app.run(host="0.0.0.0", port=5002, debug=False)

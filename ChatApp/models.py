@@ -14,7 +14,6 @@ class models:
             cursor.execute(sql, (id,name,email,password,lang,learning_lang,country,city,created_at,last_operation_at,is_active))
             connect.commit()
         except Exception as e:
-            print(f"エラー: {e}")
             abort(500)
         finally:
             cursor.close()
@@ -28,7 +27,6 @@ class models:
             user = cursor.fetchone()
             return user
         except Exception as e:
-            print(f"エラー: {e}")
             abort(500)
         finally:
             cursor.close()
@@ -42,7 +40,6 @@ class models:
             user = cursor.fetchone()
             return user
         except Exception as e:
-            print(f"エラー: {e}")
             abort(500)
         finally:
             cursor.close()
@@ -55,9 +52,7 @@ class models:
             sql = "UPDATE users SET last_operation_at=%s, is_active=1 WHERE id=%s;"
             cursor.execute(sql, (last_operation_at,id))
             connect.commit()
-            print('success')
         except Exception as e:
-            print(f"エラー: {e}")
             abort(500)
         finally:
             cursor.close()
@@ -77,7 +72,6 @@ class models:
             messages = cursor.fetchall()
             return messages
         except Exception as e:
-            print(f"エラー: {e}")
             abort(500)
         finally:
             cursor.close()
@@ -91,7 +85,6 @@ class models:
             cursor.execute(sql, (message, translated_message, user_id, channel_id))
             connect.commit()
         except Exception as e:
-            print(f"エラー: {e}")
             abort(500)
         finally:
             cursor.close()
@@ -107,7 +100,6 @@ class models:
             channels = cur.fetchall()
             return channels
         except Exception as e:
-            print(f"エラー: {e}")
             abort(500)
         finally:
             cur.close()
@@ -122,7 +114,6 @@ class models:
             channel = cur.fetchone()
             return channel
         except Exception as e:
-            print(f"エラー: {e}")
             abort(500)
         finally:
             cur.close()
@@ -141,12 +132,11 @@ class models:
             channel = cur.fetchall()
             return channel
         except Exception as e:
-            print(f"エラー: {e}")
             abort(500)
         finally:
             cur.close()
 
-    #   チャンネル名にUNIQUE制約を課さないなら不要？
+    # チャンネル名にUNIQUE制約を課さないなら不要？
     def getChannelByName(channel_name):
         try:
             conn = DB.getConnection()
@@ -156,7 +146,6 @@ class models:
             channel = cur.fetchone()
             return channel
         except Exception as e:
-            print(f"エラー: {e}")
             abort(500)
         finally:
             cur.close()
@@ -169,7 +158,6 @@ class models:
             cur.execute(sql, (id, channel_name, user_id))
             conn.commit()
         except Exception as e:
-            print(f"エラー: {e}")
             abort(500)
         finally:
             cur.close()
@@ -183,7 +171,6 @@ class models:
             cur.execute(sql, (user_id, channel_id))
             conn.commit()
         except Exception as e:
-            print(f"エラー: {e}")
             abort(500)
         finally:
             cur.close()
@@ -199,7 +186,6 @@ class models:
             members = cursor.fetchall()
             return members
         except Exception as e:
-            print(f"エラー: {e}")
             abort(500)
         finally:
             cursor.close()
@@ -214,7 +200,6 @@ class models:
             cursor.execute(sql, (id))
             connect.commit()
         except Exception as e:
-            print(f"エラー: {e}")
             abort(500)
         finally:
             cursor.close()
@@ -230,7 +215,6 @@ class models:
             src_lang = cursor.fetchone()
             return src_lang
         except Exception as e:
-            print(f"エラー: {e}")
             abort(500)
         finally:
             cursor.close()
@@ -245,7 +229,6 @@ class models:
             dest_lang = cursor.fetchone()
             return dest_lang
         except Exception as e:
-            print(f"エラー: {e}")
             abort(500)
         finally:
             cursor.close()
@@ -261,7 +244,6 @@ class models:
             message_info = cursor.fetchone()
             return message_info
         except Exception as e:
-            print(f"エラー:{e}")
             abort(500)
         finally:
             cursor.close()
@@ -276,7 +258,6 @@ class models:
             cursor.execute(sql, (message_id))
             connect.commit()
         except Exception as e:
-            print(f"エラー:{e}")
             abort(500)
         finally:
             cursor.close()
@@ -290,7 +271,6 @@ class models:
             cursor.execute(sql, (0,id,))
             connect.commit()
         except Exception as e:
-            print(f"エラー:{e}")
             abort(500)
         finally:
             cursor.close()
@@ -304,7 +284,6 @@ class models:
             cursor.execute(sql, (threshold_time,))
             connect.commit()
         except Exception as e:
-            print(f"エラー:{e}")
             abort(500)
         finally:
             cursor.close()
@@ -318,7 +297,6 @@ class models:
             users = cur.fetchall()
             return users
         except Exception as e:
-            print(f"エラー: {e}")
             abort(500)
         finally:
             cur.close()
@@ -333,7 +311,6 @@ class models:
             cursor.execute(sql, (channel_id))
             connect.commit()
         except Exception as e:
-            print(f"エラー:{e}")
             abort(500)
         finally:
             cursor.close()

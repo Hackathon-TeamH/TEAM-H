@@ -1,12 +1,11 @@
-<!--動作確認用なので変更OKです-->
-<!--正式なページ実装後は消す予定です-->
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>chatpage</title>
+    <title>Our Language</title>
+    <link rel="icon" href="../static/favicon.ico">
     <link
       rel="stylesheet"
       href="{{url_for('static',filename='css/styles.css')}}"
@@ -46,10 +45,10 @@
         <section class="hamburger_menu">
           <div class="close_hamburger_menu"></div>
           <div class="button_container">
-            <button class="menu_button active_profile">プロフィール</button>
-            <button class="menu_button join_channel">チャットに参加する</button>
+            <button class="menu_button active_profile"></button>
+            <button class="menu_button join_channel"></button>
             <form action="/logout" method="POST">
-              <button type="submit" class="menu_button">ログアウト</button>
+              <button type="submit" class="menu_button logout_button"></button>
             </form>
           </div>
 
