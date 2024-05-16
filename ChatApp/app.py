@@ -10,6 +10,7 @@ import re
 from models import models
 import channels
 import reload
+import renderProfile
 
 import translation
 from langdetect import detect
@@ -330,21 +331,18 @@ def delete_channel():
     # return redirect("/")
 
 
-#profile用データを渡す？
-@app.route('/profile')
-def profile():
+
+@app.route('/profile', methods=["GET"])
+def get_profile():
     user_id = session.get("id")
-    if user_id is None:
-        return redirect('/login')
-    
-    user_info = models.getUserWithId(user_id)
-
-    return jsonify(user_info)
-
+    last_operation_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    models.updateLastOperationAt(user_id,last_operation_at)
+    profile = renderProfile.renderProfile(user_id)
+    return profile
 
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=5002, debug=True)
     scheduler = BackgroundScheduler()
     scheduler.add_job(id="check_status", func= models.updateStatus, trigger='interval', hours=1) #一時間に一回ユーザーの操作を確認する
     scheduler.start()
+    app.run(host="0.0.0.0", port=5002, debug=True)
