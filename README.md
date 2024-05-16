@@ -11,6 +11,7 @@ yuki
 
 
 # ディレクトリ構成
+```
 .
 ├── ChatApp              # アプリ用ディレクトリ
 │   ├── __init__.py         #
@@ -24,6 +25,7 @@ yuki
 │   ├── templates           # Template(HTML)用ディレクトリ
 │   |── util                # DBコネクション
 │   └── config              # Flaskのconfig
+│
 ├── Docker
 │   ├── Flask
 │   │   └── Dockerfile      # Flask(Python)用Dockerファイル
@@ -31,5 +33,8 @@ yuki
 │       ├── Dockerfile      # MySQL用Dockerファイル
 │       ├── init.sql        # MySQL初期設定ファイル
 │       └── my.cnf
+│
 ├── docker-compose.yml      # Docker-composeファイル
 └── requirements.txt        # 使用モジュール記述ファイル
+
+```
