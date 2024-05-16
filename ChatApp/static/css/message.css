@@ -1,0 +1,92 @@
+#message_wrapper {
+    position: absolute;
+    padding-top: calc(96px + 40px);
+    padding-left: calc(300px + 40px);
+    padding-right: 40px;
+    padding-bottom: calc(20vh + 10px);
+    height: 100%;
+    width: 100%;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.sender_name {
+    margin-block-start: 4px;
+    margin-block-end: 3px;
+    font-size: 0.8rem;
+}
+
+.message {
+    width: 46%;
+    border:1px solid #2F66B7;
+    border-radius: 8px 8px 8px 0px;
+}
+
+.message .upper_message {
+    border-bottom:1px solid #2F66B7;
+    margin: 0;
+    padding: 10px;
+    background-color: var(--uppermessage);
+    border-radius: 8px 8px 0px 0px;
+    
+}
+
+.message .lower_message {
+    margin: 0;
+    padding: 10px;
+    background-color: var(--lowermessage);
+    border-radius: 0px 0px 8px 0px;
+    font-size: 12px;
+}
+
+.my_message_box {
+    text-align: right;
+}
+
+.my_message {
+    margin-left: auto;
+    width: 46%;
+    border:1px solid #2F66B7;
+    border-radius: 8px 8px 0px 8px;
+    display: inline-block;
+    text-align: left;
+    color: var(--whitetext);
+}
+
+.my_message .upper_message {
+    border-bottom:1px solid #2F66B7;
+    margin: 0;
+    padding: 10px;
+    background-color:  var(--myuppermessage);
+    border-radius: 8px 8px 0px 0px; 
+}
+
+.my_message .lower_message {
+    margin: 0;
+    padding: 10px;
+    background-color:  var(--mylowermessage);
+    border-radius: 0px 0px 0px 8px;  
+    font-size: 12px;
+}
+
+.my_message_box .buttons {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+}
+
+.my_message_box .buttons button {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+.my_message_box .buttons ion-icon {
+    font-size: 1rem;
+    margin-top: 5px;
+}
+

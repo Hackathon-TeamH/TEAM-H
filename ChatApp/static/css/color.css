@@ -1,0 +1,23 @@
+/* 色を使い回しできるように変数にする */
+
+:root {
+  --background: #E3F8FF;
+  --header: #32C2EF;
+  --button: #3796AB;
+  --whitetext: #F4FEFF;
+  --bluetext: #3796AB;
+  --redtext: #D61A1A;
+  --channelbackground: #CFEDF6;
+  --channel: #B1DEF7;
+  --channelhover: #8bcff4;
+  --activechannel: #2F66B7;
+  --text: #375572;
+  --border: #E8F1FE;
+  --uppermessage: #ffffff;
+  --lowermessage: #E0EDFF;
+  --myuppermessage: #528DB8;
+  --mylowermessage: #84AAE1;
+
+
+  
+}
