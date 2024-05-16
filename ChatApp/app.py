@@ -43,28 +43,30 @@ def user_signup():
 
     pattern = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
 
-    if(name == "" or email == "" or password1 == "" or password2 == "" or lng == "" or learning_lng == ""):
+    if(name == "" or email == "" or password1 == "" or password2 == "" or lng == None or learning_lng == None):
         flash("必須項目をすべて入力してください")
-        redirect("/signup")
+        return redirect("/signup")
     elif(password1 != password2):
         flash("同じパスワードを入力してください")
-        redirect("/signup")
+        return redirect("/signup")
     elif(re.match(pattern,email) is None):
         flash("正しいメールアドレスを入力してください")
-        redirect("/signup")
+        return redirect("/signup")
+    elif(lng == learning_lng):
+        flash("異なる言語を選んでください")
+        return redirect("/signup")
     else:
         password = hashlib.sha256(password1.encode('utf-8')).hexdigest()
         user = models.getUser(email)
 
-    if user != None:
+    if user:
         flash('既に使用されているアドレスです')
-        redirect("/signup")
+        return redirect("/signup")
     else:
         models.create_user(id,name,email,password,lng,learning_lng,country,city,dt,dt,is_active = True)
         UserId = str(id)
         session['id'] = UserId
         return redirect('/login')
-    return redirect('/login')
 
 
 #ログイン画面へ遷移
@@ -93,6 +95,7 @@ def userLogin():
        user = models.getUser(email)
        if user is None:
           flash('存在しないユーザーです')
+          return redirect("/login")
        else:
           password = hashlib.sha256(password.encode('utf-8')).hexdigest()
           if(password != user["password"]):

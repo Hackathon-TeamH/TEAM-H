@@ -25,6 +25,13 @@
     <div class="signup_form_wrapper">
       <form class="registration_form signup" method="post">
         <h1 class="registration_title">新規会員登録</h1>
+        {% with messages = get_flashed_messages() %} {% if messages %}
+          <ul class="flashes">
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+          </ul>
+          {% endif %} {% endwith %}
         <div class="signup_form">
           <label class="registration_label" for="signup-name-input">ユーザー名</label>
           <input class="signup_input" type="text" placeholder="ユーザー名" name="name" id="signup-name-input" />
@@ -80,13 +87,7 @@
           <input class="signup_input" type="text" placeholder="東京" name="city" id="signup-living-town-input" />
         </div>
         <div class="registration_button_container">
-          {% with messages = get_flashed_messages() %} {% if messages %}
-          <ul class="flashes">
-            {% for message in messages %}
-            <li>{{ message }}</li>
-            {% endfor %}
-          </ul>
-          {% endif %} {% endwith %}
+          
           <button class="registration_button pink signup_button" type="submit">新規会員登録</button>
           <a class="switch_register_mode" href="{{ url_for('login') }}">
             ログイン画面に戻る

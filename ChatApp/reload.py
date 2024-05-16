@@ -40,5 +40,4 @@ def make_HTML(user_id, channel_id):
     template = Template(html)
     data = {"messages" : messages, "user_id" : user_id}
     result = template.render(data)
-    print(result)
     return result

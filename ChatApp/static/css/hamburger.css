@@ -14,6 +14,33 @@
   right: 21px;
 }
 
+.close_hamburger_menu {
+  position: absolute;
+  top: 45px;
+  right: 10px;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+}
+
+.close_hamburger_menu::before {
+  content: "";
+  width: 50%;
+  height: 4px;
+  position: absolute;
+  transform: rotate(-45deg);
+  background-color: #2f66b7;
+}
+
+.close_hamburger_menu::after {
+  content: "";
+  width: 50%;
+  height: 4px;
+  position: absolute;
+  transform: rotate(45deg);
+  background-color: #2f66b7;
+}
+
 .active_hamburger_menu {
   display: block;
 }
@@ -315,6 +342,7 @@
   background-color: #32c2ef;
   height: 135px;
   color: #fff;
+  margin: 0;
 }
 
 .profile_dialog_active {
