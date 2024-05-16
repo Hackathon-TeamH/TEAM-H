@@ -108,35 +108,6 @@ def userLogin():
     return redirect('/')
 
 
-# メッセージ一覧
-# @app.route("/message")
-# def all_message():
-#     user_id = session.get("id")
-#     channel_id = request.args.get("channel_id")
-    
-#     if user_id is None:
-#         return redirect('/login')
-#     elif channel_id is None:
-#         return render_template('initial.html')
-#     else:
-#         session["channel_id"] = channel_id
-          
-#     channel_members = models.getChannelMemberId(channel_id)
-
-#     #チャンネル内にいるのにチャンネルが削除された場合
-#     if not channel_members:
-#         flash("チャンネルが見つかりません")
-#         return redirect('/')
-#     elif user_id not in  [m["user_id"] for m in channel_members]:
-#         flash("このチャンネルに参加していません")
-#         return redirect('/')
-#     else:
-#         messages = models.getMessageAll(channel_id)    
-#         channels = models.getChannelByUserId(user_id)
-        
-#     return render_template('chat.html', user_id=user_id, channel_id=channel_id, channels=channels, messages=messages)
-
-
 #メッセージ送信
 @app.route('/message', methods=['POST'])
 def send_message():
@@ -170,7 +141,6 @@ def send_message():
     last_operation_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     models.updateLastOperationAt(sender_id,last_operation_at)
     return redirect("/")
-
 
 
 # チャンネル一覧ページの表示
@@ -305,34 +275,6 @@ def delete_channel():
         models.deletechannel(channel_id)
         session["channel_id"] = None
         return redirect("/")
-
-
-
-
-
-
-    
-    # partner_id = request.form.get("partner_id")
-
-    # user_name = models.getUserWithId(user_id).get("user_name")
-    # partner_name = models.getUserWithId(partner_id).get("user_name")
-
-    # channel_name = f"{user_name}&{partner_name}"
-    # print(channel_name)
-
-    # channel_id = uuid.uuid4()
-    # models.addChannel(channel_id, channel_name, user_id)
-
-    # models.addToMemberships(user_id, channel_id)
-    # models.addToMemberships(partner_id, channel_id)
-    
-    # last_operation_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    # models.updateLastOperationAt(user_id,last_operation_at)
-    
-    # session["channel_id"] = channel_id
-
-    # return redirect("/")
-
 
 
 @app.route('/profile', methods=["GET"])
