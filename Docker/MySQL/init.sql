@@ -7,6 +7,7 @@ CREATE DATABASE chatapp;
 USE chatapp
 GRANT ALL PRIVILEGES ON chatapp.* TO 'testuser';
 
+
 CREATE TABLE users(
   id varchar(255) PRIMARY KEY,
   user_name varchar(255) NOT NULL,
@@ -20,7 +21,6 @@ CREATE TABLE users(
   last_operation_at DATETIME NOT NULL,
   is_active BOOLEAN NOT NULL
 );
-
 
 CREATE TABLE messages (
     id serial PRIMARY KEY,
@@ -41,7 +41,7 @@ CREATE TABLE channels(
 
 CREATE TABLE memberships(
   user_id varchar(255) REFERENCES users(id),
-  channel_id varchar(255) REFERENCES channels(id)
+  channel_id varchar(255) REFERENCES channels(id) ON DELETE CASCADE
 );
 
 -- mysqlでは0がfalse0以外がtrueとして登録されるため1をインサート

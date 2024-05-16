@@ -22,7 +22,7 @@
     <div class="container">
       <div class="header">
         <div class="header_inner">
-          <h1 class="header_title">OUR LANGUAGE</h1>
+          <h1 class="header_title">OUR<span> </span>LANGUAGE</h1>
           <a class="header_hamburger" href="#">
             <div class="hamburger_menu_button">
               <span></span><span></span><span></span>
@@ -44,6 +44,7 @@
           </div>
         </section>
         <section class="hamburger_menu">
+          <div class="close_hamburger_menu"></div>
           <div class="button_container">
             <button class="menu_button active_profile">プロフィール</button>
             <button class="menu_button join_channel">チャットに参加する</button>
@@ -97,148 +98,12 @@
       nomodule
       src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
     ></script>
-    <script>
-      //channel_listクラスの要素を変数listに格納
-      const list = document.querySelectorAll(".channel_list");
-      console.log(list);
 
-      //liタグをひとつずつ変数itemに格納
-      list.forEach((item) => {
-        //itemがクリックされたときactive_link関数を呼び出す
-        item.addEventListener("click", channel_activate);
-      });
-
-      //サブクラスactiveをリンクさせる関数
-      function channel_activate() {
-        list.forEach((item) => {
-          //listの中身を1つずつ変数itemに格納
-          item.classList.remove("active"); //acticeをremoveする
-        });
-        //クリックしたもの(this)のクラスにactiveをaddする
-        this.classList.add("active");
-      }
-
-      document
-        .querySelector(".hamburger_menu_button")
-        .addEventListener("click", () => {
-          document
-            .querySelector(".hamburger_menu")
-            .classList.toggle("active_hamburger_menu");
-          document
-            .querySelector(".hamburger_menu_button")
-            .classList.toggle("active_menu");
-        });
-
-      document.querySelector(".join_channel").addEventListener("click", () => {
-        getActiveUsers();
-        document
-          .querySelector(".select_user_dialog")
-          .classList.add("select_user_dialog_active");
-      });
-
-      document.querySelector(".dli-close").addEventListener("click", () => {
-        document
-          .querySelector(".select_user_dialog")
-          .classList.remove("select_user_dialog_active");
-      });
-
-      const getActiveUsers = () => {
-        fetch("/list-user")
-          .then((res) => res.text())
-          .then((html) => {
-            document.querySelector(".list_user_wrapper").innerHTML = html;
-          })
-          .catch((error) => console.error("Error:", error));
-      };
-
-      document
-        .querySelector(".active_profile")
-        .addEventListener("click", () => {
-          getProfile();
-          document
-            .querySelector(".profile_dialog")
-            .classList.add("profile_dialog_active");
-        });
-
-      document
-        .querySelector(".dli_close_profile")
-        .addEventListener("click", () => {
-          document
-            .querySelector(".profile_dialog")
-            .classList.remove("profile_dialog_active");
-        });
-
-      const getProfile = () => {
-        fetch("/profile")
-          .then((res) => res.text())
-          .then((html) => {
-            document.querySelector(".profile_render").innerHTML = html;
-          })
-          .catch((error) => console.error("Error:", error));
-      };
-    </script>
-
-    <script>
-      //ページ読み込み時に自動で下までスクロールする
-      window.onload = function () {
-        const messageArea = document.getElementById("message_iframe");
-        messageArea.scrollTop = messageArea.scrollHeight;
-      };
-    </script>
-
-    <script>
-       document.querySelector(".message_container").addEventListener("click", function(event) {
-          if (event.target.classList.contains("lower_message")) {
-              switch_message.call(event.target);
-          }
-      });
+    <script
+      src="{{url_for('static',filename='js/chat.js')}}"
+      type="text/javascript"
+    ></script>
 
 
-      function switch_message() {
-          //クリックした要素のdata属性を取得
-          const datavalue = this.dataset.hiddenMessage;
-          //クリックした要素のinnerHTMLを取得
-          const innervalue = this.innerHTML;
-          //それぞれを入れ替えてセット
-          this.dataset.hiddenMessage = innervalue;
-          this.innerHTML = datavalue;
-      }
-        
-    </script>
-
-    <script>
-      //message_wrapperの中を書き換える
-       function message_reload(channel_id) {
-            fetch("/reload?channel_id=" + channel_id)
-                .then(res => res.text())
-                .then(html => {
-                    document.getElementById("message_wrapper").innerHTML = html;
-                })
-                .catch(error => console.error('Error:', error));
-        }
-    </script>
-
-    <script>
-    function message_send() {
-      const message = document.getElementById("textarea").value;
-      fetch("/message", {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({text: text})
-      })
-      .then(response => response.json())
-      .then(data => {
-          console.log(data); // サーバーサイドからの応答をコンソールに出力する（任意）
-          // サーバーサイドからの応答に応じてクライアントサイドで必要な処理を行う
-          // ここでは、サーバーサイドから受け取ったテキストをアラートで表示する
-          alert('Received text from server: ' + data.text);
-      })
-      .catch(error => {
-          console.error('Error:', error);
-      });
-    }
-    </script>
   </body>
 </html>

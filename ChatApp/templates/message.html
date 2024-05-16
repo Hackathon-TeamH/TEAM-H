@@ -1,10 +1,11 @@
 
+
 <div id="message_wrapper">
     {% if messages %}
     {% for msg in messages %}
     {% if msg.user_id != user_id %}
     <div class="message_box">
-        <p class="user_name">{{msg.user_name}}</p>
+        <p class="sender_name">{{msg.user_name}}</p>
         <div class="message">
             <p class="upper_message">{{msg.translated_message}}</p>
             <p class="lower_message" data-hidden-message="{{msg.message}}">原文表示</p>
@@ -19,7 +20,7 @@
         <div class="buttons">
             <button class="change_message" type="submit"><ion-icon name="pencil-outline"></ion-icon>
             </button>
-            <form class="delete_message" action="/delete" method="POST">
+            <form class="delete_message" action="/deletemessage" method="POST">
                 <input type="hidden" name="message_id" value="{{msg.id}}">
                 <button type="submit"><ion-icon name="trash-outline"></ion-icon></button>
             </form>
@@ -27,6 +28,8 @@
     </div>
     {% endif %} 
     {% endfor %}
+    {% elif not channel_id %}
+    <div class="no_message"><p>チャンネルを選択してください</p></div>
     {% else %}
     <div class="no_message"><p>投稿がありません</p></div>
     {% endif %}

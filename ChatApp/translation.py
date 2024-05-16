@@ -29,3 +29,13 @@ def get_language_pair(user_id, channel_id):
             print(target_lang)
 
     return (source_lang, target_lang)
+
+
+#flashメッセージ翻訳
+def flash_trans(user_id,alertmessage):
+        #vuser_id = session.get("id")
+        learning_lang = models.getLearningLanguage(user_id)
+        target_lang = learning_lang["learning_language"]
+        alert = translation(alertmessage, "ja", target_lang)
+        print(alert)
+        return alert

@@ -10,7 +10,6 @@
 .signup_form_wrapper {
   background-color: #F4FEFF;
   width: 734px;
-  /* height: 940px; */
   border-radius: 8px;
   padding-top: 80px;
   padding-bottom: 80px;
@@ -34,9 +33,14 @@
   display: block;
   width: 400px;
   height: 32px;
-  border: 1px solid #1A1A1A;
+  border: 1px solid var(--bluetext);
   border-radius: 8px;
   padding-left: 8px;
+}
+
+.signup_input:focus {
+  outline: none;
+  border: 2px solid var(--mylowermessage);
 }
 
 .signup_input::placeholder {
@@ -54,6 +58,7 @@
 
 .signup_radio p {
   font-size: 12px;
+  color: var(--bluetext)
 }
 
 .signup_radio_button {
