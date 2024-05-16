@@ -139,11 +139,11 @@
 }
 
 
-.channel_wrapper ul li:hover {
+.channel_wrapper ul li.channel_list:hover {
     background-color: #8bcff4;
 }
 
-.channel_wrapper ul li.active {
+.channel_wrapper ul li.channel_list.active {
     background-color: #2F66B7;
 }
 
@@ -244,7 +244,7 @@
 
 
 
-/*-------------chat-------------------------------*/
+/*-------------message-------------------------------*/
 .message_container {
     position: absolute;
     top: 0px;

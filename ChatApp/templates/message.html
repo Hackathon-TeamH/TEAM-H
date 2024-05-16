@@ -28,6 +28,8 @@
     </div>
     {% endif %} 
     {% endfor %}
+    {% elif not channel_id %}
+    <div class="no_message"><p>チャンネルを選択してください</p></div>
     {% else %}
     <div class="no_message"><p>投稿がありません</p></div>
     {% endif %}
