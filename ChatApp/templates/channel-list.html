@@ -22,8 +22,7 @@
     <li class="channel_list">
       {% endif %}
       <a
-        href="#"
-        onclick="message_reload('{{c.channel_id}}')"
+        href="{{url_for('channel', channel_id=c.channel_id)}}"
       >
         <span class="icon">
           <div class="channel_icon">{{ c.channel_name[0].upper() if c.channel_name else '' }}</div>
