@@ -136,20 +136,17 @@ def send_message():
     message = request.form.get("message")
     sender_id = session.get("id")
     channel_id = request.form.get("channel_id")
-    print(sender_id, channel_id)
 
     if sender_id is None:
         return redirect('/login')
-    elif channel_id is None:
+    elif channel_id == "None":
         flash(translation.flash_trans(sender_id, "チャンネルが選択されていません"))
         return redirect("/")
     elif message == "":
         flash(translation.flash_trans(sender_id, "メッセージが入力されていません"))
         return redirect(f"/channel/{channel_id}")
     else:
-        print(sender_id, channel_id)
         source_lang, target_lang = translation.get_language_pair(sender_id, channel_id)
-
 
     #入力言語判定
     input_lang = detect(message)
