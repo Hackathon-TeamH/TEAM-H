@@ -22,12 +22,10 @@
 
 .message {
     width: 46%;
-    border:1px solid #2F66B7;
-    border-radius: 8px 8px 8px 0px;
 }
 
 .message .upper_message {
-    border-bottom:1px solid #2F66B7;
+    border:1px solid #2F66B7;
     margin: 0;
     padding: 10px;
     background-color: var(--uppermessage);
@@ -36,6 +34,9 @@
 }
 
 .message .lower_message {
+    border-left: 1px solid #2F66B7;
+    border-right: 1px solid #2F66B7;
+    border-bottom: 1px solid #2F66B7;
     margin: 0;
     padding: 10px;
     background-color: var(--lowermessage);
@@ -50,15 +51,13 @@
 .my_message {
     margin-left: auto;
     width: 46%;
-    border:1px solid #2F66B7;
-    border-radius: 8px 8px 0px 8px;
     display: inline-block;
     text-align: left;
     color: var(--whitetext);
 }
 
 .my_message .upper_message {
-    border-bottom:1px solid #2F66B7;
+    border:1px solid #2F66B7;
     margin: 0;
     padding: 10px;
     background-color:  var(--myuppermessage);
@@ -66,6 +65,9 @@
 }
 
 .my_message .lower_message {
+    border-left:1px solid #2F66B7;
+    border-right:1px solid #2F66B7;
+    border-bottom:1px solid #2F66B7;
     margin: 0;
     padding: 10px;
     background-color:  var(--mylowermessage);

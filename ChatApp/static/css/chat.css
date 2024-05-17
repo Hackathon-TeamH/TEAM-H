@@ -21,7 +21,7 @@
 /*header部品の枠*/
 .header_inner {
     position: relative;
-    padding: 0 20px; /*左右の余白確保*/
+    padding: 0 20px;
     display: flex; /*要素を横に並べる*/
     align-items: center;
     justify-content: center;
@@ -31,7 +31,7 @@
 
   /* ヘッダータイトル */
   .header_title {
-    padding: 0 20px; /*左右の余白確保*/
+    padding: 0 20px;
     letter-spacing: 20px;
     transform : scale(1.5, 1);   /* 変形 横,縦 */
     color: var(--whitetext);
@@ -72,7 +72,7 @@
 
 
 .channel_wrapper ul {
-    padding: 0; /*why?*/
+    padding: 0;
     margin: 0;
     height: 100%; 
     width: 100%;
@@ -111,7 +111,7 @@
     padding-right: 0px;
     border: none;
     background: transparent;
-    
+    cursor: pointer;    
 }
 
 .add_channel button .icon {

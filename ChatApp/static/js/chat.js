@@ -108,21 +108,11 @@
         this.innerHTML = datavalue;
     }
       
-
-//message_wrapperの中を書き換える
-     function message_reload(channel_id) {
-          fetch("/reload?channel_id=" + channel_id)
-              .then(res => res.text())
-              .then(html => {
-                  document.getElementById("message_wrapper").innerHTML = html;
-              })
-              .catch(error => console.error('Error:', error));
-      }
-
+    
 
 //ハンバーガーメニュー内のテキスト変換
     const set_language = () => {
-        const language = window.navigator.language === "ja-JP"
+        const language = ["ja", "ja-JP"].includes(window.navigator.language)
         const profile = document.querySelector(".active_profile")
         const channel = document.querySelector(".join_channel")
         const logout = document.querySelector(".logout_button")
