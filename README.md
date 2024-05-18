@@ -10,7 +10,11 @@ taga
 yuki
 
 
-# ディレクトリ構成
+## チェックリスト
+https://sunrise-brownie-db8.notion.site/e00deb25fc73461c8da71faf855d9f04?pvs=4
+
+
+## ディレクトリ構成
 ```
 .
 ├── ChatApp              # アプリ用ディレクトリ
