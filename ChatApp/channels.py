@@ -31,12 +31,11 @@ def renderUsers(learning_lang):
                 <form class="matching" action="/matching" method="POST">
                     <input type="hidden" name="channel_id" value="{{user.channel_id}}">
                     <button calss="matching_button" type="submit">
-                        <div class="user_icon">{{ user.partner_name[0] }}</div>
+                        <div class="user_icon">{{ user.channel_name[0] }}</div>
                         <p class="channel_name">{{ user.channel_name }}</p>
                         <p class="user_name">{{ user.partner_name }}</p>
                     </button>
                 </form>
-                
             </li>
             {% endfor %}
         {% else %}
