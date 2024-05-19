@@ -33,7 +33,7 @@
   .header_title {
     padding: 0 20px;
     letter-spacing: 20px;
-    transform : scale(1.5, 1);   /* 変形 横,縦 */
+    transform : scale(1.5, 1); /* 変形 横,縦 */
     color: var(--whitetext);
     opacity: 0.75;
   }
@@ -54,9 +54,8 @@
     margin: 0;
     padding: 0;
     width: 300px;
-    height: calc(100vh - 50px); 
+    height: calc(100% - 96px); 
     background-color: var(--channelbackground);
-    overflow-y: auto;
     border-right: solid 4px var(--border);
     z-index: 3;
 }
@@ -65,68 +64,97 @@
     width: 0px;
   }
 
+
 .channel_wrapper {
-    margin: 0;
-    padding: 0;
+    height: 100%;
 } 
 
 
-.channel_wrapper ul {
+.scrollable {
     padding: 0;
     margin: 0;
-    height: 100%; 
+    height: calc(100% - 72px); 
     width: 100%;
-
+    overflow-y: auto;
 }
 
+
 .add_channel {
+    position: relative;
     height: 72px;
     display: flex;
     align-items: center;
+    justify-content: center;
+    background-color: var(--channel);
+    border-bottom: 2px solid var(--border);
 }
 
+
 .add_channel_container {
-    height: 100%;
+    height: 45%;
+    width: 100%;
     display: flex;
     align-items: center;
     background-color: var(--channel);
+    margin-left: auto;
+    margin-right: auto;
 }
+
 
 .add_channel input {
-    height: 50%;
-    width: 70%;
+    height: 100%;
+    width: 65%;
     border:none;
     background-color: var(--background);
-    border-radius: 3px;
+    border-radius: 3px 0px 0px 3px;
     font-size: 16px;
+    margin-left: auto;
 }
 
+
 .add_channel input:focus {
-    outline: 2px solid var(--activechannel);
+    outline: none;
+    border: none;
+    border: 1px solid var(--activechannel);
 }  
 
 
+
+.channel_flashes {
+    color: var(--redtext);
+    position: absolute;
+    bottom: 3px;
+    width: 100%;
+    text-align: center;
+}
+
+
+.channel_flashes p {
+    font-size: 14px;
+    margin-bottom: 0;
+
+}
+
+
 .add_channel button {
-    padding-left: 23px;
-    padding-right: 0px;
-    border: none;
-    background: transparent;
-    cursor: pointer;    
-}
-
-.add_channel button .icon {
-    width: 45px;
     height: 100%;
-    line-height: 72px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    background-color: var(--activechannel);
+    border: var(--activechannel);
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer; 
+    border-radius: 0px 3px 3px 0px;
+    margin-right: auto;
 }
 
-.add_channel button .icon ion-icon{
-    font-size: 2rem;
-    color: var(--activechannel);
+
+.add_channel span {
+    padding: 5px;
 }
+
 
 .channel_wrapper ul li {
     list-style: none;
@@ -240,10 +268,6 @@
 }
 
 
-
-
-
-
 /*-------------message-------------------------------*/
 .message_container {
     position: absolute;
@@ -277,14 +301,14 @@
     flex-direction: column;
 }
 
-.flashes {
+.message_flashes {
     color: var(--redtext);
     list-style-type: none;
     padding: 0;
 }
 
-.flashes span {
-    font-size: 30px;
+.message_flashes span {
+    font-size: 16px;
 }
 
 .input_box {
