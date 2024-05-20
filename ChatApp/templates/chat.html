@@ -68,11 +68,11 @@
       <div class="message_container">{% include "message.html" %}</div>
       <div class="input_box_area">
         <div class="input_box_wrapper">
-          <div>
-            {% with messages = get_flashed_messages() %} {% for message in
-            messages %}
-            <li class="flashes">
-              <span>{{ message }}</span>
+          <div class="input_box_error">
+            {% with messages = get_flashed_messages(category_filter=["message"]) %}
+            {% for message in messages %}
+            <li class="message_flashes">
+                <span>{{ message }}</span>
             </li>
             {% endfor %} {% endwith %}
           </div>

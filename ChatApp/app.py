@@ -140,10 +140,10 @@ def send_message():
     if sender_id is None:
         return redirect('/login')
     elif channel_id == "None":
-        flash(translation.flash_trans(sender_id, "チャンネルが選択されていません"))
+        flash(translation.flash_trans(sender_id, "チャンネルが選択されていません"), "message")
         return redirect("/")
     elif message == "":
-        flash(translation.flash_trans(sender_id, "メッセージが入力されていません"))
+        flash(translation.flash_trans(sender_id, "メッセージが入力されていません"), "message")
         return redirect(f"/channel/{channel_id}")
     else:
         source_lang, target_lang = translation.get_language_pair(sender_id, channel_id)
@@ -191,7 +191,7 @@ def add_channel():
         return redirect("/login")
     channel_name = request.form.get("channel_name")
     if channel_name == "" or None:
-       flash(translation.flash_trans(user_id, "チャンネル名を入力してください"))
+       flash(translation.flash_trans(user_id, "チャンネル名を入力してください"), "channel")
        channel_id = session.get("channel_id")
        return redirect(f"/channel/{channel_id}") 
     
@@ -273,7 +273,7 @@ def delete_channel():
     channel_detail = models.getChannelById(channel_id)
 
     if user_id != channel_detail["user_id"]:
-        flash(translation.flash_trans(user_id, "あなたの作ったチャンネルではありません"))
+        flash(translation.flash_trans(user_id, "あなたの作ったチャンネルではありません"), channel_id)
         return redirect(f"/channel/{channel_id}")
     else:
         models.deletechannel(channel_id)

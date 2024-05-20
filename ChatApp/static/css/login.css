@@ -109,3 +109,9 @@
 .switch_register_mode:hover {
   background-color: #dcecf0;
 }
+
+
+.flashes {
+  color: var(--redtext);
+  padding: 0;
+}

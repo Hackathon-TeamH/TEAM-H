@@ -164,3 +164,9 @@ const set_language = () => {
 };
 
 set_language();
+
+//scrollを一番下に
+window.onload = () => {
+  const elm = document.getElementById("message_wrapper");
+  elm.scrollTo(0, elm.scrollHeight);
+};
