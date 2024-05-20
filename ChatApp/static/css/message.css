@@ -92,3 +92,7 @@
     margin-top: 5px;
 }
 
+
+.my_message_box:last-child {
+    margin-bottom: 40px;
+  }
