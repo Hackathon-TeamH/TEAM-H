@@ -1,11 +1,10 @@
-
 <!DOCTYPE html>
 <html lang="ja">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Our Language</title>
-    <link rel="icon" href="../static/favicon.ico">
+    <link rel="icon" href="../static/favicon.ico" />
     <link
       rel="stylesheet"
       href="{{url_for('static',filename='css/styles.css')}}"
@@ -22,11 +21,16 @@
       <div class="header">
         <div class="header_inner">
           <h1 class="header_title">OUR<span> </span>LANGUAGE</h1>
-          <a class="header_hamburger" href="#">
+          <button
+            class="header_hamburger"
+            aria-controls="navigation"
+            aria-expanded="false"
+            aria-label="メニューを開く"
+          >
             <div class="hamburger_menu_button">
               <span></span><span></span><span></span>
             </div>
-          </a>
+          </button>
         </div>
         <section class="profile_dialog">
           <div class="dli_close_profile"></div>
@@ -34,7 +38,12 @@
           <p class="profile_dialog_title">Profile</p>
         </section>
         <section class="select_user_dialog">
-          <div class="dli-close"></div>
+          <button
+            class="dli-close"
+            aria-controls="navigation"
+            aria-expanded="false"
+            aria-label="ユーザー選択ダイアログを閉じる"
+          ></button>
           <ul class="list_user_wrapper"></ul>
           <div class="select_user_dialog_title_container">
             <h3 class="select_user_dialog_title">
@@ -51,16 +60,12 @@
               <button type="submit" class="menu_button logout_button"></button>
             </form>
           </div>
-
           <h3>Menu</h3>
         </section>
+        <div class="outer_menu"></div>
       </div>
-      <div class="channel_container">
-        {% include "channel-list.html" %}
-      </div>
-      <div class="message_container">
-        {% include "message.html" %}
-      </div>
+      <div class="channel_container">{% include "channel-list.html" %}</div>
+      <div class="message_container">{% include "message.html" %}</div>
       <div class="input_box_area">
         <div class="input_box_wrapper">
           <div class="input_box_error">
@@ -69,17 +74,14 @@
             <li class="message_flashes">
                 <span>{{ message }}</span>
             </li>
-            {% endfor %}
-            {% endwith %}
+            {% endfor %} {% endwith %}
           </div>
           <form
             class="input_box"
             action="{{url_for('send_message')}}"
             method="POST"
           >
-            <textarea
-              name="message"
-            ></textarea>
+            <textarea name="message"></textarea>
             <input type="hidden" value="{{channel_id}}" name="channel_id" />
             <button type="submit">
               <ion-icon name="rocket-outline"></ion-icon>
@@ -102,7 +104,5 @@
       src="{{url_for('static',filename='js/chat.js')}}"
       type="text/javascript"
     ></script>
-
-
   </body>
 </html>
