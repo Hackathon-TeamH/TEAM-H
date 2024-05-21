@@ -151,7 +151,7 @@ def send_message():
     #入力言語判定
     input_lang = detect(message)
     if input_lang != source_lang:
-        flash(translation.flash_trans(sender_id, "学びたい言語で入力しよう"))
+        flash(translation.flash_trans(sender_id, "学びたい言語で入力しよう"), "message")
         return redirect(f"/channel/{channel_id}")
 
     translated_message = translation.translation(message, source_lang, target_lang)
@@ -288,6 +288,38 @@ def get_profile():
     models.updateLastOperationAt(user_id,last_operation_at)
     profile = renderProfile.renderProfile(user_id)
     return profile
+
+
+#メッセージ編集
+@app.route('/editmessage', methods=['POST'])
+def edit_message():
+    message = request.form.get("edit_message")
+    message_id = request.form.get("message_id")
+    message_detile = models.getMessageById(message_id)
+    channel_id = message_detile["channel_id"]
+    sender_id = session.get("id")
+
+    if sender_id is None:
+        return redirect('/login')
+    elif message == "":
+        flash(translation.flash_trans(sender_id, "メッセージが入力されていません"), message_id)
+        return redirect(f"/channel/{channel_id}")
+    else:
+        source_lang, target_lang = translation.get_language_pair(sender_id, channel_id)
+
+    #入力言語判定
+    input_lang = detect(message)
+    if input_lang != source_lang:
+        flash(translation.flash_trans(sender_id, "学びたい言語で入力しよう"), message_id)
+        return redirect(f"/channel/{channel_id}")
+
+    translated_message = translation.translation(message, source_lang, target_lang)
+    models.editMessage(message_id, message, translated_message)
+    models.updateLastMessageAt(channel_id)
+    last_operation_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    models.updateLastOperationAt(sender_id,last_operation_at)
+    return redirect(f"/channel/{channel_id}")
+
 
 
 if __name__ == '__main__':

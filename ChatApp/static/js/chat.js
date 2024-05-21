@@ -2,7 +2,6 @@
 
 //channel_listクラスの要素を変数listに格納
 const list = document.querySelectorAll(".channel_list");
-console.log(list);
 
 //liタグをひとつずつ変数itemに格納
 list.forEach((item) => {
@@ -164,3 +163,67 @@ const set_language = () => {
 };
 
 set_language();
+
+//メッセージ編集ボックス
+// document.querySelectorAll(".edit_button").forEach(button => {
+//   button.addEventListener('click', function() {
+//       const parent = this.parentElement;
+//       const prev = parent.previousElementSibling;
+//       const upper = prev.querySelector('.upper_message');
+//       const edit = prev.querySelector('.edit_box');
+//       const textarea = edit.querySelector('textarea');
+//       console.log(edit)
+//       console.log(upper)
+//       console.log(upper.innerHTML)
+//       console.log(textarea)
+
+//       if (edit.style.display === "none") {
+//           textarea.value = upper.innerHTML;
+//           console.log(textarea)    
+
+//           prev.style.display = 'none';
+//           edit.style.display = 'inline-block';
+//       } else {
+//           upper.innerHTML = textarea.value
+//           console.log(upper)
+//           prev.style.display = 'inline-block';
+//           edit.style.display = 'none';
+//       }
+//   });
+// });
+
+
+//メッセージ編集
+let originalHTML = {};
+
+function edit_message(message_id) {
+    const container = document.getElementById(message_id);
+    console.log(container)
+    originalHTML[message_id] = container.innerHTML;
+
+    const msg = container.querySelector(".upper_message").innerHTML
+    container.innerHTML = `
+      <form id="edit_${message_id}" class="edit_box" action="/editmessage" method="POST">\
+          <textarea name="edit_message">${msg}</textarea>\
+          <input type="hidden" value="${message_id}" name="message_id"/>\
+      </form>
+      <div class="buttons">
+          <button type="submit" form="edit_${message_id}">
+              <ion-icon name="checkmark-outline"></ion-icon>
+          </button>
+          <button class="right_button" onclick="undo('${message_id}')">
+              <ion-icon name="close-outline"></ion-icon>
+          </button>
+      </div>
+    `;
+}
+
+function undo(message_id) {
+  const container = document.getElementById(message_id);
+  if (originalHTML[message_id]) {
+    container.innerHTML = originalHTML[message_id];
+  }
+}
+
+    
+

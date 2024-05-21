@@ -1,9 +1,9 @@
 
-<div id="message_wrapper">
+<div class="message_wrapper">
     {% if messages %}
     {% for msg in messages %}
     {% if msg.user_id != user_id %}
-    <div class="message_box">
+    <div id="{{msg.id}}" class="message_box">
         <p class="sender_name">{{msg.user_name}}</p>
         <div class="message">
             <p class="upper_message">{{msg.translated_message}}</p>
@@ -11,17 +11,26 @@
         </div>
     </div>
     {% else %}
-    <div class="my_message_box">
+    {% with messages = get_flashed_messages(category_filter=[msg.id]) %}
+    {% for message in messages %}
+    <div class="edit_flashes">
+        <p>{{ message }}</p>
+    </div>
+    {% endfor %}
+    {% endwith %}
+    <div id="{{msg.id}}" class="my_message_box">
         <div class="my_message">
             <p class="upper_message">{{msg.message}}</p>
             <p class="lower_message" data-hidden-message="{{msg.translated_message}}">翻訳文表示</p>
         </div>
+        
         <div class="buttons">
-            <button class="change_message" type="submit"><ion-icon name="pencil-outline"></ion-icon>
+            <button class="left_button" onclick="edit_message('{{msg.id}}')">
+                <ion-icon name="pencil-outline"></ion-icon>
             </button>
-            <form class="delete_message" action="/deletemessage" method="POST">
+            <form class="right_button" action="/deletemessage" method="POST">
                 <input type="hidden" name="message_id" value="{{msg.id}}">
-                <button type="submit" onclick="return confirm('削除しても良いですか？');">
+                <button type="submit" onclick="return confirm('本当に削除しますか？');">
                     <ion-icon name="trash-outline"></ion-icon>
                 </button>
             </form>
