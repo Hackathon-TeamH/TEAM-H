@@ -67,6 +67,9 @@ document.querySelector(".outer_menu").addEventListener("click", () => {
   document
     .querySelector(".select_user_dialog")
     .classList.remove("select_user_dialog_active");
+  document
+    .querySelector(".profile_dialog")
+    .classList.remove("profile_dialog_active");
   document.querySelector(".hamburger_menu").addEventListener(
     "animationend",
     () => {

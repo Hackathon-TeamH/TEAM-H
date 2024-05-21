@@ -35,6 +35,7 @@
         <section class="profile_dialog">
           <div class="dli_close_profile"></div>
           <div class="profile_render"></div>
+          <a class="modify-profile-button" href="#">変更する</a>
           <p class="profile_dialog_title">Profile</p>
         </section>
         <section class="select_user_dialog">
@@ -69,10 +70,10 @@
       <div class="input_box_area">
         <div class="input_box_wrapper">
           <div class="input_box_error">
-            {% with messages = get_flashed_messages(category_filter=["message"]) %}
-            {% for message in messages %}
+            {% with messages = get_flashed_messages(category_filter=["message"])
+            %} {% for message in messages %}
             <li class="message_flashes">
-                <span>{{ message }}</span>
+              <span>{{ message }}</span>
             </li>
             {% endfor %} {% endwith %}
           </div>
