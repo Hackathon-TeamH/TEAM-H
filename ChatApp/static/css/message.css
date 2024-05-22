@@ -1,6 +1,6 @@
-.message_wrapper {
+#message_wrapper {
     position: absolute;
-    padding-top: calc(96px + 40px);
+    padding-top: calc(96px + 72px + 15px);
     padding-left: calc(300px + 40px);
     padding-right: 40px;
     padding-bottom: calc(20vh + 10px);
@@ -15,8 +15,9 @@
 }
 
 .sender_name {
-    margin-block-start: 4px;
-    margin-block-end: 3px;
+    margin-left: 13px;
+    margin-top: 6px;
+    margin-bottom: 4px;
     font-size: 0.8rem;
 }
 
@@ -99,7 +100,6 @@
     text-align: right;
 }
 
-
 .edit_box textarea {
     padding: 10px;
     width: 46%;
@@ -109,18 +109,19 @@
     border-radius: 8px 8px 0px 8px;
 }
 
-
 .edit_flashes {
     position: absolute;
     width: 46%;
     padding-left: 8px;
     color: var(--redtext);
     margin-left: auto;
-    text-align: left;
-
-    
+    text-align: left;    
 }
 
 .edit_flashes p {
     font-size: 14px;
 }
+
+.my_message_box:last-child {
+    margin-bottom: 40px;
+  }
