@@ -164,34 +164,6 @@ const set_language = () => {
 
 set_language();
 
-//メッセージ編集ボックス
-// document.querySelectorAll(".edit_button").forEach(button => {
-//   button.addEventListener('click', function() {
-//       const parent = this.parentElement;
-//       const prev = parent.previousElementSibling;
-//       const upper = prev.querySelector('.upper_message');
-//       const edit = prev.querySelector('.edit_box');
-//       const textarea = edit.querySelector('textarea');
-//       console.log(edit)
-//       console.log(upper)
-//       console.log(upper.innerHTML)
-//       console.log(textarea)
-
-//       if (edit.style.display === "none") {
-//           textarea.value = upper.innerHTML;
-//           console.log(textarea)    
-
-//           prev.style.display = 'none';
-//           edit.style.display = 'inline-block';
-//       } else {
-//           upper.innerHTML = textarea.value
-//           console.log(upper)
-//           prev.style.display = 'inline-block';
-//           edit.style.display = 'none';
-//       }
-//   });
-// });
-
 
 //メッセージ編集
 let originalHTML = {};

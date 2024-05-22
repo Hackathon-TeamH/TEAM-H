@@ -41,11 +41,12 @@
     padding: 10px;
     background-color: var(--lowermessage);
     border-radius: 0px 0px 8px 0px;
-    font-size: 12px;
+    font-size: 14px;
 }
 
 .my_message_box {
     text-align: right;
+
 
 }
 
@@ -72,13 +73,14 @@
     padding: 10px;
     background-color:  var(--mylowermessage);
     border-radius: 0px 0px 0px 8px;  
-    font-size: 12px;
+    font-size: 14px;
 }
 
 .my_message_box .buttons {
     display: flex;
     justify-content: right;
     align-items: center;
+    position: relative;
 }
 
 .my_message_box .buttons button {
@@ -92,6 +94,7 @@
     margin-top: 5px;
 }
 
+
 .edit_box {
     text-align: right;
 }
@@ -104,4 +107,20 @@
     resize: none;
     border-color: var(--activechannel);
     border-radius: 8px 8px 0px 8px;
+}
+
+
+.edit_flashes {
+    position: absolute;
+    width: 46%;
+    padding-left: 8px;
+    color: var(--redtext);
+    margin-left: auto;
+    text-align: left;
+
+    
+}
+
+.edit_flashes p {
+    font-size: 14px;
 }

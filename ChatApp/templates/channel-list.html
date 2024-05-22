@@ -11,10 +11,10 @@
       />
       <button type="submit"><span>add</span></button>
     </form>
-    {% with messages = get_flashed_messages(category_filter=["channel"]) %}
-    {% for message in messages %}
+    {% with flashes = get_flashed_messages(category_filter=["channel"]) %}
+    {% for flash in flashes %}
     <div class="channel_flashes">
-        <p>{{ message }}</p>
+        <p>{{ flash }}</p>
     </div>
     {% endfor %}
     {% endwith %}
@@ -44,10 +44,10 @@
               <ion-icon name="close-outline"></ion-icon>
           </button>
       </form>
-      {% with messages = get_flashed_messages(category_filter=[c.channel_id]) %}
-      {% for message in messages %}
+      {% with flashes = get_flashed_messages(category_filter=[c.channel_id]) %}
+      {% for flash in flashes %}
       <div class="channel_flashes">
-          <p>{{ message }}</p>
+          <p>{{ flash }}</p>
       </div>
       {% endfor %}
       {% endwith %}

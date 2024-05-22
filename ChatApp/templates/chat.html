@@ -69,10 +69,10 @@
       <div class="input_box_area">
         <div class="input_box_wrapper">
           <div class="input_box_error">
-            {% with messages = get_flashed_messages(category_filter=["message"]) %}
-            {% for message in messages %}
+            {% with flashes = get_flashed_messages(category_filter=["message"]) %}
+            {% for flash in flashes %}
             <li class="message_flashes">
-                <span>{{ message }}</span>
+                <span>{{ flash }}</span>
             </li>
             {% endfor %} {% endwith %}
           </div>

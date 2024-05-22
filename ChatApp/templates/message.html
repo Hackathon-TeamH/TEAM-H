@@ -11,20 +11,19 @@
         </div>
     </div>
     {% else %}
-    {% with messages = get_flashed_messages(category_filter=[msg.id]) %}
-    {% for message in messages %}
-    <div class="edit_flashes">
-        <p>{{ message }}</p>
-    </div>
-    {% endfor %}
-    {% endwith %}
     <div id="{{msg.id}}" class="my_message_box">
         <div class="my_message">
             <p class="upper_message">{{msg.message}}</p>
             <p class="lower_message" data-hidden-message="{{msg.translated_message}}">翻訳文表示</p>
         </div>
-        
         <div class="buttons">
+            {% with flashes = get_flashed_messages(category_filter=["message_" ~ msg.id]) %}
+            {% for flash in flashes %}
+            <div class="edit_flashes">
+                <p>{{ flash }}</p>
+            </div>
+            {% endfor %}
+            {% endwith %}       
             <button class="left_button" onclick="edit_message('{{msg.id}}')">
                 <ion-icon name="pencil-outline"></ion-icon>
             </button>
