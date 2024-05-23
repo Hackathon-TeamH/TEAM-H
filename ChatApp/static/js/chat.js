@@ -126,7 +126,7 @@ document.querySelector(".dli_close_profile").addEventListener("click", () => {
 });
 
 const getProfile = () => {
-  fetch("/profile")
+  fetch("/get-profile")
     .then((res) => res.text())
     .then((html) => {
       document.querySelector(".profile_render").innerHTML = html;
@@ -167,24 +167,21 @@ const set_language = () => {
 
 set_language();
 
-
 //scrollを一番下に
 window.onload = () => {
   const elm = document.getElementById("message_wrapper");
   elm.scrollTo(0, elm.scrollHeight);
 };
 
-
 //メッセージ編集
-let originalHTML = {};
+const originalHTML = {};
 
 function edit_message(message_id) {
-    const container = document.getElementById(message_id);
-    console.log(container)
-    originalHTML[message_id] = container.innerHTML;
+  const container = document.getElementById(message_id);
+  originalHTML[message_id] = container.innerHTML;
 
-    const msg = container.querySelector(".upper_message").innerHTML
-    container.innerHTML = `
+  const msg = container.querySelector(".upper_message").innerHTML;
+  container.innerHTML = `
       <form id="edit_${message_id}" class="edit_box" action="/editmessage" method="POST">\
           <textarea name="edit_message">${msg}</textarea>\
           <input type="hidden" value="${message_id}" name="message_id"/>\
@@ -193,7 +190,7 @@ function edit_message(message_id) {
           <button type="submit" form="edit_${message_id}">
               <ion-icon name="checkmark-outline"></ion-icon>
           </button>
-          <button class="right_button" onclick="undo('${message_id}')">
+          <button class="right_button" type="button" onclick="undo('${message_id}')">
               <ion-icon name="close-outline"></ion-icon>
           </button>
       </div>
@@ -207,5 +204,13 @@ function undo(message_id) {
   }
 }
 
-    
-
+const snackbar = document.querySelector(".snackbar");
+snackbar.classList.add("snackbar_active");
+snackbar.addEventListener("animationend", () => {
+  setTimeout(() => {
+    snackbar.classList.add("snackbar_closing");
+    snackbar.addEventListener("animationend", () => {
+      snackbar.remove();
+    });
+  }, 3000);
+});
