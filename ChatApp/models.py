@@ -328,3 +328,18 @@ class models:
             abort(500)
         finally:
             cursor.close()
+
+
+    #指定したchannel_idに対応するチャンネル名を取得
+    def getChannelName(channel_id):
+        try:
+            conn = DB.getConnection()
+            cur = conn.cursor()
+            sql = "SELECT channel_name FROM channels WHERE id=%s;"
+            cur.execute(sql, (channel_id))
+            channel = cur.fetchone()
+            return channel
+        except Exception as e:
+            abort(500)
+        finally:
+            cur.close()

@@ -271,11 +271,10 @@
 /*-------------message-------------------------------*/
 .message_container {
     position: absolute;
-    top: 0px;
+    top: 96px;
     right: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: var(--background);
+    left : 300px;
+    bottom: 150px;
     z-index: 1;
 }
 
@@ -285,7 +284,7 @@
     bottom: 0;
     right: 0;
     width: 100vw;
-    height: 160px;
+    height: 150px;
     border-top: 4px solid var(--border);
     background-color: var(--background);
     z-index: 2;

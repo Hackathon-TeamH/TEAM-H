@@ -1,4 +1,12 @@
 
+<div class="message_header">
+    {% if channel_id %}
+    <p class="name">{{channel_name.channel_name}}</p>
+    <p class="num">{{users_num}} / 2</p>
+    {% endif %}
+
+</div>
+
 <div id="message_wrapper">
     {% if messages %}
     {% for msg in messages %}
