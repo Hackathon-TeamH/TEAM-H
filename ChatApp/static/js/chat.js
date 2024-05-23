@@ -176,11 +176,10 @@ window.onload = () => {
 
 
 //メッセージ編集
-let originalHTML = {};
+const originalHTML = {};
 
 function edit_message(message_id) {
     const container = document.getElementById(message_id);
-    console.log(container)
     originalHTML[message_id] = container.innerHTML;
 
     const msg = container.querySelector(".upper_message").innerHTML
@@ -193,7 +192,7 @@ function edit_message(message_id) {
           <button type="submit" form="edit_${message_id}">
               <ion-icon name="checkmark-outline"></ion-icon>
           </button>
-          <button class="right_button" onclick="undo('${message_id}')">
+          <button class="right_button" type="button" onclick="undo('${message_id}')">
               <ion-icon name="close-outline"></ion-icon>
           </button>
       </div>

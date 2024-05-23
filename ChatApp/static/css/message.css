@@ -1,7 +1,7 @@
 #message_wrapper {
     position: absolute;
-    padding-top: calc(96px + 72px + 15px);
-    padding-left: calc(300px + 40px);
+    padding-top: 183px; /* 96px + 72px + 15px */
+    padding-left: 340px;/* 300px + 40px; */
     padding-right: 40px;
     padding-bottom: calc(20vh + 10px);
     height: 100%;

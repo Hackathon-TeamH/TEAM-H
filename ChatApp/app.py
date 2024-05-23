@@ -123,7 +123,6 @@ def channel(channel_id):
     else:
         messages = models.getMessageAll(channel_id)    
         channels = models.getChannelByUserId(user_id)
-        print(messages)
  
     last_operation_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     models.updateLastOperationAt(user_id,last_operation_at)
