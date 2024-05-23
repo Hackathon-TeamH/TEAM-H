@@ -29,7 +29,6 @@ CREATE TABLE messages (
     created_at timestamp NOT NULL default current_timestamp,
     user_id varchar(255) REFERENCES users(id),
     channel_id varchar(255) REFERENCES channels(id) ON DELETE CASCADE
-    is_edited BOOLEAN NOT NULL
 );
 
 CREATE TABLE channels(
@@ -53,10 +52,10 @@ INSERT INTO users(id, user_name, password, email, language, learning_language, c
     ("ab0bf204-3df1-4a52-b14a-89f18e8a8188", "TEST_USER2", "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8", "test2@email.com", "en", "ja", "US", "LosAngeles", '2024-04-14 22:00:00', '2024-04-14 22:00:00', 1);
 
 
-INSERT INTO messages (id, message, translated_message, created_at, user_id, channel_id, is_edited) VALUES
-    ("1", "Hello", "こんにちは", NOW(), "35d485b3-f3e0-4b34-84bd-3460487c711e", "1", 0),
-    ("2", "How are you?", "元気ですか？", NOW(), "35d485b3-f3e0-4b34-84bd-3460487c711e", "2", 0),
-    ("3", "Nice to meet you.", "はじめまして。", NOW(), "ab0bf204-3df1-4a52-b14a-89f18e8a8188", "2", 0);
+INSERT INTO messages (id, message, translated_message, created_at, user_id, channel_id) VALUES
+    ("1", "Hello", "こんにちは", NOW(), "35d485b3-f3e0-4b34-84bd-3460487c711e", "1"),
+    ("2", "How are you?", "元気ですか？", NOW(), "35d485b3-f3e0-4b34-84bd-3460487c711e", "2"),
+    ("3", "Nice to meet you.", "はじめまして。", NOW(), "ab0bf204-3df1-4a52-b14a-89f18e8a8188", "2");
 
 INSERT INTO channels(id, channel_name, created_at, user_id, last_message_at) VALUES
     ("1", "TEST_CHANNEL1", NOW(), "35d485b3-f3e0-4b34-84bd-3460487c711e", NOW()),

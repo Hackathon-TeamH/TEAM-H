@@ -2,31 +2,77 @@
     height: 72px;
     margin-left: 40px;
     margin-right: 40px;
-    margin-bottom: 10px;
-    border-bottom: 4px solid #fff;
+    margin-bottom: 0px;
     display: flex;
-    align-items: center;
-    justify-content: space-between
-
+    align-items: flex-end;
+    position: relative;
+}
+  
+.message_header:before {    
+    content: "";
+    display: inline-block;
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--border);
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.103);
 }
 
-.message_header .name{
+.message_header_inner{
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: flex-end;
+    height: 50px;
+}
+
+.header_user_info {
+    margin-top: 4px;
+    margin-left: 30px;
+    display: flex;
+    align-items: flex-end;
+}
+
+.header_channel_name {
     font-size: 1.5rem;
     margin: 0;
-    line-height: 72px;
     margin-left: 30px;
 }
 
-.message_header .num {
-    margin-left: 2.5rem;
+.header_user_name {
+    font-size: 1.2rem;
     color: grey;
-    margin-right: 50px;
+    margin: 0;
+    padding: 0;
+    line-height: 19px;
+    
+}
+
+
+.active_icon {
+    font-size: 1.5rem;
+    color: #30b806;
+    margin-right: 5px;
+    margin-bottom: -2px;
+    line-height: 18px;
+}
+
+.inactive_icon {
+    font-size: 1.5rem;
+    color: gray;
+    margin-right: 5px;
+    margin-bottom: -2px;
+    line-height: 18px;
 }
 
 
 
 #message_wrapper {
-    height: 88%;
+    height: 90%;
     margin-left: 40px;
     margin-right: 40px;
 
@@ -40,8 +86,8 @@
 .sender_name {
     margin-left: 13px;
     margin-top: 6px;
-    margin-bottom: 4px;
-    font-size: 0.8rem;
+    margin-bottom: 5px;
+    font-size: 0.9rem;
 }
 
 .message {
@@ -66,6 +112,7 @@
     background-color: var(--lowermessage);
     border-radius: 0px 0px 8px 0px;
     font-size: 14px;
+    cursor: pointer;
 }
 
 .my_message_box {
@@ -98,6 +145,7 @@
     background-color:  var(--mylowermessage);
     border-radius: 0px 0px 0px 8px;  
     font-size: 14px;
+    cursor: pointer;
 }
 
 .my_message_box .buttons {
@@ -119,6 +167,7 @@
 }
 
 .no_message {
+    margin-top: 10px;
     margin-left: 30px;
 } 
 
@@ -148,6 +197,12 @@
     font-size: 14px;
 }
 
-.my_message_box:last-child {
-    margin-bottom: 80px;
+
+.msg:first-child {
+    margin-top: 20px;
+  }
+
+
+.msg:last-child {
+    margin-bottom: 30px;
   }
