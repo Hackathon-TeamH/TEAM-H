@@ -1,7 +1,7 @@
 #message_wrapper {
     position: absolute;
-    padding-top: calc(96px + 40px);
-    padding-left: calc(300px + 40px);
+    padding-top: 183px; /* 96px + 72px + 15px */
+    padding-left: 340px;/* 300px + 40px; */
     padding-right: 40px;
     padding-bottom: calc(20vh + 10px);
     height: 100%;
@@ -15,8 +15,9 @@
 }
 
 .sender_name {
-    margin-block-start: 4px;
-    margin-block-end: 3px;
+    margin-left: 13px;
+    margin-top: 6px;
+    margin-bottom: 4px;
     font-size: 0.8rem;
 }
 
@@ -34,30 +35,31 @@
 }
 
 .message .lower_message {
-    border-left: 1px solid #2F66B7;
-    border-right: 1px solid #2F66B7;
-    border-bottom: 1px solid #2F66B7;
+    border-left: 1px solid var(--activechannel);
+    border-right: 1px solid var(--activechannel);
+    border-bottom: 1px solid var(--activechannel);
     margin: 0;
     padding: 10px;
     background-color: var(--lowermessage);
     border-radius: 0px 0px 8px 0px;
-    font-size: 12px;
+    font-size: 14px;
 }
 
 .my_message_box {
     text-align: right;
+
+
 }
 
 .my_message {
     margin-left: auto;
     width: 46%;
-    display: inline-block;
     text-align: left;
     color: var(--whitetext);
 }
 
 .my_message .upper_message {
-    border:1px solid #2F66B7;
+    border:1px solid var(--activechannel);
     margin: 0;
     padding: 10px;
     background-color:  var(--myuppermessage);
@@ -65,20 +67,21 @@
 }
 
 .my_message .lower_message {
-    border-left:1px solid #2F66B7;
-    border-right:1px solid #2F66B7;
-    border-bottom:1px solid #2F66B7;
+    border-left:1px solid var(--activechannel);
+    border-right:1px solid var(--activechannel);
+    border-bottom:1px solid var(--activechannel);
     margin: 0;
     padding: 10px;
     background-color:  var(--mylowermessage);
     border-radius: 0px 0px 0px 8px;  
-    font-size: 12px;
+    font-size: 14px;
 }
 
 .my_message_box .buttons {
     display: flex;
     justify-content: right;
     align-items: center;
+    position: relative;
 }
 
 .my_message_box .buttons button {
@@ -88,10 +91,36 @@
 }
 
 .my_message_box .buttons ion-icon {
-    font-size: 1rem;
+    font-size: 1.2rem;
     margin-top: 5px;
 }
 
+
+.edit_box {
+    text-align: right;
+}
+
+.edit_box textarea {
+    padding: 10px;
+    width: 46%;
+    min-height: calc(2rem + 37px);
+    resize: none;
+    border-color: var(--activechannel);
+    border-radius: 8px 8px 0px 8px;
+}
+
+.edit_flashes {
+    position: absolute;
+    width: 46%;
+    padding-left: 8px;
+    color: var(--redtext);
+    margin-left: auto;
+    text-align: left;    
+}
+
+.edit_flashes p {
+    font-size: 14px;
+}
 
 .my_message_box:last-child {
     margin-bottom: 40px;

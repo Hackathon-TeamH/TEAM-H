@@ -314,4 +314,17 @@ class models:
             abort(500)
         finally:
             cursor.close()
+            
 
+    # メッセージ編集
+    def editMessage(message_id, message, translated_message):
+        try:
+            connect = DB.getConnection()
+            cursor = connect.cursor()
+            sql = "UPDATE messages SET message = %s, translated_message = %s WHERE id =%s;"
+            cursor.execute(sql, (message, translated_message, message_id))
+            connect.commit()
+        except Exception as e:
+            abort(500)
+        finally:
+            cursor.close()

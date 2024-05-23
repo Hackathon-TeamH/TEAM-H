@@ -2,7 +2,6 @@
 
 //channel_listクラスの要素を変数listに格納
 const list = document.querySelectorAll(".channel_list");
-console.log(list);
 
 //liタグをひとつずつ変数itemに格納
 list.forEach((item) => {
@@ -168,8 +167,44 @@ const set_language = () => {
 
 set_language();
 
+
 //scrollを一番下に
 window.onload = () => {
   const elm = document.getElementById("message_wrapper");
   elm.scrollTo(0, elm.scrollHeight);
 };
+
+
+//メッセージ編集
+const originalHTML = {};
+
+function edit_message(message_id) {
+    const container = document.getElementById(message_id);
+    originalHTML[message_id] = container.innerHTML;
+
+    const msg = container.querySelector(".upper_message").innerHTML
+    container.innerHTML = `
+      <form id="edit_${message_id}" class="edit_box" action="/editmessage" method="POST">\
+          <textarea name="edit_message">${msg}</textarea>\
+          <input type="hidden" value="${message_id}" name="message_id"/>\
+      </form>
+      <div class="buttons">
+          <button type="submit" form="edit_${message_id}">
+              <ion-icon name="checkmark-outline"></ion-icon>
+          </button>
+          <button class="right_button" type="button" onclick="undo('${message_id}')">
+              <ion-icon name="close-outline"></ion-icon>
+          </button>
+      </div>
+    `;
+}
+
+function undo(message_id) {
+  const container = document.getElementById(message_id);
+  if (originalHTML[message_id]) {
+    container.innerHTML = originalHTML[message_id];
+  }
+}
+
+    
+
