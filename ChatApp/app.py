@@ -39,7 +39,7 @@ def user_signup():
     city = request.form.get('city')
 
     dt = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    print(request.form)
+
     pattern = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
 
     if(name == "" or email == "" or password1 == "" or password2 == "" or lng == None or learning_lng == None):
