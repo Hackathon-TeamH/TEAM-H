@@ -2,7 +2,7 @@ from jinja2 import Template
 from models import models
 
 def renderProfile(id):
-    user = models.getUserWithId(id)
+    user = models.getUserById(id)
 
     html = '''
         {% if user %}
@@ -32,11 +32,11 @@ def renderProfile(id):
               </ul>
               <ul>
               {% if user.learning_language == "ja" %}
-                <li>お住まいの都市：</li>
+                <li>お住まいの町：</li>
               {% else %}
                 <li>City：</li>
               {% endif %}
-                <li>{{ user.country }}</li>
+                <li>{{ user.city }}</li>
               </ul>
             </div>
         {% else %}

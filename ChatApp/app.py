@@ -170,12 +170,12 @@ def index():
         return redirect("/login")
     else:
         channels = models.getChannelByUserId(user_id)
-    
+
     channel_id = request.args.get("channel_id")
     if channel_id is None:
         messages = None
     else:
-        messages = models.getMessageAll(channel_id)    
+        messages = models.getMessageAll(channel_id)
         channels = models.getChannelByUserId(user_id)
  
     last_operation_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -284,13 +284,39 @@ def delete_channel():
         return redirect("/")
 
 
-@app.route('/profile', methods=["GET"])
+@app.route('/get-profile', methods=["GET"])
 def get_profile():
     user_id = session.get("id")
     last_operation_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     models.updateLastOperationAt(user_id,last_operation_at)
     profile = renderProfile.renderProfile(user_id)
     return profile
+
+
+@app.route('/profile')
+def profile():
+    user_id = session.get("id")
+    user = models.getUserById(user_id)
+    return render_template('profile.html', user=user)
+
+
+@app.route('/profile',methods=["POST"])
+def update_profile():
+    user_id = session.get("id")
+    name = request.form.get('name')
+    country = request.form.get('country')
+    city = request.form.get('city')
+
+    last_operation_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    models.updateLastOperationAt(user_id,last_operation_at)
+
+    if(name == ""):
+        flash("必須項目をすべて入力してください")
+        return redirect("/profile")
+
+    models.update_profile(user_id,name,country,city)
+    flash(translation.flash_trans(user_id, "プロフィールをアップデートしました"), "update_profile")
+    return redirect('/')
 
 
 #メッセージ編集

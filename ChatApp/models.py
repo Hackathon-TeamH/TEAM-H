@@ -31,7 +31,7 @@ class models:
         finally:
             cursor.close()
 
-    def getUserWithId(id):
+    def getUserById(id):
         try:
             connect = DB.getConnection()
             cursor = connect.cursor()
@@ -323,6 +323,18 @@ class models:
             cursor = connect.cursor()
             sql = "UPDATE messages SET message = %s, translated_message = %s WHERE id =%s;"
             cursor.execute(sql, (message, translated_message, message_id))
+            connect.commit()
+        except Exception as e:
+            abort(500)
+        finally:
+            cursor.close()    
+
+    def update_profile(user_id,name,country,city):
+        try:
+            connect = DB.getConnection()
+            cursor = connect.cursor()
+            sql = "UPDATE users SET user_name=%s, country=%s, city=%s  WHERE id=%s;"
+            cursor.execute(sql, (name,country,city,user_id))
             connect.commit()
         except Exception as e:
             abort(500)

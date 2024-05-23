@@ -1,0 +1,95 @@
+.edit_profile_header {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 96px;
+  background-color: #32c2ef;
+  border-bottom: solid 4px var(--border);
+}
+
+.edit_profile_header h1 {
+  padding: 0;
+  margin: 0;
+  color: #fff;
+  line-height: 96px;
+  padding-left: 18px;
+  font-size: 24px;
+  font-weight: lighter;
+}
+
+.edit_profile_background {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  background-color: #f4feff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 50px;
+  padding-top: 50px;
+}
+
+.edit_profile_wrapper {
+  display: block;
+  width: 754px;
+  background-color: #fff;
+  padding: 57px 162px 50px 162px;
+  border-radius: 8px;
+}
+
+.edit_profile_page_user_icon {
+  display: block;
+  width: 150px;
+  height: 150px;
+  margin: 0 auto 50px auto;
+  background-color: #3796ab;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 150px;
+  color: #fff;
+  font-size: 100px;
+}
+
+.edit_profile_button_wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 49px;
+  gap: 20px;
+}
+
+.confirm_contained {
+  width: 113px;
+  height: 48px;
+  font-size: 16px;
+  line-height: 48px;
+  text-align: center;
+  background-color: #3796ab;
+  border-radius: 8px;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+.back_to_main_button_outlined {
+  width: 113px;
+  height: 48px;
+  font-size: 16px;
+  line-height: 48px;
+  text-align: center;
+  border-radius: 8px;
+  color: #3796ab;
+  cursor: pointer;
+  border: 1px solid #3796ab;
+  text-decoration: none;
+}
+
+.prof_error_message {
+  font-size: 14px;
+  color: var(--redtext);
+}
+
+.confirm_contained:disabled {
+  background-color: #3796ab;
+  opacity: 0.5;
+}
