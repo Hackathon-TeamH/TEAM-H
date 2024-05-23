@@ -106,6 +106,7 @@
   position: absolute;
   left: 0;
   bottom: -36px;
+  font-weight: lighter;
   background-color: #32c2ef;
 }
 
@@ -161,7 +162,6 @@
 
 .hamburger_menu_button span:nth-of-type(3) {
   top: 31px;
-  height: 4px;
 }
 
 .hamburger_menu_button.active_menu span:nth-of-type(1) {

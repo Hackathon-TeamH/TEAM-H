@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Our Language|profile</title>
+    <link rel="icon" href="../static/favicon.ico" />
+    <link
+      rel="stylesheet"
+      href="{{url_for('static',filename='css/styles.css')}}"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Anta&family=Kosugi+Maru&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <header class="edit_profile_header">
+      <h1>Our Language</h1>
+    </header>
+    <div class="edit_profile_background">
+      {% if user %}
+      <form class="edit_profile_wrapper" method="POST">
+        <div class="edit_profile_page_user_icon"></div>
+        <div class="signup_form">
+          <label class="registration_label" for="signup-name-input"
+            >ユーザー名</label
+          >
+          <input
+            class="signup_input signup_input_for_profile"
+            type="text"
+            placeholder="ユーザー名"
+            name="name"
+            id="signup-name-input"
+            value="{{ user.user_name }}"
+          />
+          <span class="prof_error_message profile_name"></span>
+        </div>
+        <div class="signup_form">
+          <label class="registration_label" for="signup-living-country-input">お住まいの国</label>
+          <input class="signup_input" type="text" placeholder="日本" name="country" id="signup-living-country-input"  value="{{ user.country }}" />
+        </div>
+        <div class="signup_form">
+          <label class="registration_label" for="signup-living-town-input">お住まいの町</label>
+          <input class="signup_input" type="text" placeholder="東京" name="city" id="signup-living-town-input"  value="{{ user.city }}" />
+        </div>
+        <div class="registration_button_container">
+        <div class="edit_profile_button_wrapper">
+          <button type="button" class="confirm_contained" disabled onClick="onSubmit()">変更を確定</button>
+          <a class="back_to_main_button_outlined" href="{{ url_for('index') }}">
+            戻る
+          </a>
+        </div>
+      </form>
+      {% else %}
+      <p>プロフィールを取得できませんでした</p>
+      {% endif %}
+    </div>
+    <script src="../static/js/prof.js" ></script>
+  </body>
+</html>
