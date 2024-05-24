@@ -1,0 +1,117 @@
+/* ログイン画面のCSS */
+
+.container {
+  background-color: #E3F8FF;
+}
+
+.header_inner {
+  border: none;
+}
+
+/* -------------login-form------------------------------- */
+.registration_form_wrapper {
+  display: block;
+  width: 400px;
+  height: 480px;
+  background-color: #F4FEFF;
+  border-radius: 8px;
+  padding-top: 24px;
+  position: absolute;
+  top: 55%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.registration_title {
+  display: block;
+  width: 100%;
+  font-size: 43px;
+  font-weight: bold;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 48px;
+  color: var(--bluetext);
+}
+
+.form {
+  text-align: left;
+  display: inline-block;
+  width: 255px;
+  height: 64px;
+  margin-bottom: 8px;
+}
+
+.registration_label {
+  display: block;
+  font-size: 12px;
+  margin-bottom: 4px;
+  color: var(--bluetext);
+}
+
+.login_input {
+  display: block;
+  width: 255px;
+  height: 32px;
+  border: 1px solid var(--bluetext);
+  border-radius: 8px;
+  padding-left: 8px;
+}
+
+.login_input:focus {
+  outline: none;
+  border: 2px solid var(--mylowermessage);
+}
+
+
+.login_input::placeholder {
+  display: block;
+  font-size: 12px;
+}
+
+.registration_button {
+  display: block;
+  width: 255px;
+  height: 48px;
+  color: #F4FEFF;
+  background-color: #3796AB;
+  border: none;
+  border-radius: 8px;
+  margin-top: 32px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 16px;
+  cursor: pointer;
+}
+
+.registration_button:hover {
+  background-color: #52adbf;
+}
+
+.signup_button {
+  margin-top: 32px;
+}
+
+.switch_register_mode {
+  text-decoration: none;
+  display: block;
+  width: 255px;
+  padding: 16px 0;
+  font-size: 16px;
+  color: #3796AB;
+  background-color: #F4FEFF;
+  border: 1px solid #3796AB;
+  border-radius: 8px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.switch_register_mode:hover {
+  background-color: #dcecf0;
+}
+
+
+.flashes {
+  color: var(--redtext);
+  padding: 0;
+}

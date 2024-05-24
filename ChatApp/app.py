@@ -358,4 +358,4 @@ if __name__ == '__main__':
     scheduler = BackgroundScheduler()
     scheduler.add_job(id="check_status", func= models.updateStatus, trigger='interval', hours=1) #一時間に一回ユーザーの操作を確認する
     scheduler.start()
-    app.run(host="0.0.0.0", port=5002, debug=True)
+    # app.run(host="0.0.0.0", port=5002, debug=True)

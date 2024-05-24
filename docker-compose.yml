@@ -9,8 +9,7 @@ services:
     # MySQLのDockerfileをビルドする
     build:
       # ビルドコンテキストはカレントディレクトリ
-      context: .
-      dockerfile: Docker/MySQL/Dockerfile
+      context: ./MySQL/
     # M1チップでも動くように
     # Intel Macの場合あってもなくても動く
     platform: linux/x86_64
@@ -39,26 +38,40 @@ services:
 
   app:
     # コンテナ名をFlaskに設定
-    container_name: Flask_teamH
+    container_name: Flask_TEAM-H
     # FlaskのDockerfileをビルドする
     build:
       # ビルドコンテキストはカレントディレクトリ
-      context: .
-      dockerfile: Docker/Flask/Dockerfile
+      context: ./ChatApp/
     # ボリュームを指定
     # ローカルのカレントディレクトリをコンテナの/codeにマウントする
     volumes:
+      - tmp-data:/app/tmp
       - ./ChatApp:/code
+      - ./Nginx/static:/app/static
     # ローカルの5000番ポートとコンテナの5000番ポートをつなぐ
     ports:
       - "5002:5002"
-    # コマンドを実行
-    command:  bash -c "python app.py"
     # 先にdbを起動してからappを起動する
     depends_on:
       db:
         # dbのヘルスチェックが終わってからappを起動させる
         condition: service_healthy
 
+  web:
+    container_name: Nginx
+    # FlaskのDockerfileをビルドする
+    build:
+      # ビルドコンテキストはカレントディレクトリ
+      context: ./Nginx/
+    volumes:
+      - tmp-data:/app/tmp
+      - ./Nginx/static:/app/static
+    ports:
+      - "80:80"
+    depends_on:
+      - app
+
 volumes:
   mysql_data:
+  tmp-data:

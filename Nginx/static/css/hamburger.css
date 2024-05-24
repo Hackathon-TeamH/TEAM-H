@@ -1,0 +1,449 @@
+@keyframes show_menu {
+  0% {
+    transform: translateX(438px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes hide_menu {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(438px);
+  }
+}
+
+.outer_menu {
+  display: none;
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.3);
+  width: 100%;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  cursor: pointer;
+}
+
+.outer_menu.outer {
+  display: block;
+}
+
+.hamburger_menu {
+  width: 437px;
+  height: 100vh;
+  z-index: 1;
+  background-color: #e8f1fe;
+  position: fixed;
+  top: 0;
+  right: 0;
+  transition: transform 0.5s;
+  transform: translateX(438px); /* 初期状態で画面外に隠す */
+}
+
+.hamburger_menu.active {
+  transform: translateX(0); /* メニューを表示 */
+  animation: show_menu 0.5s forwards; /* 開くアニメーション */
+}
+
+.hamburger_menu.closing {
+  animation: hide_menu 0.3s forwards; /* 閉じるアニメーション */
+}
+
+.header_hamburger {
+  position: fixed;
+  top: 21px;
+  right: 21px;
+  background-color: #fff;
+  border-radius: 50%;
+  border: none;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+}
+
+.close_hamburger_menu {
+  position: absolute;
+  top: 21px;
+  right: 21px;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  border-radius: 50%;
+  background-color: #32c2ef;
+}
+
+.close_hamburger_menu::before,
+.close_hamburger_menu::after {
+  content: "";
+  width: 50%;
+  height: 4px;
+  position: absolute;
+  top: 23px;
+  left: 12px;
+  background-color: #fff;
+}
+
+.close_hamburger_menu::before {
+  transform: rotate(-45deg);
+}
+
+.close_hamburger_menu::after {
+  transform: rotate(45deg);
+}
+
+.hamburger_menu h3 {
+  width: 100%;
+  height: 135px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  color: #fff;
+  position: absolute;
+  left: 0;
+  bottom: -36px;
+  font-weight: lighter;
+  background-color: #32c2ef;
+}
+
+.button_container {
+  margin: 155px auto;
+  width: min-content;
+}
+
+.menu_button {
+  padding: 12px 0;
+  width: 255px;
+  text-align: center;
+  border-radius: 8px;
+  font-size: 16px;
+  border: solid 1px #3796ab;
+  color: #3796ab;
+  background-color: #f4feff;
+  margin-bottom: 51px;
+  cursor: pointer;
+}
+
+.menu_button:last-child {
+  margin-bottom: 0;
+}
+
+.hamburger_menu_button {
+  position: relative;
+  cursor: pointer;
+  width: 50px;
+  height: 50px;
+  border-radius: 5px;
+  z-index: 100;
+}
+
+.hamburger_menu_button span {
+  display: inline-block;
+  transition: all 0.4s; /* アニメーションの設定 */
+  position: absolute;
+  left: 8px;
+  height: 3px;
+  border-radius: 2px;
+  background-color: #32c2ef;
+  width: 45%;
+}
+
+.hamburger_menu_button span:nth-of-type(1) {
+  top: 15px;
+}
+
+.hamburger_menu_button span:nth-of-type(2) {
+  top: 23px;
+}
+
+.hamburger_menu_button span:nth-of-type(3) {
+  top: 31px;
+}
+
+.hamburger_menu_button.active_menu span:nth-of-type(1) {
+  top: 18px;
+  left: 18px;
+  transform: translateY(6px) rotate(-45deg);
+  width: 30%;
+}
+
+.hamburger_menu_button.active_menu span:nth-of-type(2) {
+  opacity: 0;
+}
+
+.hamburger_menu_button.active_menu span:nth-of-type(3) {
+  top: 30px;
+  left: 18px;
+  transform: translateY(-6px) rotate(45deg);
+  width: 30%;
+}
+
+.select_user_dialog {
+  position: absolute;
+  width: 1011px;
+  height: 715px;
+  background-color: #e8f1fe;
+  border-radius: 50px;
+  top: 150%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: none;
+  z-index: 100;
+}
+
+.select_user_dialog_title_container {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background-color: #32c2ef;
+  height: 135px;
+  border-radius: 0 0 50px 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.select_user_dialog_title {
+  text-align: center;
+  color: #fff;
+  font-size: 32px;
+}
+
+.list_user_wrapper {
+  display: flex;
+  gap: 49px;
+  width: 90%;
+  margin-top: 173px;
+  overflow-x: scroll;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+  margin: 173px auto 0 auto;
+}
+
+.user_card {
+  display: block;
+  width: 223px;
+  height: 291px;
+  border-radius: 8px;
+  background-color: #f4feff;
+  list-style-type: none;
+  flex-shrink: 0;
+}
+
+.matching button {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.user_icon {
+  border-radius: 50%;
+  width: 90px;
+  height: 90px;
+  text-align: center;
+  font-size: 64px;
+  line-height: 90px;
+  background-color: #3796ab;
+  margin: 56px auto 47px auto;
+  color: #fff;
+}
+
+.channel_name {
+  font-size: 24px;
+  text-align: center;
+  color: #3796ab;
+  overflow-x: hidden;
+}
+
+.user_name {
+  font-size: 24px;
+  text-align: center;
+  color: #3796ab;
+  overflow-x: hidden;
+}
+
+.select_user_dialog_active {
+  display: block;
+}
+
+.dli-close {
+  background-color: #32c2ef;
+  border-radius: 50%;
+  border: none;
+  position: absolute;
+  top: 30px;
+  right: 40px;
+  cursor: pointer;
+  width: 50px;
+  height: 50px;
+}
+
+.dli-close::before {
+  content: "";
+  position: absolute;
+  top: 24px;
+  left: 12px;
+  width: 50%;
+  height: 4px;
+  background-color: #fff;
+  transform: rotate(45deg);
+}
+
+.dli-close::after {
+  content: "";
+  position: absolute;
+  top: 24px;
+  left: 12px;
+  width: 50%;
+  height: 4px;
+  background-color: #fff;
+  transform: rotate(-45deg);
+}
+
+.profile_dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 437px;
+  height: 696px;
+  margin: 0;
+  padding: 0;
+  border-radius: 30px;
+  background-color: #e8f1fe;
+  display: none;
+  z-index: 100;
+}
+
+.dli_close_profile {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  top: 25px;
+  right: 25px;
+  cursor: pointer;
+  background-color: #32c2ef;
+  border-radius: 50%;
+}
+
+.dli_close_profile::after {
+  content: "";
+  position: absolute;
+  top: 23px;
+  left: 12px;
+  width: 50%;
+  height: 4px;
+  background-color: #fff;
+  transform: rotate(-45deg);
+}
+
+.dli_close_profile::before {
+  content: "";
+  position: absolute;
+  top: 23px;
+  left: 12px;
+  width: 50%;
+  height: 4px;
+  background-color: #fff;
+  transform: rotate(45deg);
+}
+
+.profile_icon {
+  width: 150px;
+  height: 150px;
+  font-size: 94px;
+  text-align: center;
+  line-height: 150px;
+  border-radius: 50%;
+  background-color: #3796ab;
+  color: white;
+  margin: 70px auto 20px auto;
+}
+
+.profile_user_name {
+  text-align: center;
+  font-size: 24px;
+  color: #3796ab;
+  margin-bottom: 12px;
+}
+
+.profile_user_email {
+  text-align: center;
+  font-size: 18px;
+  color: #3796ab;
+  margin-top: 0;
+}
+
+.profile_detail_table {
+  margin-top: 40px;
+  margin-left: 40px;
+}
+
+.profile_detail_table ul {
+  margin: 0;
+  padding: 0;
+  text-align: right;
+  padding-right: 8px;
+  font-size: 18px;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 16px;
+  color: #3796ab;
+}
+
+.profile_detail_table li {
+  width: 150px;
+  margin: 0;
+  padding: 0;
+  font-size: 18px;
+}
+
+.profile_detail_table li:nth-of-type(2) {
+  text-align: left;
+  padding-left: 18px;
+}
+
+.modify-profile-button {
+  display: block;
+  padding: 12px 0;
+  text-align: center;
+  width: 128px;
+  background-color: #3796ab;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 16px;
+  text-decoration: none;
+  margin: 46px auto;
+  box-shadow: 0px 4px 0px rgba(0, 0, 0, 0.1);
+}
+
+.modify-profile-button:active {
+  border-bottom: 0;
+  text-decoration: none;
+}
+
+.profile_dialog_title {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  line-height: 135px;
+  font-size: 32px;
+  border-radius: 0 0 30px 30px;
+  background-color: #32c2ef;
+  height: 135px;
+  color: #fff;
+  margin: 0;
+}
+
+.profile_dialog_active {
+  display: block;
+}
