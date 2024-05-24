@@ -2,7 +2,6 @@
 
 //channel_listクラスの要素を変数listに格納
 const list = document.querySelectorAll(".channel_list");
-console.log(list);
 
 //liタグをひとつずつ変数itemに格納
 list.forEach((item) => {
@@ -67,7 +66,11 @@ document.querySelector(".outer_menu").addEventListener("click", () => {
   document
     .querySelector(".select_user_dialog")
     .classList.remove("select_user_dialog_active");
-  document.querySelector(".hamburger_menu").addEventListener(
+  document
+    .querySelector(".profile_dialog")
+    .classList.remove("profile_dialog_active");
+  document
+    .querySelector(".hamburger_menu").addEventListener(
     "animationend",
     () => {
       document.querySelector(".hamburger_menu").classList.remove("closing");
@@ -124,7 +127,7 @@ document.querySelector(".dli_close_profile").addEventListener("click", () => {
 });
 
 const getProfile = () => {
-  fetch("/profile")
+  fetch("/get-profile")
     .then((res) => res.text())
     .then((html) => {
       document.querySelector(".profile_render").innerHTML = html;
@@ -170,3 +173,45 @@ window.onload = () => {
   const elm = document.getElementById("message_wrapper");
   elm.scrollTo(0, elm.scrollHeight);
 };
+
+//メッセージ編集
+const originalHTML = {};
+
+function edit_message(message_id) {
+  const container = document.getElementById(message_id);
+  originalHTML[message_id] = container.innerHTML;
+
+  const msg = container.querySelector(".upper_message").innerHTML;
+  container.innerHTML = `
+      <form id="edit_${message_id}" class="edit_box" action="/editmessage" method="POST">\
+          <textarea name="edit_message">${msg}</textarea>\
+          <input type="hidden" value="${message_id}" name="message_id"/>\
+      </form>
+      <div class="buttons">
+          <button type="submit" form="edit_${message_id}">
+              <ion-icon name="checkmark-outline"></ion-icon>
+          </button>
+          <button class="right_button" type="button" onclick="undo('${message_id}')">
+              <ion-icon name="close-outline"></ion-icon>
+          </button>
+      </div>
+    `;
+}
+
+function undo(message_id) {
+  const container = document.getElementById(message_id);
+  if (originalHTML[message_id]) {
+    container.innerHTML = originalHTML[message_id];
+  }
+}
+
+const snackbar = document.querySelector(".snackbar");
+snackbar.classList.add("snackbar_active");
+snackbar.addEventListener("animationend", () => {
+  setTimeout(() => {
+    snackbar.classList.add("snackbar_closing");
+    snackbar.addEventListener("animationend", () => {
+      snackbar.remove();
+    });
+  }, 3000);
+});
