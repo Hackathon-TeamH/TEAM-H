@@ -340,3 +340,36 @@ class models:
             abort(500)
         finally:
             cursor.close()
+
+
+    #指定したchannel_idに対応するチャンネル名を取得
+    def getChannelName(channel_id):
+        try:
+            conn = DB.getConnection()
+            cur = conn.cursor()
+            sql = "SELECT channel_name FROM channels WHERE id=%s;"
+            cur.execute(sql, (channel_id))
+            channel = cur.fetchone()
+            return channel
+        except Exception as e:
+            abort(500)
+        finally:
+            cur.close()
+
+
+    # 参加しているユーザー名を取ってくる
+    def getPartnerUserName(user_id, channel_id):
+        try:
+            connect = DB.getConnection()
+            cursor = connect.cursor()
+            sql = "SELECT user_name, country, city, is_active "\
+                "FROM memberships AS ms INNER JOIN users AS u ON ms.user_id = u.id "\
+                "WHERE channel_id = %s AND user_id != %s"\
+            ";"
+            cursor.execute(sql, (channel_id, user_id))
+            user = cursor.fetchone()
+            return user
+        except Exception as e:
+            abort(500)
+        finally:
+            cursor.close()    

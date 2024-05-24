@@ -1,9 +1,33 @@
 
+<div class="message_header">
+    <div class="message_header_inner">
+    {% if channel_id %}
+    <p class="header_channel_name">{{channel_name.channel_name}}</p>
+        {% if partner_user_detile %}
+        <div class="header_user_info">
+            {% if partner_user_detile.is_active == 0 %}
+            <ion-icon class="inactive_icon" name="checkmark-circle"></ion-icon>
+            {% else %}
+            <ion-icon class="active_icon" name="checkmark-circle"></ion-icon>
+            {% endif %}
+            <p class="header_user_name">
+            {{partner_user_detile.user_name}}&thinsp;(&thinsp;{{partner_user_detile.country}}&thinsp;/&thinsp;{{partner_user_detile.city}}&thinsp;)</p>
+        </div>
+        {% else %}
+        <div class="header_user_info">
+            <p class="header_user_name">No other user</p>
+        </div>
+        {% endif %}
+
+    {% endif %}
+    </div>
+</div>
+
 <div id="message_wrapper">
     {% if messages %}
     {% for msg in messages %}
     {% if msg.user_id != user_id %}
-    <div id="{{msg.id}}" class="message_box">
+    <div id="{{msg.id}}" class="message_box msg">
         <p class="sender_name">{{msg.user_name}}</p>
         <div class="message">
             <p class="upper_message">{{msg.translated_message}}</p>
@@ -11,7 +35,7 @@
         </div>
     </div>
     {% else %}
-    <div id="{{msg.id}}" class="my_message_box">
+    <div id="{{msg.id}}" class="my_message_box msg">
         <div class="my_message">
             <p class="upper_message">{{msg.message}}</p>
             <p class="lower_message" data-hidden-message="{{msg.translated_message}}">翻訳文表示</p>
