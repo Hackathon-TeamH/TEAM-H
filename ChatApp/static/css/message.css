@@ -1,11 +1,80 @@
-#message_wrapper {
+.message_header {
+    height: 72px;
+    margin-left: 40px;
+    margin-right: 40px;
+    margin-bottom: 0px;
+    display: flex;
+    align-items: flex-end;
+    position: relative;
+}
+  
+.message_header:before {    
+    content: "";
+    display: inline-block;
     position: absolute;
-    padding-top: calc(96px + 40px);
-    padding-left: calc(300px + 40px);
-    padding-right: 40px;
-    padding-bottom: calc(20vh + 10px);
-    height: 100%;
+    left: 0;
     width: 100%;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--border);
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.103);
+}
+
+.message_header_inner{
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: flex-end;
+    height: 50px;
+}
+
+.header_user_info {
+    margin-top: 4px;
+    margin-left: 30px;
+    display: flex;
+    align-items: flex-end;
+}
+
+.header_channel_name {
+    font-size: 1.5rem;
+    margin: 0;
+    margin-left: 30px;
+}
+
+.header_user_name {
+    font-size: 1.2rem;
+    color: grey;
+    margin: 0;
+    padding: 0;
+    line-height: 19px;
+    
+}
+
+
+.active_icon {
+    font-size: 1.5rem;
+    color: #30b806;
+    margin-right: 5px;
+    margin-bottom: -2px;
+    line-height: 18px;
+}
+
+.inactive_icon {
+    font-size: 1.5rem;
+    color: gray;
+    margin-right: 5px;
+    margin-bottom: -2px;
+    line-height: 18px;
+}
+
+
+
+#message_wrapper {
+    height: 90%;
+    margin-left: 40px;
+    margin-right: 40px;
 
     overflow-y: auto;
     overflow-x: hidden;
@@ -15,9 +84,10 @@
 }
 
 .sender_name {
-    margin-block-start: 4px;
-    margin-block-end: 3px;
-    font-size: 0.8rem;
+    margin-left: 13px;
+    margin-top: 6px;
+    margin-bottom: 5px;
+    font-size: 0.9rem;
 }
 
 .message {
@@ -34,30 +104,32 @@
 }
 
 .message .lower_message {
-    border-left: 1px solid #2F66B7;
-    border-right: 1px solid #2F66B7;
-    border-bottom: 1px solid #2F66B7;
+    border-left: 1px solid var(--activechannel);
+    border-right: 1px solid var(--activechannel);
+    border-bottom: 1px solid var(--activechannel);
     margin: 0;
     padding: 10px;
     background-color: var(--lowermessage);
     border-radius: 0px 0px 8px 0px;
-    font-size: 12px;
+    font-size: 14px;
+    cursor: pointer;
 }
 
 .my_message_box {
     text-align: right;
+
+
 }
 
 .my_message {
     margin-left: auto;
     width: 46%;
-    display: inline-block;
     text-align: left;
     color: var(--whitetext);
 }
 
 .my_message .upper_message {
-    border:1px solid #2F66B7;
+    border:1px solid var(--activechannel);
     margin: 0;
     padding: 10px;
     background-color:  var(--myuppermessage);
@@ -65,20 +137,22 @@
 }
 
 .my_message .lower_message {
-    border-left:1px solid #2F66B7;
-    border-right:1px solid #2F66B7;
-    border-bottom:1px solid #2F66B7;
+    border-left:1px solid var(--activechannel);
+    border-right:1px solid var(--activechannel);
+    border-bottom:1px solid var(--activechannel);
     margin: 0;
     padding: 10px;
     background-color:  var(--mylowermessage);
     border-radius: 0px 0px 0px 8px;  
-    font-size: 12px;
+    font-size: 14px;
+    cursor: pointer;
 }
 
 .my_message_box .buttons {
     display: flex;
     justify-content: right;
     align-items: center;
+    position: relative;
 }
 
 .my_message_box .buttons button {
@@ -88,7 +162,47 @@
 }
 
 .my_message_box .buttons ion-icon {
-    font-size: 1rem;
+    font-size: 1.2rem;
     margin-top: 5px;
 }
 
+.no_message {
+    margin-top: 10px;
+    margin-left: 30px;
+} 
+
+.edit_box {
+    text-align: right;
+}
+
+.edit_box textarea {
+    padding: 10px;
+    width: 46%;
+    min-height: calc(2rem + 37px);
+    resize: none;
+    border-color: var(--activechannel);
+    border-radius: 8px 8px 0px 8px;
+}
+
+.edit_flashes {
+    position: absolute;
+    width: 46%;
+    padding-left: 8px;
+    color: var(--redtext);
+    margin-left: auto;
+    text-align: left;    
+}
+
+.edit_flashes p {
+    font-size: 14px;
+}
+
+
+.msg:first-child {
+    margin-top: 20px;
+  }
+
+
+.msg:last-child {
+    margin-bottom: 80px;
+  }
