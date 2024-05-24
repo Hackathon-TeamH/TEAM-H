@@ -115,19 +115,22 @@ def channel(channel_id):
         return redirect('/login')
     else:
         channels = models.getChannelByUserId(user_id)
-
-    #channel_id = request.args.get("channel_id")
-    session["channel_id"] = channel_id
  
     if channel_id is None:
         messages = None
     else:
+        session["channel_id"] = channel_id
         messages = models.getMessageAll(channel_id)    
-        channels = models.getChannelByUserId(user_id)
+        channel_name = models.getChannelName(channel_id)
+        users_num = len(models.getChannelMemberId(channel_id))
+        partner_user_detile = models.getPartnerUserName(user_id, channel_id)
+
  
     last_operation_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     models.updateLastOperationAt(user_id,last_operation_at)
-    return render_template('chat.html', user_id=user_id, channel_id=channel_id, channels=channels, messages=messages)
+    return render_template(
+        'chat.html', user_id=user_id, partner_user_detile=partner_user_detile, channel_id=channel_id, channel_name=channel_name, users_num=users_num, channels=channels, messages=messages
+        )
 
 
 #メッセージ送信
@@ -137,12 +140,13 @@ def send_message():
     sender_id = session.get("id")
     channel_id = request.form.get("channel_id")
 
+
     if sender_id is None:
         return redirect('/login')
     elif channel_id == "None":
         flash(translation.flash_trans(sender_id, "チャンネルが選択されていません"), "message")
         return redirect("/")
-    elif message == "":
+    elif message.strip() == "":
         flash(translation.flash_trans(sender_id, "メッセージが入力されていません"), "message")
         return redirect(f"/channel/{channel_id}")
     else:
@@ -151,7 +155,7 @@ def send_message():
     #入力言語判定
     input_lang = detect(message)
     if input_lang != source_lang:
-        flash(translation.flash_trans(sender_id, "学びたい言語で入力しよう"))
+        flash(translation.flash_trans(sender_id, "学びたい言語で入力しよう"), "message")
         return redirect(f"/channel/{channel_id}")
 
     translated_message = translation.translation(message, source_lang, target_lang)
@@ -162,25 +166,25 @@ def send_message():
     return redirect(f"/channel/{channel_id}")
 
 
-# チャンネル一覧ページの表示
+# ホーム
 @app.route("/")
 def index():
     user_id = session.get("id")
     if user_id is None:
-        return redirect('/login')
+        return redirect("/login")
     else:
         channels = models.getChannelByUserId(user_id)
-    
+
     channel_id = request.args.get("channel_id")
     if channel_id is None:
         messages = None
     else:
-        messages = models.getMessageAll(channel_id)    
+        messages = models.getMessageAll(channel_id)
         channels = models.getChannelByUserId(user_id)
  
     last_operation_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     models.updateLastOperationAt(user_id,last_operation_at)
-    return render_template('chat.html', user_id=user_id, channel_id=channel_id, channels=channels, messages=messages)
+    return render_template("chat.html", user_id=user_id, channel_id=channel_id, channels=channels, messages=messages)
 
 
 # チャンネルの追加
@@ -190,10 +194,13 @@ def add_channel():
     if user_id is None:
         return redirect("/login")
     channel_name = request.form.get("channel_name")
-    if channel_name == "" or None:
-       flash(translation.flash_trans(user_id, "チャンネル名を入力してください"), "channel")
-       channel_id = session.get("channel_id")
-       return redirect(f"/channel/{channel_id}") 
+    if channel_name.strip() == "":
+        flash(translation.flash_trans(user_id, "チャンネル名を入力してください"), "channel")
+        channel_id = session.get("channel_id")
+        if channel_id is None:
+            return redirect(f"/") 
+        else:
+            return redirect(f"/channel/{channel_id}") 
     
     id = uuid.uuid4()
     models.addChannel(id, channel_name, user_id)
@@ -281,13 +288,70 @@ def delete_channel():
         return redirect("/")
 
 
-@app.route('/profile', methods=["GET"])
+@app.route('/get-profile', methods=["GET"])
 def get_profile():
     user_id = session.get("id")
     last_operation_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     models.updateLastOperationAt(user_id,last_operation_at)
     profile = renderProfile.renderProfile(user_id)
     return profile
+
+
+@app.route('/profile')
+def profile():
+    user_id = session.get("id")
+    user = models.getUserById(user_id)
+    return render_template('profile.html', user=user)
+
+
+@app.route('/profile',methods=["POST"])
+def update_profile():
+    user_id = session.get("id")
+    name = request.form.get('name')
+    country = request.form.get('country')
+    city = request.form.get('city')
+
+    last_operation_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    models.updateLastOperationAt(user_id,last_operation_at)
+
+    if(name == ""):
+        flash("必須項目をすべて入力してください")
+        return redirect("/profile")
+
+    models.update_profile(user_id,name,country,city)
+    flash(translation.flash_trans(user_id, "プロフィールをアップデートしました"), "update_profile")
+    return redirect('/')
+
+
+#メッセージ編集
+@app.route('/editmessage', methods=['POST'])
+def edit_message():
+    message = request.form.get("edit_message")
+    message_id = request.form.get("message_id")
+    message_detile = models.getMessageById(message_id)
+    channel_id = message_detile["channel_id"]
+    sender_id = session.get("id")
+
+    if sender_id is None:
+        return redirect('/login')
+    elif message.strip() == "":
+        return redirect(f"/channel/{channel_id}")
+    else:
+        source_lang, target_lang = translation.get_language_pair(sender_id, channel_id)
+
+    #入力言語判定
+    input_lang = detect(message)
+    if input_lang != source_lang:
+        flash(translation.flash_trans(sender_id, "学びたい言語で入力しよう"), 'message_' + message_id)
+        return redirect(f"/channel/{channel_id}")
+
+    translated_message = translation.translation(message, source_lang, target_lang)
+    models.editMessage(message_id, message, translated_message)
+    models.updateLastMessageAt(channel_id)
+    last_operation_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    models.updateLastOperationAt(sender_id,last_operation_at)
+    return redirect(f"/channel/{channel_id}")
+
 
 
 if __name__ == '__main__':

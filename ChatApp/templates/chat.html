@@ -35,6 +35,9 @@
         <section class="profile_dialog">
           <div class="dli_close_profile"></div>
           <div class="profile_render"></div>
+          <a class="modify-profile-button" href="{{ url_for('profile') }}"
+            >変更する</a
+          >
           <p class="profile_dialog_title">Profile</p>
         </section>
         <section class="select_user_dialog">
@@ -69,11 +72,11 @@
       <div class="input_box_area">
         <div class="input_box_wrapper">
           <div class="input_box_error">
-            {% with messages = get_flashed_messages(category_filter=["message"]) %}
-            {% for message in messages %}
-            <li class="message_flashes">
-                <span>{{ message }}</span>
-            </li>
+            {% with flashes = get_flashed_messages(category_filter=["message"])
+            %} {% for flash in flashes %}
+            <p class="message_flashes">
+              <span>{{ flash }}</span>
+            </p>
             {% endfor %} {% endwith %}
           </div>
           <form
@@ -89,6 +92,13 @@
           </form>
         </div>
       </div>
+
+      {% with flashes = get_flashed_messages(category_filter=["update_profile"])
+      %} {% for flash in flashes %}
+      <p class="snackbar">
+        <span>{{ flash }}</span>
+      </p>
+      {% endfor %} {% endwith %}
     </div>
 
     <script
