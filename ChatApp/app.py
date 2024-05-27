@@ -110,6 +110,7 @@ def userLogin():
 # チャンネル一覧ページの表示
 @app.route("/channel/<channel_id>")
 def channel(channel_id):
+    print("ここまで")
     user_id = session.get("id")
     if user_id is None:
         return redirect('/login')
@@ -129,7 +130,7 @@ def channel(channel_id):
     last_operation_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     models.updateLastOperationAt(user_id,last_operation_at)
     return render_template(
-        'chat.html', user_id=user_id, partner_user_detile=partner_user_detile, channel_id=channel_id, channel_name=channel_name, users_num=users_num, channels=channels, messages=messages
+        'message.html', user_id=user_id, partner_user_detile=partner_user_detile, channel_id=channel_id, channel_name=channel_name, users_num=users_num, channels=channels, messages=messages
         )
 
 
@@ -190,6 +191,7 @@ def index():
 # チャンネルの追加
 @app.route("/channel", methods=["POST"])
 def add_channel():
+    print("チャンネル追加")
     user_id = session.get("id")
     if user_id is None:
         return redirect("/login")

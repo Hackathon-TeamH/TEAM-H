@@ -1,4 +1,5 @@
-
+{% extends 'chat.html' %}
+{% block message %}
 <div class="message_header">
     <div class="message_header_inner">
     {% if channel_id %}
@@ -67,3 +68,5 @@
     <div class="no_message"><p>投稿がありません</p></div>
     {% endif %}
 </div>
+
+{% endblock %}
