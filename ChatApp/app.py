@@ -11,7 +11,7 @@ from models import models
 import channels
 import renderProfile
 
-#import translation
+import translation
 #from langdetect import detect
 
 
@@ -145,15 +145,15 @@ def send_message():
     if sender_id is None:
         return redirect('/login')
     elif channel_id == "None":
-        # flash(translation.flash_trans(sender_id, "チャンネルが選択されていません"), "message")
-        flash("チャンネルが選択されていません", "message")
+        flash(translation.flash_trans(sender_id, "チャンネルが選択されていません"), "message")
+        # flash("チャンネルが選択されていません", "message")
         return redirect("/")
     elif message.strip() == "":
-        # flash(translation.flash_trans(sender_id, "メッセージが入力されていません"), "message")
-        flash("メッセージが入力されていません", "message")
+        flash(translation.flash_trans(sender_id, "メッセージが入力されていません"), "message")
+        # flash("メッセージが入力されていません", "message")
         return redirect(f"/channel/{channel_id}")
     else:
-        #source_lang, target_lang = translation.get_language_pair(sender_id, channel_id)
+        source_lang, target_lang = translation.get_language_pair(sender_id, channel_id)
 
     #入力言語判定
     # input_lang = detect(message)
@@ -161,13 +161,13 @@ def send_message():
     #     flash(translation.flash_trans(sender_id, "学びたい言語で入力しよう"), "message")
     #     return redirect(f"/channel/{channel_id}")
 
-    #translated_message = translation.translation(message, source_lang, target_lang)
-        translated_message = "translated_message"
-        models.createMessage(message, translated_message, sender_id, channel_id)
-        models.updateLastMessageAt(channel_id)
-        last_operation_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        models.updateLastOperationAt(sender_id,last_operation_at)
-        return redirect(f"/channel/{channel_id}")
+    translated_message = translation.translation(message, source_lang, target_lang)
+    # translated_message = "translated_message"
+    models.createMessage(message, translated_message, sender_id, channel_id)
+    models.updateLastMessageAt(channel_id)
+    last_operation_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    models.updateLastOperationAt(sender_id,last_operation_at)
+    return redirect(f"/channel/{channel_id}")
 
 
 # ホーム
@@ -200,8 +200,8 @@ def add_channel():
         return redirect("/login")
     channel_name = request.form.get("channel_name")
     if channel_name.strip() == "":
-        #flash(translation.flash_trans(user_id, "チャンネル名を入力してください"), "channel")
-        flash("チャンネル名を入力してください", "channel")
+        flash(translation.flash_trans(user_id, "チャンネル名を入力してください"), "channel")
+        # flash("チャンネル名を入力してください", "channel")
         channel_id = session.get("channel_id")
         if channel_id is None:
             return redirect(f"/") 
@@ -286,8 +286,8 @@ def delete_channel():
     channel_detail = models.getChannelById(channel_id)
 
     if user_id != channel_detail["user_id"]:
-        #flash(translation.flash_trans(user_id, "あなたの作ったチャンネルではありません"), channel_id)
-        flash("あなたの作ったチャンネルではありません", channel_id)
+        flash(translation.flash_trans(user_id, "あなたの作ったチャンネルではありません"), channel_id)
+        # flash("あなたの作ったチャンネルではありません", channel_id)
         return redirect(f"/channel/{channel_id}")
     else:
         models.deletechannel(channel_id)
@@ -345,7 +345,7 @@ def edit_message():
     elif message.strip() == "":
         return redirect(f"/channel/{channel_id}")
     else:
-        #source_lang, target_lang = translation.get_language_pair(sender_id, channel_id)
+        source_lang, target_lang = translation.get_language_pair(sender_id, channel_id)
 
     #入力言語判定
     # input_lang = detect(message)
@@ -353,13 +353,13 @@ def edit_message():
     #     flash(translation.flash_trans(sender_id, "学びたい言語で入力しよう"), 'message_' + message_id)
     #     return redirect(f"/channel/{channel_id}")
 
-    #translated_message = translation.translation(message, source_lang, target_lang)
-        translated_message = "translated_message"
-        models.editMessage(message_id, message, translated_message)
-        models.updateLastMessageAt(channel_id)
-        last_operation_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        models.updateLastOperationAt(sender_id,last_operation_at)
-        return redirect(f"/channel/{channel_id}")
+    translated_message = translation.translation(message, source_lang, target_lang)
+    # translated_message = "translated_message"
+    models.editMessage(message_id, message, translated_message)
+    models.updateLastMessageAt(channel_id)
+    last_operation_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    models.updateLastOperationAt(sender_id,last_operation_at)
+    return redirect(f"/channel/{channel_id}")
 
 
 
