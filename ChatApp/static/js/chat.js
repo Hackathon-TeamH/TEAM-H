@@ -214,3 +214,16 @@ snackbar.addEventListener("animationend", () => {
     });
   }, 3000);
 });
+
+// Enterキーで送信
+const textarea = document.getElementById('message_textarea');
+textarea.addEventListener('keydown', keydown);
+
+function keydown(event){
+  console.log("koko")
+  if (event.code === 'Enter' && event.ctrlKey) {
+    console.log("soko")
+    event.preventDefault();  // Enterキーのデフォルト動作（改行）を防ぎます。
+    document.getElementById('message_form').submit();  // フォームを送信します。
+  }
+};

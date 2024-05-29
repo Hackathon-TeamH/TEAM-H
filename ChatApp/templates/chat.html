@@ -85,13 +85,14 @@
             {% endfor %} {% endwith %}
           </div>
           <form
+            id="message_form"
             class="input_box"
             action="{{url_for('send_message')}}"
             method="POST"
           >
-            <textarea name="message"></textarea>
+            <textarea id="message_textarea" name="message"></textarea>
             <input type="hidden" value="{{channel_id}}" name="channel_id" />
-            <button type="submit">
+            <button id="message_button" type="submit">
               <ion-icon name="rocket-outline"></ion-icon>
             </button>
           </form>

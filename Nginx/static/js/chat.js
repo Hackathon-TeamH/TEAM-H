@@ -69,8 +69,7 @@ document.querySelector(".outer_menu").addEventListener("click", () => {
   document
     .querySelector(".profile_dialog")
     .classList.remove("profile_dialog_active");
-  document
-    .querySelector(".hamburger_menu").addEventListener(
+  document.querySelector(".hamburger_menu").addEventListener(
     "animationend",
     () => {
       document.querySelector(".hamburger_menu").classList.remove("closing");
@@ -215,3 +214,16 @@ snackbar.addEventListener("animationend", () => {
     });
   }, 3000);
 });
+
+// Enterキーで送信
+const textarea = document.getElementById('message_textarea');
+textarea.addEventListener('keydown', keydown);
+
+function keydown(event){
+  console.log("koko")
+  if (event.code === 'Enter' && event.ctrlKey) {
+    console.log("soko")
+    event.preventDefault();  // Enterキーのデフォルト動作（改行）を防ぎます。
+    document.getElementById('message_form').submit();  // フォームを送信します。
+  }
+};

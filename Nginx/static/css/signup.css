@@ -20,6 +20,7 @@
   text-align: center;
 }
 
+
 .signup_form {
   /* background-color: aquamarine; */
   text-align: left;
@@ -28,6 +29,7 @@
   height: 64px;
   margin-bottom: 4px;
 }
+
 
 .signup_input {
   display: block;
@@ -77,4 +79,10 @@
 
 .signup_radio label:hover {
   color: gray;
+}
+
+.required_label {
+  color: var(--redtext);
+  font-size: 10px;
+  margin-left: 0.25rem
 }
