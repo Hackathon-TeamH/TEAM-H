@@ -12,7 +12,6 @@ import channels
 import renderProfile
 
 import translation
-from langdetect import detect
 
 
 app = Flask(__name__)
@@ -107,10 +106,9 @@ def userLogin():
     return redirect('/')
 
 
-# チャンネル一覧ページの表示
+# チャンネル選択
 @app.route("/channel/<channel_id>")
 def channel(channel_id):
-    print("ここまで")
     user_id = session.get("id")
     if user_id is None:
         return redirect('/login')
@@ -146,20 +144,12 @@ def send_message():
         return redirect('/login')
     elif channel_id == "None":
         flash(translation.flash_trans(sender_id, "チャンネルが選択されていません"), "message")
-        # flash("チャンネルが選択されていません", "message")
         return redirect("/")
     elif message.strip() == "":
         flash(translation.flash_trans(sender_id, "メッセージが入力されていません"), "message")
-        # flash("メッセージが入力されていません", "message")
         return redirect(f"/channel/{channel_id}")
     else:
         source_lang, target_lang = translation.get_language_pair(sender_id, channel_id)
-
-    # 入力言語判定
-    # input_lang = detect(message)
-    # if input_lang != source_lang:
-    #     flash(translation.flash_trans(sender_id, "学びたい言語で入力しよう"), "message")
-    #     return redirect(f"/channel/{channel_id}")
 
     # googletransでの入力言語判定
     if source_lang != translation.google_detect(message):
@@ -168,7 +158,6 @@ def send_message():
 
 
     translated_message = translation.translation(message, source_lang, target_lang)
-    # translated_message = "translated_message"
     models.createMessage(message, translated_message, sender_id, channel_id)
     models.updateLastMessageAt(channel_id)
     last_operation_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -200,14 +189,12 @@ def index():
 # チャンネルの追加
 @app.route("/channel", methods=["POST"])
 def add_channel():
-    print("チャンネル追加")
     user_id = session.get("id")
     if user_id is None:
         return redirect("/login")
     channel_name = request.form.get("channel_name")
     if channel_name.strip() == "":
         flash(translation.flash_trans(user_id, "チャンネル名を入力してください"), "channel")
-        # flash("チャンネル名を入力してください", "channel")
         channel_id = session.get("channel_id")
         if channel_id is None:
             return redirect(f"/") 
@@ -293,7 +280,6 @@ def delete_channel():
 
     if user_id != channel_detail["user_id"]:
         flash(translation.flash_trans(user_id, "あなたの作ったチャンネルではありません"), channel_id)
-        # flash("あなたの作ったチャンネルではありません", channel_id)
         return redirect(f"/channel/{channel_id}")
     else:
         models.deletechannel(channel_id)
@@ -301,6 +287,7 @@ def delete_channel():
         return redirect("/")
 
 
+#プロフィール表示
 @app.route('/get-profile', methods=["GET"])
 def get_profile():
     user_id = session.get("id")
@@ -310,6 +297,7 @@ def get_profile():
     return profile
 
 
+#プロフィール変更ページ表示
 @app.route('/profile')
 def profile():
     user_id = session.get("id")
@@ -317,6 +305,7 @@ def profile():
     return render_template('profile.html', user=user)
 
 
+#プロフィール変更
 @app.route('/profile',methods=["POST"])
 def update_profile():
     user_id = session.get("id")
@@ -332,8 +321,8 @@ def update_profile():
         return redirect("/profile")
 
     models.update_profile(user_id,name,country,city)
-    # flash(translation.flash_trans(user_id, "プロフィールをアップデートしました"), "update_profile")
-    flash("プロフィールをアップデートしました", "update_profile")
+    flash(translation.flash_trans(user_id, "プロフィールをアップデートしました"), "update_profile")
+    # flash("プロフィールをアップデートしました", "update_profile")
     return redirect('/')
 
 
@@ -353,19 +342,12 @@ def edit_message():
     else:
         source_lang, target_lang = translation.get_language_pair(sender_id, channel_id)
 
-    #入力言語判定
-    # input_lang = detect(message)
-    # if input_lang != source_lang:
-    #     flash(translation.flash_trans(sender_id, "学びたい言語で入力しよう"), 'message_' + message_id)
-    #     return redirect(f"/channel/{channel_id}")
-
     # googletransでの入力言語判定
     if source_lang != translation.google_detect(message):
         flash(translation.flash_trans(sender_id, "学びたい言語で入力しよう"), "message")
         return redirect(f"/channel/{channel_id}")
 
     translated_message = translation.translation(message, source_lang, target_lang)
-    # translated_message = "translated_message"
     models.editMessage(message_id, message, translated_message)
     models.updateLastMessageAt(channel_id)
     last_operation_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
