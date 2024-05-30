@@ -1,8 +1,8 @@
 /* 全てのCSSをまとめてエクスポート */
 
 @import "color.css";
-@import "chat.css";
 @import "base.css";
+@import "chat.css";
 @import "message.css";
 @import "hamburger.css";
 @import "login.css";

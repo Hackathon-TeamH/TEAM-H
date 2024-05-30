@@ -12,7 +12,6 @@ import channels
 import renderProfile
 
 import translation
-from langdetect import detect
 
 
 app = Flask(__name__)
@@ -107,7 +106,7 @@ def userLogin():
     return redirect('/')
 
 
-# チャンネル一覧ページの表示
+# チャンネル選択
 @app.route("/channel/<channel_id>")
 def channel(channel_id):
     user_id = session.get("id")
@@ -129,7 +128,7 @@ def channel(channel_id):
     last_operation_at = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     models.updateLastOperationAt(user_id,last_operation_at)
     return render_template(
-        'chat.html', user_id=user_id, partner_user_detile=partner_user_detile, channel_id=channel_id, channel_name=channel_name, users_num=users_num, channels=channels, messages=messages
+        'message.html', user_id=user_id, partner_user_detile=partner_user_detile, channel_id=channel_id, channel_name=channel_name, users_num=users_num, channels=channels, messages=messages
         )
 
 
@@ -152,11 +151,11 @@ def send_message():
     else:
         source_lang, target_lang = translation.get_language_pair(sender_id, channel_id)
 
-    #入力言語判定
-    input_lang = detect(message)
-    if input_lang != source_lang:
+    # googletransでの入力言語判定
+    if source_lang != translation.google_detect(message):
         flash(translation.flash_trans(sender_id, "学びたい言語で入力しよう"), "message")
         return redirect(f"/channel/{channel_id}")
+
 
     translated_message = translation.translation(message, source_lang, target_lang)
     models.createMessage(message, translated_message, sender_id, channel_id)
@@ -288,6 +287,7 @@ def delete_channel():
         return redirect("/")
 
 
+#プロフィール表示
 @app.route('/get-profile', methods=["GET"])
 def get_profile():
     user_id = session.get("id")
@@ -297,6 +297,7 @@ def get_profile():
     return profile
 
 
+#プロフィール変更ページ表示
 @app.route('/profile')
 def profile():
     user_id = session.get("id")
@@ -304,6 +305,7 @@ def profile():
     return render_template('profile.html', user=user)
 
 
+#プロフィール変更
 @app.route('/profile',methods=["POST"])
 def update_profile():
     user_id = session.get("id")
@@ -320,6 +322,7 @@ def update_profile():
 
     models.update_profile(user_id,name,country,city)
     flash(translation.flash_trans(user_id, "プロフィールをアップデートしました"), "update_profile")
+    # flash("プロフィールをアップデートしました", "update_profile")
     return redirect('/')
 
 
@@ -339,10 +342,9 @@ def edit_message():
     else:
         source_lang, target_lang = translation.get_language_pair(sender_id, channel_id)
 
-    #入力言語判定
-    input_lang = detect(message)
-    if input_lang != source_lang:
-        flash(translation.flash_trans(sender_id, "学びたい言語で入力しよう"), 'message_' + message_id)
+    # googletransでの入力言語判定
+    if source_lang != translation.google_detect(message):
+        flash(translation.flash_trans(sender_id, "学びたい言語で入力しよう"), "message")
         return redirect(f"/channel/{channel_id}")
 
     translated_message = translation.translation(message, source_lang, target_lang)
