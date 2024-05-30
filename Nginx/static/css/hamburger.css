@@ -344,7 +344,6 @@
   transform: rotate(-45deg);
 }
 
-
 .dli_close_profile::before {
   content: "";
   position: absolute;

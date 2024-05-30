@@ -38,7 +38,7 @@
           {% endif %} {% endwith %}
           <div class="signup_form">
             <label class="registration_label" for="signup-name-input"
-              >ユーザー名</label
+              >ユーザー名<sup class="required_label">*</sup></label
             >
             <input
               class="signup_input"
@@ -50,7 +50,7 @@
           </div>
           <div class="signup_form">
             <label class="registration_label" for="signup-email-input"
-              >メールアドレス</label
+              >メールアドレス<sup class="required_label">*</sup></label
             >
             <input
               class="signup_input"
@@ -62,7 +62,7 @@
           </div>
           <div class="signup_form">
             <label class="registration_label" for="signup-password-input"
-              >パスワード</label
+              >パスワード<sup class="required_label">*</sup></label
             >
             <input
               class="signup_input"
@@ -77,7 +77,7 @@
               class="registration_label"
               for="signup-password-confirmation-input"
             >
-              パスワード（確認）
+              パスワード&thinsp;(確認)<sup class="required_label">*</sup>
             </label>
             <input
               class="signup_input"
@@ -89,7 +89,7 @@
           </div>
           <!-- ラジオボタンで「学びたい言語」「話せる言語」実装 -->
           <div class="signup_radio">
-            <p>学びたい言語</p>
+            <p>学びたい言語<sup class="required_label">*</sup></p>
             <div class="signup_radio_button">
               <div class="sign_up_radio_button_each">
                 <input
@@ -112,7 +112,7 @@
             </div>
           </div>
           <div class="signup_radio">
-            <p>話せる言語</p>
+            <p>話せる言語<sup class="required_label">*</sup></p>
             <div class="signup_radio_button">
               <div class="sign_up_radio_button_each">
                 <input type="radio" id="japanese2" name="language" value="ja" />

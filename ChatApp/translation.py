@@ -35,3 +35,11 @@ def flash_trans(user_id,alertmessage):
         target_lang = learning_lang["learning_language"]
         alert = translation(alertmessage, "ja", target_lang)
         return alert
+
+
+# googletransでの言語判定
+def google_detect(message):
+     detect = trans.detect(message)
+     lang = detect.lang
+     return lang
+

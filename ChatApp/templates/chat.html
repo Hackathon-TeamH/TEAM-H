@@ -67,8 +67,13 @@
         </section>
         <div class="outer_menu"></div>
       </div>
-      <div class="channel_container">{% include "channel-list.html" %}</div>
-      <div class="message_container">{% include "message.html" %}</div>
+      <div class="channel_container">
+        {% include "channel-list.html" %}
+      </div>
+      <div class="message_container">
+        {% block message %}
+        {% endblock %}
+      </div>
       <div class="input_box_area">
         <div class="input_box_wrapper">
           <div class="input_box_error">
@@ -80,13 +85,14 @@
             {% endfor %} {% endwith %}
           </div>
           <form
+            id="message_form"
             class="input_box"
             action="{{url_for('send_message')}}"
             method="POST"
           >
-            <textarea name="message"></textarea>
+            <textarea id="message_textarea" name="message"></textarea>
             <input type="hidden" value="{{channel_id}}" name="channel_id" />
-            <button type="submit">
+            <button id="message_button" type="submit">
               <ion-icon name="rocket-outline"></ion-icon>
             </button>
           </form>
